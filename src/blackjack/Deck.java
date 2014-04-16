@@ -4,7 +4,7 @@
 package blackjack;
 
 /**
- * @author jordan
+ * @author Riya Modi
  *
  */
 public class Deck {

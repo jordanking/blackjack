@@ -8,7 +8,7 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /**
- * @author jordan
+ * @author Jordan King
  *
  */
 public class GameBoard extends JPanel {
