@@ -8,7 +8,7 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /**
- * @author jordan
+ * @author Kevin Tian
  *
  */
 public class PlayPanel extends JPanel {

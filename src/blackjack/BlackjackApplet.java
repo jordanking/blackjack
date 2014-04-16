@@ -8,7 +8,7 @@ import java.awt.HeadlessException;
 import javax.swing.JApplet;
 
 /**
- * @author jordan
+ * @author Allie Miller
  *
  */
 public class BlackjackApplet extends JApplet {
