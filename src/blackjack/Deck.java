@@ -120,9 +120,5 @@ public class Deck {
 		}
 			
 	}
-	
-	public void main(String[] args){
-		printDeck();
-	}
 
 }
