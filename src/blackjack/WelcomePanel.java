@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 
 
 /**
- * @author jordan
+ * @author Allie Miller
  *
  */
 public class WelcomePanel extends JPanel implements ActionListener{

@@ -4,7 +4,7 @@
 package blackjack;
 
 /**
- * @author jordan
+ * @author Kevin Tian
  *
  */
 public class ProgressBar {

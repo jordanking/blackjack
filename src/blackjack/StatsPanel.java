@@ -8,7 +8,7 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /**
- * @author jordan
+ * @author Alex Post
  *
  */
 public class StatsPanel extends JPanel {

@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 
 
 /**
- * @author jordan
+ * @author Allie Miller
  *
  */
 public class HelpPanel extends JPanel implements ActionListener{
