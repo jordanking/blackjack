@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
  * @author Allie Miller
  *
  */
-public class HelpPanel extends JPanel implements ActionListener{
+public class HelpPanel extends BPanel implements ActionListener{
 
 	JTextArea helpInstructions;
 	Button playAgainButton, exitButton;

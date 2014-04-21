@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
  * @author Allie Miller
  *
  */
-public class WelcomePanel extends JPanel implements ActionListener{
+public class WelcomePanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions;
 	Button getStartedButton, helpButton, exitButton;
@@ -89,14 +89,15 @@ public class WelcomePanel extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == exitButton)
+		if (event.getSource() == exitButton) {
 			System.exit(0);
 			//panelManager.actionPerformed(new ActionEvent(this, JPanelManager.REMOVE, "blackjack.WelcomePanel"));
-		else
+		} else {
 			if (event.getSource() == getStartedButton)
 			{
 				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.DummyPanel"));
 			}
+		}
 	}
 	
 	 public Insets getInsets()

@@ -1,16 +1,6 @@
 package blackjack;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 
 
@@ -23,8 +13,7 @@ import javax.swing.JPanel;
  * number of hands played between one player and a dealer. It tracks losses and finances, and draws
  * the game on a panel.
  */
-@SuppressWarnings("serial")
-public class GameBoard extends JPanel {
+public class GameBoard  {
 	
 	/**
 	 * A constant for the default amount of starting cash.
@@ -37,29 +26,9 @@ public class GameBoard extends JPanel {
 	static private final int DEFAULT_BET = 10;
 	
 	/**
-	 * A constant for the text color.
-	 */
-	static private final Color TEXT_COLOR = Color.red;
-	
-	/**
-	 * A constant for the bet display text.
-	 */
-	static private final String BET_DISPLAY_STRING = "Bet: ";
-	
-	/**
-	 * A constant for the cash display text.
-	 */
-	static private final String CASH_DISPLAY_STRING = "Cash: ";
-	
-	/**
-	 * A constant for the losses display text.
-	 */
-	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
-	
-	/**
 	 * The dealer is a private member that models the current state of the dealer in the game.
 	 */
-	private Dealer dealer;
+	private Player dealer;
 	
 	/**
 	 * The player is a private member that models the current state of the player in the game.
@@ -107,6 +76,12 @@ public class GameBoard extends JPanel {
 	 * bet.
 	 */
 	private boolean readyForBet;
+	
+	/**
+	 * The readyForBet bool is a marker of whether or not the game is ready to receive the player
+	 * bet.
+	 */
+	private boolean handInProgress;
 
 	/**
 	 * The default constructor just initializes the data model. I am not sure how this will interact
@@ -120,29 +95,6 @@ public class GameBoard extends JPanel {
 		
 		// initialize the game model
 		initModel();
-	}
-
-	/**
-	 * Constructs and initializes the data model, the layout, the buffering, and everything.
-	 * 
-	 * @param layout
-	 * @param isDoubleBuffered
-	 * @return none
-	 * @since 1.0
-	 */
-	public GameBoard(LayoutManager layout) {
-		
-		// Call up to the super
-		super(layout);
-		
-		// Set up the game model
-		initModel();
-		
-		// Use the layout that was passed in
-		setLayout(layout);
-		
-		// Set the double buffering to true so it looks prettier
-		setDoubleBuffered(true);
 	}
 	
 	/**
@@ -186,6 +138,9 @@ public class GameBoard extends JPanel {
 	 * @since 1.0
 	 */
 	public void setBet(int newBet) {
+		if(!isReadyForBet()){
+			return;
+		}
 		bet = newBet;
 	}
 	
@@ -200,6 +155,39 @@ public class GameBoard extends JPanel {
 		return bet;
 	}
 
+	/**
+	 * Returns the current hand of the dealer.
+	 * 
+	 * @param none
+	 * @return dealerHand the player's hand.
+	 * @since 1.0
+	 */
+	public ArrayList<Card> getDealerHand() {
+		return dealer.getHand();
+	}
+	
+	/**
+	 * Returns the current hand of the player.
+	 * 
+	 * @param none
+	 * @return playerHand the player's hand.
+	 * @since 1.0
+	 */
+	public ArrayList<Card> getPlayerHand() {
+		return player.getHand();
+	}
+	
+	/**
+	 * Returns the current value of the hand of the player.
+	 * 
+	 * @param none
+	 * @return handValue the player's hand value.
+	 * @since 1.0
+	 */
+	public int getPlayerHandValue() {
+		return player.getPoints();
+	}
+	
 	/**
 	 * Returns the current number of hands that have been played since the last initialization.
 	 * 
@@ -221,7 +209,7 @@ public class GameBoard extends JPanel {
 	public void initModel() {
 		
 		// get new models
-		dealer = new Dealer();
+		dealer = new Player();
 		player = new Player();
 		deck = new Deck();
 		
@@ -245,13 +233,43 @@ public class GameBoard extends JPanel {
 	 */
 	public void playHand() {
 		
+		if (handInProgress) {
+			return;
+		}
+		
 		// See if the player has money to play
 		if (cash < bet) {
 			return;
 		}
+
+		// the hand begins!
+		handInProgress = true;
+
+		// reset player
+		player.reset();
+		
+		// reset dealer
+		dealer.reset();
 		
 		// We are now on the next hand.
 		handNumber++;
+		
+		// shuffle and deal
+		deal();
+		
+		// ready for bet and input
+		readyForInput = true;
+		readyForBet = true;
+		
+	}
+
+	/**
+	 * 
+	 */
+	private void deal() {
+		
+		// get a fresh deck
+		deck = new Deck();
 		
 		// Shuffle deck up front
 		deck.shuffle();
@@ -264,11 +282,6 @@ public class GameBoard extends JPanel {
 		
 		// deal the third card to the player
 		player.addCard(deck.drawCard());
-		
-		// ready for bet and input
-		readyForInput = true;
-		readyForBet = true;
-		
 	}
 	
 	/**
@@ -282,7 +295,7 @@ public class GameBoard extends JPanel {
 	public void hit() {
 		
 		// Make sure that the model is ready for input
-		if (!readyForInput) {
+		if (!readyForInput || !handInProgress) {
 			return;
 		}
 		
@@ -299,8 +312,8 @@ public class GameBoard extends JPanel {
 		if (player.getPoints() > 21) {
 			
 			// the player loses!
-			cash -= bet;
-			losses += bet;
+			lose();
+			return;
 		}
 		
 		// now we are ready for more input
@@ -319,7 +332,7 @@ public class GameBoard extends JPanel {
 	public void stand() {
 		
 		// Make sure that the model is ready for input
-		if (!readyForInput) {
+		if (!readyForInput || !handInProgress) {
 			return;
 		}
 		
@@ -339,26 +352,40 @@ public class GameBoard extends JPanel {
 			if (dealer.getPoints() > 21) {
 				
 				// the player wins!
-				cash += bet;
-				losses -= bet;
+				win();
+				return;
+				
 			}
+			
 		}
 		
+		// see who won
+		checkScores();		
+	}
+
+	/**
+	 * 
+	 */
+	private void checkScores() {
 		// check the scores for the winner
 		if (dealer.getPoints() > player.getPoints()) {
 			
 			// the player loses!
-			cash -= bet;
-			losses += bet;
+			lose();
+			return;
+			
 		} else if (dealer.getPoints() < player.getPoints()) {
 			
 			// the player wins!
-			cash += bet;
-			losses -= bet;
+			win();
+			return;
+			
 		} else {
-			// push: do nothing on a tie
+			
+			push();
+			return;
+			
 		}
-		
 	}
 	
 	/**
@@ -386,151 +413,60 @@ public class GameBoard extends JPanel {
 	}
 	
 	/**
-     * Calls the drawing methods of the blackjack game
-     * 
-     * @param graphicsObject the graphicsObject to draw with
-     * @return none
-     * @see JComponent
-     * @since 1.0 
-     */
-    @Override
-    public void paintComponent(Graphics graphicsObject) {
-    	
-    	// draw all the other stuff (actually erases it!)
-        super.paintComponent(graphicsObject);
-        
-    	// Switch to 2D
-        Graphics2D graphicsObject2d = (Graphics2D) graphicsObject;
-        
-        // make it antialiasing for fun
-    	graphicsObject2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-  	          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    	graphicsObject2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-  	          RenderingHints.VALUE_RENDER_QUALITY);
-        
-        // draw background
-        drawBackground(graphicsObject2d);
-        
-        // draw my stuff (what else is there really?)
-        drawDealer(graphicsObject2d);
-        drawPlayer(graphicsObject2d);
-        drawDeck(graphicsObject2d);
-        
-        // Draw the meta (like cash, bet, etc...)
-        drawMeta(graphicsObject2d);
+	 * Returns a boolean representing whether or not the game is playing a hand. 
+	 * 
+	 * @param none
+	 * @return handInProgress a boolean value of whether the game playing a hand.
+	 * @since 1.0
+	 */
+	public boolean isHandInProgress() {
+		return handInProgress;
+	}
+	
+	/**
+	 * Updates for a loss. 
+	 * 
+	 * @param none
+	 * @return none
+	 * @since 1.0
+	 */
+	public void lose() {
+		cash -= bet;
+		losses += bet;
+		handInProgress = false;
+		System.out.println("Player loses: ");
+		System.out.println("Player has " + player.getPoints() + " points");
+		System.out.println("Dealer has " + dealer.getPoints() + " points");
 
-        // Explicitly release the memory storing the graphics. Do not wait for garbage collection
-        graphicsObject2d.dispose();
-    }
-
-    /**
-     * Draws the background on the game board
-     * 
-     * @param graphicsObject2d the 2d graphics object we draw with
-     * @return none
-     * @since 1.0
-     */
-    private void drawBackground(Graphics2D graphicsObject2d) {
-    	
-    	// draw the background
-//    	graphicsObject2d.drawImage(backImageAsset, 0, 0, this);
-    	graphicsObject2d.setBackground(Color.green);
-        
-        // Synchronize the graphics state - now is the the to draw! (magic)
-        Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE ITLL SUCK EVERYTHING UP
-    }
-    
-    /**
-     * Draws the dealer's hand on the screen
-     * 
-     * @param graphicsObject2d the 2d graphics object we draw with
-     * @return none
-     * @since 1.0
-     */
-    private void drawDealer(Graphics2D graphicsObject2d) {
-    	
-    	// get the dealer's hand
-    	ArrayList<Card> dealerHand = dealer.getHand();
-    	
-    	// iterate through all cards of the dealer and draw them on the board
-    	for (Card card: dealerHand) {
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-//    		graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-		}
-        
-        // Synchronize the graphics state (more magic)
-        Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE ITLL SUCK EVERYTHING UP
-    }
-
-    /**
-     * Draws the player's hand on the screen
-     * 
-     * @param graphicsObject2d the 2d graphics object we draw with
-     * @return none
-     * @since 1.0
-     */
-    private void drawPlayer(Graphics2D graphicsObject2d) {
-
-
-    	// get the player's hand
-    	ArrayList<Card> playerHand = player.getHand();
-    	
-    	// iterate through all cards of the player and draw them on the board
-    	for (Card card: playerHand) {
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-//    		graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-		}
-        
-        // Synchronize the graphics state (more magic)
-        Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT
-    }
-    
-    /**
-     * Draws the deck on the screen
-     * 
-     * @param graphicsObject2d the 2d graphics object we draw with
-     * @return none
-     * @since 1.0
-     */
-    private void drawDeck(Graphics2D graphicsObject2d) {
-    	
-    	// graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-        
-        // Synchronize the graphics state (more magic)
-        Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT PLZ
-    }
-    
-    /**
-     * Draws the meta information on the screen
-     * 
-     * @param graphicsObject
-     * @return none
-     * @since 1.0
-     */
-    private void drawMeta(Graphics2D graphicsObject2d) {
-    	
-    	// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 25));
-        graphicsObject2d.setColor(TEXT_COLOR);
-        
-        // Draw the cash
-   		graphicsObject2d.drawString(CASH_DISPLAY_STRING + cash, 5, 25);
-        
-   		// Draw the losses
-   		graphicsObject2d.drawString(LOSSES_DISPLAY_STRING + losses, 5, 50);
-   		
-   		// Draw the bet
-   		graphicsObject2d.drawString(BET_DISPLAY_STRING + bet, 5, 75);
-        
-        // Synchronize the graphics state - now is the the to draw! (more magic)
-        Toolkit.getDefaultToolkit().sync();
-    }
+	}
+	
+	/**
+	 * Updates for a win.
+	 * 
+	 * @param none
+	 * @return none
+	 * @since 1.0
+	 */
+	public void win() {
+		cash += bet;
+		losses -= bet;
+		handInProgress = false;
+		System.out.println("Player wins: ");
+		System.out.println("Player has " + player.getPoints() + " points");
+		System.out.println("Dealer has " + dealer.getPoints() + " points");
+	}
+	
+	/**
+	 * Updates for a push.
+	 * 
+	 * @param none
+	 * @return none
+	 * @since 1.0
+	 */
+	public void push() {
+		handInProgress = false;
+		System.out.println("Push: ");
+		System.out.println("Player has " + player.getPoints() + " points");
+		System.out.println("Dealer has " + dealer.getPoints() + " points");
+	}
 }

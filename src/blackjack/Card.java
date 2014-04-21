@@ -16,7 +16,9 @@ public class Card {
 	 * 
 	 */
 	public Card() {
-		// TODO Auto-generated constructor stub
+		// Defaults
+		cardRank = Rank.ACE;
+		cardSuit = Suit.CLUBS;
 	}
 	
 	public Card (Rank cardRank, Suit cardSuit){

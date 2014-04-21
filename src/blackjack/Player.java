@@ -11,66 +11,75 @@ import java.util.ArrayList;
  */
 public class Player {
 	
-	ArrayList<Card> playerHand = new ArrayList<Card>();	//ArrayList of Card Objects for player's hand
-	private int playerHandValue;						//value of the player's hand
-	private int numOfCards;								//number of card's the player has
+	ArrayList<Card> playerHand;	//ArrayList of Card Objects for player's hand
 
 	/**
-	 * Player()
-	 * constructor initializes Player class variables
+	 * player()
+	 * initializes player class variables
 	 */
 	public Player() {
-		// TODO Auto-generated constructor stub
-		playerHandValue = 0;	//initialize the value of the player's hand
-		numOfCards = 0;			//initialize the number of cards the player has
+		
+		// the player's hand
+		playerHand = new ArrayList<Card>();
 	}
 
-	/*
+	/**
 	 * addCard(Card drawCard)
-	 * adds a card to the player's hand when player hits
+	 * adds a card to the player's hand when the player hits
 	 * updates the value of the player's hand
-	 * updates the number of cards the player has
+	 * updates the number of cards the player's has
 	 * @param drawCard Card object 
 	 */
 	public void addCard(Card drawCard) {
-		// TODO Auto-generated method stub
-		
+
 		//adds a card to the ArrayList of the player's hand
 		playerHand.add(drawCard);
 		
-		//update the value of the player's hand
-		int newCardRank = drawCard.getCardRank().getCardPoints();
-		playerHandValue+=newCardRank;
-		
-		//update the number of cards the player has
-		numOfCards++;
 	}
 
-	/*
+	/**
 	 * getPoints()
 	 * returns the value of the player's hand
 	 */
 	public int getPoints() {
-		// TODO Auto-generated method stub
+		int playerHandValue = 0;
+		for(Card card: playerHand){
+			playerHandValue += card.getCardRank().getCardPoints();
+		}
+		for(Card card: playerHand) {
+			if (playerHandValue > 21 && card.getCardRank() == Rank.ACE) {
+				playerHandValue -= 10;
+			}
+		}
 		return playerHandValue;
 	}
 	
-	/*
+	/**
 	 * getNumOfCards()
 	 * returns the number of cards in the player's hand
 	 */
 	public int getNumOfCards(){
-		return numOfCards;
+		return playerHand.size();
 	}
 
-	/*
+	/**
 	 * getHand()
 	 * returns the ArrayList representing the player's hand of Card objects
 	 * @return ArrayList<Card>
 	 */
 	public ArrayList<Card> getHand() {
-		// TODO Auto-generated method stub
+		
 		return playerHand;
 	}
+	
+	/**
+	 * clear()
+	 * clears the ArrayList representing the player's hand of Card objects
+	 * @return ArrayList<Card>
+	 */
+	public void reset() {
+		playerHand.clear();
+	}
+
 
 }

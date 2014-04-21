@@ -12,15 +12,15 @@ import java.util.Random;
  */
 public class Deck {
 	
-	ArrayList<Card> deck = new ArrayList<Card>();	//ArrayList of Card objects
-	private int numCardsInDeck;						//keeps track of the number of Cards in the deck
+	ArrayList<Card> deck;	//ArrayList of Card objects
+
 
 	/**
 	 * Deck()
 	 * Constructor creates a deck of playing cards (no joker)
 	 */
 	public Deck() {
-		// TODO Auto-generated constructor stub
+		deck = new ArrayList<Card>();
 		
 		for (int suit=0; suit<4; suit++){
 			for (int rank=0; rank<13; rank++){
@@ -34,17 +34,14 @@ public class Deck {
 				deck.add(newCard);
 			}
 		}
-		
-		//initialize the number of cards in a new deck
-		numCardsInDeck = 52;
 	}
 	
 	/*
 	 * printDeck()
 	 * prints the contents of the deck
 	 */
-	public void printDeck(){
-		for (int i=0; i<deck.size();i++){
+	public void printDeck() {
+		for (int i=0; i<deck.size();i++) {
 			System.out.println(deck.get(i).getCardSuit() + " " + deck.get(i).getCardRank());
 		}
 	}
@@ -54,7 +51,7 @@ public class Deck {
 	 * @return numCardsInDeck the number of cards in the deck
 	 */
 	public int getNumCardsInDeck(){
-		return numCardsInDeck;
+		return deck.size();
 	}
 
 	/*
@@ -69,10 +66,10 @@ public class Deck {
 		int randomIndex;
 		Card placeholder;
 		
-		for (int deckIterator=0; deckIterator<getNumCardsInDeck();deckIterator++){
+		for (int deckIterator=0; deckIterator<deck.size(); deckIterator++){
 			//pick a random number from the number of cards currently in the deck
 			//this random number will represent an index in the ArrayList "deck"
-			randomIndex = randomCard.nextInt(getNumCardsInDeck());
+			randomIndex = randomCard.nextInt(deck.size());
 			
 			//create a Card object placeholder for the current card deckIterator is pointing to
 			placeholder = deck.get(deckIterator);
@@ -95,10 +92,8 @@ public class Deck {
 		//if the deck is not empty, return the card on top
 		if (isEmpty()==false){
 			
-			//reduce the number of cards in the deck by one
-			numCardsInDeck--;
-			
-			return deck.get(0);
+			// remove a card
+			return deck.remove(0);
 		}
 		
 		//if the deck is empty, return a null object
@@ -112,13 +107,12 @@ public class Deck {
 	 * @return boolean whether or not the deck is empty
 	 */
 	public boolean isEmpty(){
-		if (numCardsInDeck==0)
-			return true;
-		else{
+		if (deck.size()==0) {
 			System.out.println("DECK IS EMPTY");
+			return true;
+		} else {
+			System.out.println("DECK IS NOT EMPTY");
 			return false;
 		}
-			
 	}
-
 }

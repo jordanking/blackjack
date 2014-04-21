@@ -46,7 +46,7 @@ public class LossesBoard extends JPanel implements Runnable{
 		
 		//create image of Starbucks Cup
 		try {
-			starbucksImage = ImageIO.read(new File("starbucksCup.jpg"));
+			starbucksImage = ImageIO.read(new File("images/starbucksCup.jpg"));
 		} catch (IOException error) {
 			// TODO Auto-generated catch block
 			error.printStackTrace();
