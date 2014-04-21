@@ -40,7 +40,7 @@ public class JPanel extends Panel
        properties = p;
        if (properties != null)
        {
-          applet       = (Applet)properties.get("Applet");
+          applet  = (Applet)properties.get("Applet");
           panelManager = (ActionListener)properties.get("PanelManager");
        }
    }

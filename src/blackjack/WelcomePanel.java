@@ -95,7 +95,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		else
 			if (event.getSource() == getStartedButton)
 			{
-				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.HelpPanel"));
+				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.DummyPanel"));
 			}
 	}
 	
