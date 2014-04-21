@@ -9,7 +9,7 @@ package blackjack;
  */
 public enum Rank {
 	//NEED TO change this so ACE can be a 1 or a 11
-	ACE(1),
+	ACE(11),
 	TWO(2),
 	THREE(3),
 	FOUR(4),
