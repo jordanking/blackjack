@@ -31,12 +31,7 @@ import java.util.Vector;
 import javax.swing.JApplet;
 
 /**
-<<<<<<< HEAD
- * @author alyssamiller
-=======
  * @author Allie Miller
->>>>>>> FETCH_HEAD
- *
  */
 public class BlackjackApplet extends JApplet implements ActionListener{
 	
