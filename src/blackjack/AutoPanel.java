@@ -6,6 +6,7 @@ package blackjack;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -44,12 +45,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * Stand value for simulation.
 	 */
-	private int standValue = 17;
+	private Integer standValue = 17;
 	
 	/**
 	 * Bet value for simulation.
 	 */
-	private int betValue = 50;
+	private Integer betValue = 50;
 	
 	/**
 	 * Allows the drawing on a thread.
@@ -105,8 +106,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	public AutoPanel() {
 		// initialize standValue and betValue
-		standValue = (int) properties.get("standValue");
-		betValue = (int) properties.get("betValue");
+		
+		
+		standValue = (Integer) properties.get("standValue");
+		betValue = (Integer) properties.get("betValue");
+		
+		
 	}
 	
 	/**
