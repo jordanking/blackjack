@@ -41,7 +41,7 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
     private Thread animator;
 	
 	/**
-	 * A constant for the text color.
+	 * A constant for the total hands to play in this panel.
 	 */
 	static private final int TOTAL_HANDS_TO_PLAY = 10;
     
