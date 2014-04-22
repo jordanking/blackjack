@@ -11,7 +11,10 @@
 // on this project. 
 // 
 // Description: Our program simulates a Blackjack game and
-// allows the player to visualize the true weight of his monetary losses
+// allows the player to visualize the true weight of his monetary losses.
+// 
+// Resources:
+// 
 // 
 
 
@@ -71,10 +74,13 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 	{   
 		switch(event.getID())
 		{
+		
+		// call add panel method
 		case ADD:
 			panelAdd(event.getActionCommand());
 			break;
-
+			
+		// call remove panel method
 		case REMOVE:
 			Object object = event.getSource();
 			panelRemove(object);
@@ -143,13 +149,15 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 		panelsVector.removeElement(jPanel);
 		jPanel.stop();
 
-		// If other components exists, call "start" method on second to last
+		// If other components exists, call "start" method on last panel in vectoe
 		if (panelsVector.size() > 0)
 			((BPanel)panelsVector.lastElement()).start();
-
+		
+		// destroy and remove requested panel
 		jPanel.destroy();
 		remove(jPanel);
-
+		
+		// remove requested panel from properties
 		this.properties.remove(jPanel);
 	}
 }

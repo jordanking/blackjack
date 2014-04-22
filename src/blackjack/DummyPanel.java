@@ -25,6 +25,10 @@ import javax.swing.Timer;
 
 
 /**
+ * DummyPanel
+ * 
+ * A basic panel class for the different play panels.
+ * 
  * @author Alyssa Miller, Jordan King
  *
  */

@@ -8,8 +8,11 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /**
+ * AutoPanel 
+ * 
+ * Play panel class for the Blackjack simulator.
+ * 
  * @author Kevin Tian
- *
  */
 public class AutoPanel extends JPanel {
 

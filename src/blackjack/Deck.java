@@ -17,7 +17,7 @@ public class Deck {
 
 	/**
 	 * Deck()
-	 * Constructor creates a deck of playing cards (no joker)
+	 * Constructor creates a deck of playing cards (no jokers)
 	 */
 	public Deck() {
 		deck = new ArrayList<Card>();
@@ -29,16 +29,19 @@ public class Deck {
 				Suit newSuit = Suit.values()[suit];
 				Rank newRank = Rank.values()[rank];
 				
+				// create card
 				Card newCard = new Card(newRank,newSuit);
 				
+				// add to deck
 				deck.add(newCard);
 			}
 		}
 	}
 	
-	/*
+	/**
 	 * printDeck()
-	 * prints the contents of the deck
+	 * 
+	 * Prints the contents of the deck
 	 */
 	public void printDeck() {
 		for (int i=0; i<deck.size();i++) {
@@ -54,13 +57,13 @@ public class Deck {
 		return deck.size();
 	}
 
-	/*
+	/**
 	 * shuffle()
+	 * 
 	 * shuffles the deck by going through all the current cards
 	 * and swapping them with randomly generated cards
 	 */
 	public void shuffle() {
-		// TODO Auto-generated method stub
 		
 		Random randomCard = new Random();
 		int randomIndex;

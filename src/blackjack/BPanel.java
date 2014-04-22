@@ -13,6 +13,11 @@ import java.util.Properties;
 import javax.swing.JPanel;
 
 /**
+ * BPanel
+ * 
+ * Panel class that facilitates 
+ * interactions with Panel Manager.
+ * 
  * @author alyssamiller
  *
  */
@@ -20,11 +25,20 @@ import javax.swing.JPanel;
 public class BPanel extends JPanel
 {
 	
+	/**
+	 * Protected objects to manage information flow in system.
+	 */
    protected ActionListener panelManager = null;
    protected Applet         applet = null;
    protected Properties     properties = null;
 
-
+   
+   /**
+    * init()
+    * 
+    * Initializes default GUI for BPanel.
+    * 
+    */
    public void init()    {
 	  
    }
@@ -33,12 +47,19 @@ public class BPanel extends JPanel
    public void destroy() {}
 
    /**
-    * The <I>Properties</I> object passed here is a global way of exchanging
+    * setProperties()
+    * 
+    * Set local properties object to parameter.
+    * 
+    * @param p - properties object
+    * 
+    * The Properties object passed here is a global way of exchanging
     * data between screens.
     */
    public void setProperties(Properties p)
    {
        properties = p;
+       
        if (properties != null)
        {
           applet  = (Applet)properties.get("Applet");
@@ -47,17 +68,27 @@ public class BPanel extends JPanel
    }
    
    /**
-    * This will probably be overriden by a sub-class 
+    * This will probably be overridden by a sub-class 
     */
    public void actionPerformed(ActionEvent ae)
    {
    }
-
+   
+   /**
+    * getInsets()
+    * 
+    * Sets inset from border (padding).
+    */
    public Insets getInsets()
    {
       return new Insets(2, 2, 2, 2);
    }
-
+   
+   /**
+    * paint()
+    * 
+    * Draws panel.
+    */
    public void paint(Graphics g)
    {
       g.draw3DRect(0, 0, getSize().width - 1, getSize().height - 1, false);

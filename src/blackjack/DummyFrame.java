@@ -9,6 +9,11 @@ import javax.swing.JFrame;
 
 
 
+/**
+ * Do we need this considering that the applet
+ * acts as our window?
+ *
+ */
 @SuppressWarnings("serial")
 public class DummyFrame extends JFrame {
 
