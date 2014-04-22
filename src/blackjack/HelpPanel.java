@@ -97,15 +97,15 @@ public class HelpPanel extends BPanel implements ActionListener{
 		add(buttonsPanel);
 		*/
 	}
-	
+
 	public void actionPerformed(ActionEvent event) {
-		
-		if (event.getSource() == exitButton)
+
+		if (event.getSource() == exitButton) {
 			System.exit(0);
-			//panelManager.actionPerformed(new ActionEvent(this, JPanelManager.REMOVE, "blackjack.HelpPanel"));
-		//else if (event.getSource() == playAgainButton)
-			//panelManager.actionPerformed(new ActionEvent(this, JPanelManager.ADD, "blackjack.SettingsPanel"));
-		
+//			panelManager.actionPerformed(new ActionEvent(this, JPanelManager.REMOVE, "blackjack.HelpPanel"));
+		} else if (event.getSource() == playAgainButton) {
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.DummyPanel"));
+		}
 	}
 	
  public Insets getInsets()

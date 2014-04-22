@@ -3,6 +3,7 @@
  */
 package blackjack;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.RenderingHints;
@@ -37,6 +39,11 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * A constant for the text color.
 	 */
+	static private final int TOTAL_HANDS_TO_PLAY = 10;
+    
+	/**
+	 * A constant for the text color.
+	 */
 	static private final Color TEXT_COLOR = Color.red;
 	
 	/**
@@ -55,9 +62,15 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
+	 * Panel for the buttons
+	 */
+	Panel buttonsPanel;
+	
+	/**
 	 * The buttons
 	 */
-	Button hitButton, exitButton, standButton, handButton;
+	Button hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
+		betButton3;
 	
 	/**
 	 * The game model.
@@ -69,14 +82,14 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 	
 	
 	/**
-	 * Constructor, just inits.
+	 * Constructor.
 	 * 
 	 * @param none
 	 * @return none
 	 * @since 1.0
 	 */
 	public DummyPanel() {
-		init();
+		//
 	}
 	
 	
@@ -93,33 +106,70 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 		gameBoard = new GameBoard();
 
 		// set the size of this panel
-		setPreferredSize(new Dimension(500, 500));
+		setPreferredSize(new Dimension(800, 800));
 		
-		// Make the buttons!
-		hitButton = new Button("Hit");
-		exitButton = new Button("Exit");
-		standButton = new Button("Stand");
-		handButton = new Button("Next Hand");
-
+		setLayout(new BorderLayout());
 		
-		hitButton.addActionListener(this);
-		exitButton.addActionListener(this);
-		standButton.addActionListener(this);
-		handButton.addActionListener(this);
+		// make the input buttons
+		try {
+			buttonsPanel = initializeInputButtons();
+		} catch (HeadlessException e) {
+			
+			e.printStackTrace();
+		}
 
+		// add the button panel
+		add(buttonsPanel, BorderLayout.SOUTH);
+		
+		gameBoard.playHand();
+
+	}
+
+
+	/**
+	 * A method to create the buttons panel
+	 * 
+	 * @return panel the panel for the buttons
+	 * @throws HeadlessException
+	 * @since 1.0
+	 */
+	private Panel initializeInputButtons() throws HeadlessException {
 		// a panel for the buttons for fun
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
+		// Make the buttons!
+		hitButton = new Button("Hit");
+		standButton = new Button("Stand");
+		handButton = new Button("Next Hand");
+		exitButton = new Button("Exit");
+		skipButton = new Button("Skip");
+		betButton1 = new Button("Bet 10");
+		betButton2 = new Button("Bet 50");
+		betButton3 = new Button("Bet 100");
+
+
+		
+		hitButton.addActionListener(this);
+		standButton.addActionListener(this);
+		handButton.addActionListener(this);
+		exitButton.addActionListener(this);
+		skipButton.addActionListener(this);
+		betButton1.addActionListener(this);
+		betButton2.addActionListener(this);
+		betButton3.addActionListener(this);
+
+		
 		buttonsPanel.add(hitButton);
-		buttonsPanel.add(exitButton);
 		buttonsPanel.add(standButton);
 		buttonsPanel.add(handButton);
+		buttonsPanel.add(exitButton);
+		buttonsPanel.add(skipButton);
+		buttonsPanel.add(betButton1);
+		buttonsPanel.add(betButton2);
+		buttonsPanel.add(betButton3);
 
-
-		// add the button panel
-		add(buttonsPanel);
-
+		return buttonsPanel;
 	}
 	
 	
@@ -147,6 +197,22 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 		} else if (event.getSource() == handButton) {
 			
 			gameBoard.playHand();
+			
+		} else if (event.getSource() == skipButton) {
+			
+			skip();
+			
+		} else if (event.getSource() == betButton1) {
+			
+			gameBoard.setBet(10);
+			
+		} else if (event.getSource() == betButton2) {
+			
+			gameBoard.setBet(50);
+			
+		} else if (event.getSource() == betButton3) {
+			
+			gameBoard.setBet(100);
 			
 		}
 	}
@@ -185,12 +251,15 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
         
         // Draw the meta (like cash, bet, etc...)
         drawMeta(graphicsObject2d);
+        
+        // Draw the progress bar
+        drawProgressBar(graphicsObject2d);
 
         // Explicitly release the memory storing the graphics. Do not wait for garbage collection
         graphicsObject2d.dispose();
     }
 
-    /**
+	/**
      * Draws the background on the game board
      * 
      * @param graphicsObject2d the 2d graphics object we draw with
@@ -229,7 +298,7 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: dealerHand) {
 //    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-    		int x = 100 + 100*index;
+    		int x = 310 + 100*index;
     		int y = 160;
     		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
             
@@ -301,7 +370,21 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
     private void drawDeck(Graphics2D graphicsObject2d) {
     	
     	// graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
-        
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
+        graphicsObject2d.setColor(TEXT_COLOR);
+    	
+    	
+    		// the spacing
+    		int x = 700;
+    		int y = 160;
+    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+
+//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+
+            // Draw the card rank and suit
+       		graphicsObject2d.drawString("Deck", x+10, y+10);
+
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
 
@@ -334,9 +417,55 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
         Toolkit.getDefaultToolkit().sync();
     }
     
+    /**
+     * Draws the progress bar
+     * 
+     * @param graphicsObject2d
+     * @return none
+     * @since 1.0
+     */
+    private void drawProgressBar(Graphics2D graphicsObject2d) {
+		
+    	int totalHandsToPlay = TOTAL_HANDS_TO_PLAY;
+    	
+    	int barWidth = 400;
+    	int barHeight = 25;
+    	int barX = 200;
+    	int barY = 10;
+    	
+    	int sliceWidth = barWidth/totalHandsToPlay;
+    	
+    	// draw a border
+    	graphicsObject2d.drawRoundRect(barX, barY, barWidth, barHeight, 1, 1);
+    	
+    	// fill in based on hands played!
+    	for (int i = 0; i < gameBoard.getHandNumber(); i++) {
+        	graphicsObject2d.fillRect(barX + (i*sliceWidth), barY, sliceWidth, barHeight);
+		}
+    	
+    	
+	}
+    
     public void cycle() {
-//
+    	
+    	
+    	
+    	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
+    		properties.put("AverageHold", 17);
+    		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+		}
     }
+    
+    /**
+     * Goes to the settings panel
+     * 
+     * @param none
+     * @return none
+     * @see BlackjackApplet
+     */
+	public void skip() {
+		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+	}
 
 
     /**

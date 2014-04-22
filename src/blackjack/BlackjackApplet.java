@@ -104,6 +104,7 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 			showStatus(except.toString());
 			except.printStackTrace();
 			return;
+			
 		}
 
 		jPanel.setProperties(properties);
