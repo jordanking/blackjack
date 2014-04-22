@@ -37,6 +37,21 @@ import javax.swing.Timer;
 public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	
 	/**
+	 * Indicates if simulation is still running.
+	 */
+	private boolean simulationOn = true;
+	
+	/**
+	 * Stand value for simulation.
+	 */
+	private int standValue = 17;
+	
+	/**
+	 * Bet value for simulation.
+	 */
+	private int betValue = 50;
+	
+	/**
 	 * Allows the drawing on a thread.
 	 */
     private Thread animator;
@@ -89,7 +104,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * Default constructor.
 	 */
 	public AutoPanel() {
-		// do nothing ... for now.
+		// initialize standValue and betValue
+		standValue = (int) properties.get("standValue");
+		betValue = (int) properties.get("betValue");
 	}
 	
 	/**
@@ -186,27 +203,28 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		/*
 		if (event.getSource() == hitButton)
 			
-			gameBoard.hit();
+			gameBoard.hit();*/
 		
-		else if (event.getSource() == exitButton) {
+		if (event.getSource() == exitButton) {
 			
 			System.exit(0);
 			
-		} else if (event.getSource() == standButton) {
+		} /*else if (event.getSource() == standButton) {
 			
 			gameBoard.stand();
 			
 		} else if (event.getSource() == handButton) {
 			
-			gameBoard.playHand();
+			gameBoard.playHand();*/
 			
-		} else if (event.getSource() == skipButton) {
+		else if (event.getSource() == skipButton) {
 			
 			skip();
 			
-		} else if (event.getSource() == betButton1) {
+		} /*else if (event.getSource() == betButton1) {
 			
 			gameBoard.setBet(10);
 			
@@ -218,7 +236,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			
 			gameBoard.setBet(100);
 			
-		}
+		}*/
 	}
 	
 
@@ -471,14 +489,36 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * cycle()
      * 
      * Checks to see if hand is above total hands to play.
+     * Otherwise, runs through simulations.
      */
     public void cycle() {
     	
     	// if hand reaches total hands to play
+    	// turn off simulation
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
-    		properties.put("AverageHold", 17);
-    		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+    		simulationOn = false;
 		}
+    	
+    	// if the simulation is still running
+    	if (simulationOn) {
+    		
+    		// play hand
+    		// method self-checks to see if hand is already in play
+    		gameBoard.playHand();
+    		
+    		// set bet
+    		// method self-checks to see if it's ready to accept bet
+    		gameBoard.setBet(betValue);
+    		
+    		// if points is less than stand value, hit
+    		// otherwise, stand
+    		if (gameBoard.getPlayer().getPoints() < standValue) {
+    			gameBoard.hit();
+    		}
+    		else {
+    			gameBoard.stand();
+    		}
+    	}
     }
     
     /**

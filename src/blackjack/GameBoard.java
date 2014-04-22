@@ -470,6 +470,15 @@ public class GameBoard  {
 		System.out.println("Player has " + player.getPoints() + " points");
 		System.out.println("Dealer has " + dealer.getPoints() + " points");
 	}
+	
+	/**
+	 * getPlayer()
+	 * 
+	 * @return player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
 
 
 }
