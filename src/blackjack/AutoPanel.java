@@ -470,12 +470,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     /**
      * cycle()
      * 
-     * 
+     * Checks to see if hand is above total hands to play.
      */
     public void cycle() {
     	
-    	
-    	
+    	// if hand reaches total hands to play
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
     		properties.put("AverageHold", 17);
     		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
@@ -483,7 +482,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     }
     
     /**
-     * Goes to the settings panel
+     * skip()
+     * 
+     * Goes to the stats panel.
      * 
      * @param none
      * @return none
@@ -495,6 +496,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 
 
     /**
+     * addNotify()
+     * 
      * Overridden addNotify() method - this makes the the component on a new thread.
      * We want it displayed on a new thread.
      * Swing calls this method.
@@ -537,35 +540,3 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 
 
 
-	/**
-	 * @param layout
-	 */
-	public AutoPanel(LayoutManager layout) {
-		super(layout);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param isDoubleBuffered
-	 */
-	public AutoPanel(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param layout
-	 * @param isDoubleBuffered
-	 */
-	public AutoPanel(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
-}
