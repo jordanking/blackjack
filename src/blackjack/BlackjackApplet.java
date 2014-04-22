@@ -90,7 +90,7 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 	}
 
 	/**
-	 * Instantiate a class file, call it's init() and start() methods, call stop() on 
+	 * Instantiate a class file, call its init() and start() methods, call stop() on 
 	 * previous panel, show newly added panel in the cardlayout, add new Panel
 	 * to the panel vector, and finally add the reference to Properties so that
 	 * it can be accessed by all panels

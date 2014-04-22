@@ -36,8 +36,6 @@ public class BPanel extends JPanel
    /**
     * init()
     * 
-    * Initializes default GUI for BPanel.
-    * 
     */
    public void init()    {
 	  
