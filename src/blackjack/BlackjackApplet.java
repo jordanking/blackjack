@@ -14,6 +14,7 @@
 // allows the player to visualize the true weight of his monetary losses.
 // 
 // Resources:
+// http://stackoverflow.com/questions/9029162/how-do-i-get-the-text-of-a-button-in-java
 // 
 // 
 

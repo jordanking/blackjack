@@ -68,6 +68,8 @@ public class StatsPanel extends BPanel implements ActionListener {
 		title.setEditable(false);
 		statistics.setEditable(false);
 		
+		retrieveValues();
+		
 		calculateValues();
 		
 		title.setText("Statistics:");
@@ -85,8 +87,8 @@ public class StatsPanel extends BPanel implements ActionListener {
 	 * retrieveValues
 	 */
 	public void retrieveValues() {
-		//totalWins = properties.
-		//totalLosses =
+		totalWins = (Integer) properties.get("TotalWins");
+		totalLosses = (Integer) properties.get("TotalLosses");
 	}
 	
 	/*

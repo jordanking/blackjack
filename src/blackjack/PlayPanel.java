@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -72,7 +73,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * The buttons
 	 */
-	Button hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
+	JButton hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
 		betButton3;
 	
 	/**
@@ -142,14 +143,14 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-		hitButton = new Button("Hit");
-		standButton = new Button("Stand");
-		handButton = new Button("Next Hand");
-		exitButton = new Button("Exit");
-		skipButton = new Button("Skip");
-		betButton1 = new Button("Bet 10");
-		betButton2 = new Button("Bet 50");
-		betButton3 = new Button("Bet 100");
+		hitButton = new JButton("Hit");
+		standButton = new JButton("Stand");
+		handButton = new JButton("Next Hand");
+		exitButton = new JButton("Exit");
+		skipButton = new JButton("Skip");
+		betButton1 = new JButton("Bet 10");
+		betButton2 = new JButton("Bet 50");
+		betButton3 = new JButton("Bet 100");
 
 		// Add listeners to buttons.
 		hitButton.addActionListener(this);
@@ -186,6 +187,67 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		
+		/**
+		 * Code from stackoverflow.com. See BlackjackApplet class.
+		 * Purpose of this is to use switch statement
+		 * instead of if-else combo.
+		 */
+		
+		// get object
+		Object object = event.getSource();
+		
+		// declare variables
+		JButton button = null;
+		String buttonText = "";
+		
+		// if the object is an instance of JButton
+		// convert to JButton
+		if(object instanceof JButton)
+			button = (JButton)object;
+		
+		// if button is not null
+		// get button text
+		if(button != null)
+		    buttonText = button.getText();
+		
+		// evaluate button text
+		switch (buttonText) {
+		
+		case ("Hit"):
+			gameBoard.hit();
+			break;
+		
+		case ("Exit"): 
+			System.exit(0);
+			break;
+			
+		case ("Stand"):
+			gameBoard.stand();
+			break;
+			
+		case ("Next Hand"):
+			gameBoard.playHand();
+			break;
+			
+		case("Skip"):
+			skip();
+			break;
+			
+		case("Bet 10"):
+			gameBoard.setBet(10);
+			break;
+			
+		case("Bet 50"):
+			gameBoard.setBet(50);
+			break;
+			
+		case("Bet 100"):
+			gameBoard.setBet(100);
+			break;
+		
+		}
+		
+		/*
 		if (event.getSource() == hitButton) {
 			
 			gameBoard.hit();
@@ -219,6 +281,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			gameBoard.setBet(100);
 			
 		}
+		*/
 	}
 	
 

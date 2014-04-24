@@ -29,7 +29,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	Button getStartedButton, helpButton, exitButton;
 	
 	public void init() {
-		setBackground(Color.white);
+		setBackground(Color.green);
 		
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
