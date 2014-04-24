@@ -12,9 +12,22 @@ import java.util.ArrayList;
  * game of blackjack. It contains the complete model of a game of blackjack, for an arbitrary
  * number of hands played between one player and a dealer. It tracks losses and finances.
  */
+<<<<<<< HEAD
 public class GameBoard {
 	
 	/////////////////////////////////Constants/////////////////////////////////////////////////////
+=======
+
+/**
+ * I'm sure that you're already working on this Jordan, so that's why I haven't modified it.
+ * You mentioned you were already going to have buttons highlight (may be best if some disappear)
+ * depending on the state, which is great. One gameplay issue if you haven't found it yet 
+ * is that I can hit and stand without betting.
+ * 
+ * Added total wins and total losses to play around with for setting properties. Feel free to modify.
+ */
+public class GameBoard  {
+>>>>>>> FETCH_HEAD
 	
 	/**
 	 * A constant for the default amount of starting cash.
@@ -51,6 +64,16 @@ public class GameBoard {
 	 */
 	private int cash;
 
+	/**
+	 * The totalWins is a private member that tracks the total wins the player has.
+	 */
+	private int totalWins;
+	
+	/**
+	 * The totalLosses is a private member that tracks the total losses the player has.
+	 */
+	private int totalLosses;
+	
 	/**
 	 * The losses is a private member that tracks the total amount of money lost by the player over
 	 * the course of this game's last initialization (or creation).
@@ -1125,6 +1148,28 @@ public class GameBoard {
 	 */
 	public int getPlayerHandValueSplit() {
 		return player.getPointsSplit();
+	}
+	
+	/**
+	 * getTotalWins()
+	 * 
+	 * Return total wins for player.
+	 * 
+	 * @return totalWins
+	 */
+	public int getTotalWins() {
+		return totalWins;
+	}
+	
+	/**
+	 * getTotalLosses()
+	 * 
+	 * Return total losses for player.
+	 * 
+	 * @return totalLosses
+	 */
+	public int getTotalLosses() {
+		return totalLosses;
 	}
 
 	/**

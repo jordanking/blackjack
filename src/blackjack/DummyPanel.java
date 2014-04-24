@@ -74,7 +74,7 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 	 * The buttons
 	 */
 	Button hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
-		betButton3;
+		betButton3, statsButton, settingsButton;
 	
 	/**
 	 * The game model.
@@ -148,6 +148,8 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 		handButton = new Button("Next Hand");
 		exitButton = new Button("Exit");
 		skipButton = new Button("Skip");
+		statsButton = new Button("Stats");
+		settingsButton = new Button("Settings");
 		betButton1 = new Button("Bet 10");
 		betButton2 = new Button("Bet 50");
 		betButton3 = new Button("Bet 100");
@@ -159,6 +161,8 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 		handButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		skipButton.addActionListener(this);
+		statsButton.addActionListener(this);
+		settingsButton.addActionListener(this);
 		betButton1.addActionListener(this);
 		betButton2.addActionListener(this);
 		betButton3.addActionListener(this);
@@ -172,6 +176,8 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 		buttonsPanel.add(betButton1);
 		buttonsPanel.add(betButton2);
 		buttonsPanel.add(betButton3);
+		buttonsPanel.add(statsButton);
+		buttonsPanel.add(settingsButton);
 
 		return buttonsPanel;
 	}
@@ -218,6 +224,14 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 			
 			gameBoard.bet(100);
 			
+		} else if (event.getSource() == statsButton){
+			
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+		
+		}else if (event.getSource() == settingsButton){
+			
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.SettingsPanel"));
+		
 		}
 	}
 

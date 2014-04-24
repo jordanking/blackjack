@@ -107,9 +107,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	public AutoPanel() {
 		// initialize standValue and betValue
 		
+		standValue = 17;
+		betValue = 50;
 		
+		/*
 		standValue = (Integer) properties.get("standValue");
-		betValue = (Integer) properties.get("betValue");
+		betValue = (Integer) properties.get("betValue");*/
 		
 		
 	}
