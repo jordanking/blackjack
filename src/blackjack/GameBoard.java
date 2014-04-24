@@ -11,14 +11,7 @@ import java.util.ArrayList;
  * The panel that is used in both the PlayPanel and the AutoPanel to display and model a
  * game of blackjack. It contains the complete model of a game of blackjack, for an arbitrary
  * number of hands played between one player and a dealer. It tracks losses and finances.
- */
-<<<<<<< HEAD
-public class GameBoard {
-	
-	/////////////////////////////////Constants/////////////////////////////////////////////////////
-=======
-
-/**
+ * 
  * I'm sure that you're already working on this Jordan, so that's why I haven't modified it.
  * You mentioned you were already going to have buttons highlight (may be best if some disappear)
  * depending on the state, which is great. One gameplay issue if you haven't found it yet 
@@ -26,8 +19,12 @@ public class GameBoard {
  * 
  * Added total wins and total losses to play around with for setting properties. Feel free to modify.
  */
+	
+	/////////////////////////////////Constants/////////////////////////////////////////////////////
+
+
 public class GameBoard  {
->>>>>>> FETCH_HEAD
+
 	
 	/**
 	 * A constant for the default amount of starting cash.

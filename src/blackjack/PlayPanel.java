@@ -4,7 +4,6 @@
 package blackjack;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -73,13 +72,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * The buttons
 	 */
-<<<<<<< HEAD
-	Button hitButton, standButton, handButton, dealButton, 
+	JButton hitButton, standButton, handButton, dealButton, 
 		exitButton, skipButton, betButton1, betButton2, betButton3;
-=======
-	JButton hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
-		betButton3;
->>>>>>> FETCH_HEAD
+
 	
 	/**
 	 * The game model.
@@ -148,26 +143,17 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-<<<<<<< HEAD
-		hitButton = new Button("Hit");
-		standButton = new Button("Stand");
-		handButton = new Button("Next Hand");
-		dealButton = new Button("Deal");
-		exitButton = new Button("Exit");
-		skipButton = new Button("Skip");
-		betButton1 = new Button("Bet 10");
-		betButton2 = new Button("Bet 50");
-		betButton3 = new Button("Bet 100");
-=======
+
 		hitButton = new JButton("Hit");
 		standButton = new JButton("Stand");
 		handButton = new JButton("Next Hand");
+		dealButton = new JButton("Deal");
 		exitButton = new JButton("Exit");
 		skipButton = new JButton("Skip");
 		betButton1 = new JButton("Bet 10");
 		betButton2 = new JButton("Bet 50");
 		betButton3 = new JButton("Bet 100");
->>>>>>> FETCH_HEAD
+
 
 		// Add listeners to buttons.
 		hitButton.addActionListener(this);
@@ -248,63 +234,27 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			gameBoard.playHand();
 			break;
 			
+		case ("Deal"):
+			gameBoard.deal();
+			break;
+			
 		case("Skip"):
 			skip();
 			break;
 			
 		case("Bet 10"):
-			gameBoard.setBet(10);
+			gameBoard.bet(10);
 			break;
 			
 		case("Bet 50"):
-			gameBoard.setBet(50);
+			gameBoard.bet(50);
 			break;
 			
 		case("Bet 100"):
-			gameBoard.setBet(100);
+			gameBoard.bet(100);
 			break;
 		
 		}
-		
-		/*
-		if (event.getSource() == hitButton) {
-			
-			gameBoard.hit();
-		
-		} else if (event.getSource() == exitButton) {
-			
-			System.exit(0);
-			
-		} else if (event.getSource() == standButton) {
-			
-			gameBoard.stand();
-			
-		} else if (event.getSource() == handButton) {
-			
-			gameBoard.playHand();
-			
-		} else if (event.getSource() == dealButton) {
-			
-			gameBoard.deal();
-			
-		} else if (event.getSource() == skipButton) {
-			
-			skip();
-			
-		} else if (event.getSource() == betButton1) {
-			
-			gameBoard.bet(10);
-			
-		} else if (event.getSource() == betButton2) {
-			
-			gameBoard.bet(50);
-			
-		} else if (event.getSource() == betButton3) {
-			
-			gameBoard.bet(100);
-			
-		}
-		*/
 	}
 	
 
@@ -514,6 +464,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
    		
    		// Draw the bet
    		graphicsObject2d.drawString(BET_DISPLAY_STRING + gameBoard.getBet(), 5, 150);
+   		
+   		// Draw the state
+   		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();

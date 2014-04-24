@@ -27,6 +27,7 @@ package blackjack;
 
 import java.awt.AWTEvent;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
@@ -60,7 +61,7 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 			properties = null; 
 		}
 		//sets the size and layout of the applet
-		setSize(800,800);
+		setPreferredSize(new Dimension(800, 800));
 		setLayout(jCardLayout  = new CardLayout());
 
 		// adds the first panel, the Welcome screen
