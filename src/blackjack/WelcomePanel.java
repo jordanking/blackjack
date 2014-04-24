@@ -68,6 +68,9 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		appInstructions.setAlignmentY(CENTER_ALIGNMENT);
 		
 		
+		/**
+		 * What does gridBag do guys?
+		 */
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		setLayout(gridBagLayout);

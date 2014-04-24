@@ -81,6 +81,14 @@ public class StatsPanel extends BPanel implements ActionListener {
 		add(statsPanel);
 	}
 	
+	/**
+	 * retrieveValues
+	 */
+	public void retrieveValues() {
+		//totalWins = properties.
+		//totalLosses =
+	}
+	
 	/*
 	 * This class will eventually get values from the gameboard class.  The methods I have here are made up, but the general
 	 * idea is there.

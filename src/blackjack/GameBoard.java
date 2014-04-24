@@ -14,6 +14,15 @@ import java.util.ArrayList;
  * number of hands played between one player and a dealer. It tracks losses and finances, and draws
  * the game on a panel.
  */
+
+/**
+ * I'm sure that you're already working on this Jordan, so that's why I haven't modified it.
+ * You mentioned you were already going to have buttons highlight (may be best if some disappear)
+ * depending on the state, which is great. One gameplay issue if you haven't found it yet 
+ * is that I can hit and stand without betting.
+ * 
+ * Added total wins and total losses to play around with for setting properties. Feel free to modify.
+ */
 public class GameBoard  {
 	
 	/**
@@ -47,6 +56,16 @@ public class GameBoard  {
 	 * to bet with.
 	 */
 	private int cash;
+	
+	/**
+	 * The totalWins is a private member that tracks the total wins the player has.
+	 */
+	private int totalWins;
+	
+	/**
+	 * The totalLosses is a private member that tracks the total losses the player has.
+	 */
+	private int totalLosses;
 	
 	/**
 	 * The losses is a private member that tracks the total amount of money lost by the player over
@@ -478,6 +497,28 @@ public class GameBoard  {
 	 */
 	public Player getPlayer() {
 		return player;
+	}
+	
+	/**
+	 * getTotalWins()
+	 * 
+	 * Return total wins for player.
+	 * 
+	 * @return totalWins
+	 */
+	public int getTotalWins() {
+		return totalWins;
+	}
+	
+	/**
+	 * getTotalLosses()
+	 * 
+	 * Return total losses for player.
+	 * 
+	 * @return totalLosses
+	 */
+	public int getTotalLosses() {
+		return totalLosses;
 	}
 
 

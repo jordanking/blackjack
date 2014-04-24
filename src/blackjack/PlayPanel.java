@@ -480,13 +480,18 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     /**
      * skip()
      * 
-     * Goes to the stats panel.
+     * Goes to the stats panel. Stores necessary info
+     * in properties before proceeding.
      * 
      * @param none
      * @return none
      * @see BlackjackApplet
      */
 	public void skip() {
+		// store total wins and losses
+		properties.put("TotalWins", gameBoard.getTotalWins());
+		properties.put("TotalLosses", gameBoard.getTotalLosses());
+		
 		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
 	}
 
