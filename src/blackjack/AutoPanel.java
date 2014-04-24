@@ -513,7 +513,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		
     		// set bet
     		// method self-checks to see if it's ready to accept bet
-    		gameBoard.setBet(betValue);
+    		gameBoard.bet(betValue);
     		
     		// if points is less than stand value, hit
     		// otherwise, stand

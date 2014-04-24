@@ -17,7 +17,7 @@ public class Deck {
 
 	/**
 	 * Deck()
-	 * Constructor creates a deck of playing cards (no jokers)
+	 * Constructor creates a deck of 52 playing cards (no jokers)
 	 */
 	public Deck() {
 		deck = new ArrayList<Card>();
@@ -34,6 +34,41 @@ public class Deck {
 				
 				// add to deck
 				deck.add(newCard);
+			}
+		}
+	}
+	
+	/**
+	 * Deck(int)
+	 * Constructor creates a deck of playing cards (no jokers) with the specified number of 52 card
+	 * decks
+	 * 
+	 * @param numberOfDecks the number of decks to build the deck with
+	 * @return none
+	 * @since 1.0
+	 */
+	public Deck(int numberOfDecks) {
+		deck = new ArrayList<Card>();
+		
+		// number of decks
+		for (int i = 0; i < numberOfDecks; i++) {
+			
+			// each suit
+			for (int suit = 0; suit < 4; suit++) {
+				
+				// each rank
+				for (int rank = 0; rank < 13; rank++) {
+
+					//use enums
+					Suit newSuit = Suit.values()[suit];
+					Rank newRank = Rank.values()[rank];
+
+					// create card
+					Card newCard = new Card(newRank, newSuit);
+
+					// add to deck
+					deck.add(newCard);
+				}
 			}
 		}
 	}
@@ -90,7 +125,6 @@ public class Deck {
 	 * @return Card object 
 	 */
 	public Card drawCard() {
-		// TODO Auto-generated method stub
 		
 		//if the deck is not empty, return the card on top
 		if (isEmpty()==false){
@@ -114,7 +148,6 @@ public class Deck {
 			System.out.println("DECK IS EMPTY");
 			return true;
 		} else {
-			System.out.println("DECK IS NOT EMPTY");
 			return false;
 		}
 	}

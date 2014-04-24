@@ -208,15 +208,15 @@ public class DummyPanel extends BPanel implements ActionListener, Runnable {
 			
 		} else if (event.getSource() == betButton1) {
 			
-			gameBoard.setBet(10);
+			gameBoard.bet(10);
 			
 		} else if (event.getSource() == betButton2) {
 			
-			gameBoard.setBet(50);
+			gameBoard.bet(50);
 			
 		} else if (event.getSource() == betButton3) {
 			
-			gameBoard.setBet(100);
+			gameBoard.bet(100);
 			
 		}
 	}

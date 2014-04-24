@@ -21,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -32,6 +31,7 @@ import javax.swing.Timer;
  * @author Kevin Tian
  * Modified version of dummy pannel written up by Jordan King and Allie Miller.
  */
+@SuppressWarnings("serial")
 public class PlayPanel extends BPanel implements Runnable, ActionListener {
 
 	/**
@@ -72,8 +72,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * The buttons
 	 */
-	Button hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
-		betButton3;
+	Button hitButton, standButton, handButton, dealButton, 
+		exitButton, skipButton, betButton1, betButton2, betButton3;
 	
 	/**
 	 * The game model.
@@ -145,6 +145,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		hitButton = new Button("Hit");
 		standButton = new Button("Stand");
 		handButton = new Button("Next Hand");
+		dealButton = new Button("Deal");
 		exitButton = new Button("Exit");
 		skipButton = new Button("Skip");
 		betButton1 = new Button("Bet 10");
@@ -155,6 +156,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		hitButton.addActionListener(this);
 		standButton.addActionListener(this);
 		handButton.addActionListener(this);
+		dealButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		skipButton.addActionListener(this);
 		betButton1.addActionListener(this);
@@ -165,6 +167,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.add(hitButton);
 		buttonsPanel.add(standButton);
 		buttonsPanel.add(handButton);
+		buttonsPanel.add(dealButton);
 		buttonsPanel.add(exitButton);
 		buttonsPanel.add(skipButton);
 		buttonsPanel.add(betButton1);
@@ -202,21 +205,25 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			
 			gameBoard.playHand();
 			
+		} else if (event.getSource() == dealButton) {
+			
+			gameBoard.deal();
+			
 		} else if (event.getSource() == skipButton) {
 			
 			skip();
 			
 		} else if (event.getSource() == betButton1) {
 			
-			gameBoard.setBet(10);
+			gameBoard.bet(10);
 			
 		} else if (event.getSource() == betButton2) {
 			
-			gameBoard.setBet(50);
+			gameBoard.bet(50);
 			
 		} else if (event.getSource() == betButton3) {
 			
-			gameBoard.setBet(100);
+			gameBoard.bet(100);
 			
 		}
 	}
