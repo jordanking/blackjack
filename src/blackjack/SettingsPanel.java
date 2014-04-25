@@ -16,7 +16,7 @@ import javax.swing.JTabbedPane;
  * @author Alex Post
  *
  */
-public class SettingsPanel extends JPanel {
+public class SettingsPanel extends BPanel {
 
 	/**
 	 * 
@@ -85,5 +85,6 @@ public class SettingsPanel extends JPanel {
 	        panel.add(filler);
 	        return panel;
 	    }
+	 
 	
 }
