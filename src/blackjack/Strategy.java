@@ -9,54 +9,28 @@ import java.util.Collections;
 /**
  * @author alyssamiller
  *
- *Object to hold strategy for a given hand. Contains
- *all game actions to take for all possible dealer's face up 
- *card value. 
+ *Object to hold strategy (GameAction) for a given player and dealer hand
  *
  */
 public class Strategy {
-/**
-	// might not need
-	public static final ArrayList<Integer> dealerFaceUpCardValue = (ArrayList<Integer>) 
-			Collections.unmodifiableList(new ArrayList<Integer>() {{
-		    	//populate possible dealer's face up card value
-		    	for (int i = 1; i <= 10; i++)
-		    		add(i);
-		    }}); 
-	*/
+
 	private int totalPlayerHand; // total card value of player's hand
+	private int dealerFaceUpCard; // value of dealer's card that is face up
 	
-	// the action to take with the dealt hand 
-	//and all corresponding dealer face up card values
-	//first index corresponds to ace; second to 
-	//"two", third to "three", etc. tenth corresponds
-	// to "ten" and other face cards
-	private ArrayList<GameAction> desiredActions; 
+	private GameAction desiredAction; // the action to take with the dealt hand 
+	
 	
 	/**
 	 * Constructor. Sets totalPlayerHand and desiredGameAction
 	 * @param totalPlayerHand
-	 * @param desiredActions
+	 * @param desiredAction
+	 * @param dealerFaceUpCard
 	 */
-	public Strategy(int totalPlayerHand, ArrayList<GameAction> desiredActions) {
-		desiredActions = new ArrayList<GameAction>();
+	public Strategy(int totalPlayerHand, int dealerFaceUpCard, GameAction desiredAction) {
 		
 		this.setTotalPlayerHand(totalPlayerHand);
-		this.setDesiredActions(desiredActions);
-	}
-
-	/**
-	 * @return the desiredActions
-	 */
-	public ArrayList<GameAction> getDesiredActions() {
-		return desiredActions;
-	}
-
-	/**
-	 * @param desiredActions the desiredActions to set
-	 */
-	public void setDesiredActions(ArrayList<GameAction> desiredActions) {
-		this.desiredActions = desiredActions;
+		this.setDealerFaceUpCard(dealerFaceUpCard);
+		this.setDesiredAction(desiredAction);
 	}
 
 	/**
@@ -71,5 +45,33 @@ public class Strategy {
 	 */
 	public void setTotalPlayerHand(int totalPlayerHand) {
 		this.totalPlayerHand = totalPlayerHand;
+	}
+
+	/**
+	 * @return the dealerFaceUpCard
+	 */
+	public int getDealerFaceUpCard() {
+		return dealerFaceUpCard;
+	}
+
+	/**
+	 * @param dealerFaceUpCard the dealerFaceUpCard to set
+	 */
+	public void setDealerFaceUpCard(int dealerFaceUpCard) {
+		this.dealerFaceUpCard = dealerFaceUpCard;
+	}
+
+	/**
+	 * @return the desiredAction
+	 */
+	public GameAction getDesiredAction() {
+		return desiredAction;
+	}
+
+	/**
+	 * @param desiredAction the desiredAction to set
+	 */
+	public void setDesiredAction(GameAction desiredAction) {
+		this.desiredAction = desiredAction;
 	}
 }

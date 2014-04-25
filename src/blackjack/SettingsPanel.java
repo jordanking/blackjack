@@ -86,5 +86,8 @@ public class SettingsPanel extends BPanel {
 	        return panel;
 	    }
 	 
+	 public void setStrategy() {
+		 
+	 }
 	
 }
