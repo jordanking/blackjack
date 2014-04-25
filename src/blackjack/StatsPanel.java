@@ -113,5 +113,5 @@ public class StatsPanel extends BPanel implements ActionListener {
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
 		}
 	}
-
+	
 }
