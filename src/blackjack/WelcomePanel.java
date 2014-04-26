@@ -26,10 +26,10 @@ import javax.swing.JTextArea;
 public class WelcomePanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions;
-	Button getStartedButton, helpButton, exitButton;
+	Button getStartedButton, helpButton, exitButton, instructionsButton;
 	
 	public void init() {
-		setBackground(Color.green);
+		
 		
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
@@ -37,10 +37,12 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		//buttonsPanel.add(helpButton = new Button("Help"));
 		buttonsPanel.add(exitButton = new Button("Exit"));
 		buttonsPanel.add(getStartedButton = new Button("Get Started"));
+		buttonsPanel.add(instructionsButton = new Button("How to Play"));
 		
 		//helpButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		getStartedButton.addActionListener(this);
+		instructionsButton.addActionListener(this);
 		
 		Panel instructionsPanel = new Panel();
 		instructionsPanel.setLayout(new GridLayout(2, 1));
@@ -94,12 +96,13 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == exitButton) {
 			System.exit(0);
-			//panelManager.actionPerformed(new ActionEvent(this, JPanelManager.REMOVE, "blackjack.WelcomePanel"));
-		} else {
-			if (event.getSource() == getStartedButton)
-			{
-				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.PlayPanel"));
-			}
+		} 
+		if (event.getSource() == getStartedButton)
+		{
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.PlayPanel"));
+		}
+		if (event.getSource() == instructionsButton) {
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.InstructionsPanel"));
 		}
 	}
 	
@@ -107,31 +110,4 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	   {
 	      return new Insets(0, 0, 0, 0);
 	   }
-	/**
-	***
-	* * @param layout
-	* *
-	*public WelcomePanel(LayoutManager layout) {
-	*	super(layout);
-	*	// TODO Auto-generated constructor stub
-	*}
-*
-*	
-*	 * @param isDoubleBuffered
-*	
-*	public WelcomePanel(boolean isDoubleBuffered) {
-*		super(isDoubleBuffered);
-*		// TODO Auto-generated constructor stub
-*	}
-*
-*	
-*	 * @param layout
-*	 * @param isDoubleBuffered
-*	 
-*	public WelcomePanel(LayoutManager layout, boolean isDoubleBuffered) {
-*		super(layout, isDoubleBuffered);
-*		// TODO Auto-generated constructor stub
-*	}
-	*/
-
 }
