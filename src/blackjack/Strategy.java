@@ -3,8 +3,6 @@
  */
 package blackjack;
 
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author alyssamiller
@@ -20,7 +18,6 @@ public class Strategy {
 	private Card dealerFaceUpCard; // value of dealer's card that is face up
 	
 	private GameAction desiredAction; // the action to take with the dealt hand 
-	
 	
 	/**
 	 * Constructor. Sets totalPlayerHand and desiredGameAction

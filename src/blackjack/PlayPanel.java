@@ -510,6 +510,20 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
     public void cycle() {
     	
+    	if (gameBoard.getMainHandState() != GameState.HIT && 
+    			gameBoard.getMainHandState() != GameState.DEAL && 
+    			gameBoard.getMainHandState() != GameState.SPLIT) {
+    		
+    		
+    		hitButton.setVisible(false);
+    	} else {
+    		hitButton.setVisible(true);
+    	}
+    	
+    	
+    	
+    	
+    	
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
     		properties.put("AverageHold", 17);
     		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));

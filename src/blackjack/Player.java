@@ -123,6 +123,52 @@ public class Player {
 	}
 	
 	/**
+	 * returns whether or not the player has a splittable pair.
+	 * 
+	 * @param canOnlySplitOnSameRank false if you can split based on value, true if rank must be same !=(king/10)
+	 * @return hasPair true if they have a pair
+	 * @since 1.0
+	 */
+	public boolean hasPair(boolean canOnlySplitOnSameRank) {
+		if (canOnlySplitOnSameRank) {
+
+			// true if they have 2 cards, and they have the same rank ( 10 / 10 or Jack/Jack)
+			return (playerHand.get(0).getCardRank() == playerHand.get(1).getCardRank()
+					&& playerHand.size() == 2);
+		} else {
+			
+			// true if they have 2 cards, and they have the same value ( 10 / 10 or 10/Jack)
+						return (playerHand.get(0).getCardRank().getCardPoints() == 
+								playerHand.get(1).getCardRank().getCardPoints()
+								&& playerHand.size() == 2);
+		}
+		
+	}
+	
+	/**
+	 * returns the ArrayList representing the player's split hand of Card objects
+	 * 
+	 * @param none
+	 * @return hasBlackjack whether or not they have a blackjack
+	 * @since 1.0
+	 */
+	public boolean hasBlackjack() {
+		
+		// make sure there are 2 cards
+		return (playerHand.size() == 2 &&
+				
+				// make sure there is a blackjack
+				(
+				(playerHand.get(0).getCardRank() == Rank.ACE && 
+				playerHand.get(0).getCardRank().getCardPoints() == 10)
+				||
+				(playerHand.get(0).getCardRank().getCardPoints() == 10 && 
+				playerHand.get(0).getCardRank() == Rank.ACE)
+				)
+				);
+	}
+	
+	/**
 	 * reset()
 	 * resets the player's hands
 	 * @return ArrayList<Card>

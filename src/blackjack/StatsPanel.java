@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
  * @author Alex Post
  *
  */
+@SuppressWarnings("serial")
 public class StatsPanel extends BPanel implements ActionListener {
 
 	Button backButton;

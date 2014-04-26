@@ -110,14 +110,44 @@ public class GameBoard  {
 	/////////////////////////////////Rules////////////////////////////////////////////////////////
 	
 	/**
+	 * This rule adds a huge house edge.
+	 */
+	private boolean dealerWinsPush;
+	
+	/**
 	 * The soft seventeen is a rule where the dealer must hit if they have an ace and 17 points.
 	 */
 	private boolean softSeventeenRule;
 	
 	/**
+	 * Toggles whether surrendering is allowed.
+	 */
+	private boolean surrenderAllowed;
+	
+	/**
+	 * If the player splits aces, they usually are not allowed to do anything more with them.
+	 */
+	private boolean splittingAcesEndsControl;
+	
+	/**
+	 * True only lets players split cards with the same rank.
+	 */
+	private boolean onlySplitOnSameRank;
+	
+	/**
+	 * Toggles allowing the player to double on either hand after splitting.
+	 */
+	private boolean doubleAllowedAfterSplit;
+	
+	/**
 	 * The number of the decks to play with!
 	 */
 	private int numberOfDecks;
+	
+	/**
+	 * The ratio to pay blackjacks at.
+	 */
+	private double blackjackPayRatio;
 
 	/////////////////////////////////Methods/////////////////////////////////////////////////////
 
@@ -349,25 +379,34 @@ public class GameBoard  {
 			return false;
 		}
 		
-
-		// TODO: RULE FOR SPLITTING IDENTICAL CARDS, ACES, ETC
-		
-
 		// make sure the cards are the same rank
-		if (player.getHand().get(0).getCardRank() != player.getHand().get(1).getCardRank()){
+		if (player.hasPair(onlySplitOnSameRank)){
 
-			System.out.println("The hand may only be split when both cards have the same rank.");
+			System.out.println("The hand may only be split when the player has a pair.");
 			return false;
 		}
 
 		// move one card from the main hand to the split hand
 		player.addCardSplit( player.getHand().remove(1) );
 
-
+		// hit on both hands
+		player.addCard(deck.drawCard());
+		player.addCardSplit( deck.drawCard() );
+		
 		// update the game states
 		mainHandState = GameState.SPLIT;
 		splitHandState = GameState.SPLIT;
 		handHasSplit = true;
+		
+		// check for rules on splitting aces
+		if (player.getHand().get(0).getCardRank() == Rank.ACE && splittingAcesEndsControl) {
+			
+			// force the player to stand now on both hands
+			stand();
+			standSplit();
+		}
+
+
 
 		// successful split
 		return true;
@@ -394,11 +433,13 @@ public class GameBoard  {
 
 		}
 
+		// check if doubling is allowed after a split
+		if (!doubleAllowedAfterSplit && handHasSplit) {
 
-		// TODO: RULE FOR DOUBLING AFTER SPLIT AND ACES AND STUFF
-
-
-
+			// errors!
+			System.out.println("Doubling after a split has been disallowed.");
+			return false;
+		}
 
 		// this hand has doubled
 		mainHandState = GameState.DOUBLE;
@@ -430,9 +471,18 @@ public class GameBoard  {
 			return false;
 
 		}
+		
+		// check if surrendering is allowed
+		if (!surrenderAllowed) {
+
+			// errors!
+			System.out.println("Surrendering is set to not be allowed.");
+			return false;
+
+		}
 
 
-		// TODO: RULES LIMITING SURRENDERING
+		// TODO: RULES LIMITING LATE SURRENDERING
 
 		cash -= Math.ceil(bet/2);
 		losses += Math.ceil(bet/2);
@@ -542,10 +592,14 @@ public class GameBoard  {
 			return false;
 
 		}
+		
+		// check if doubling is allowed after a split
+		if (!doubleAllowedAfterSplit) {
 
-
-		// TODO: RULE FOR DOUBLING AFTER SPLIT AND ACES AND STUFF
-
+			// errors!
+			System.out.println("Doubling after a split has been disallowed.");
+			return false;
+		}
 
 		// this hand has doubled.
 		splitHandState = GameState.DOUBLE;
@@ -594,11 +648,29 @@ public class GameBoard  {
 	 */
 	private void initRules() {
 		
+		// this rule is mean, so we don't default to it
+		dealerWinsPush = false;
+		
 		// like in vegas
 		softSeventeenRule = true;
 		
+		// allow surrender
+		surrenderAllowed = true;
+		
+		// disallow control after splitting aces
+		splittingAcesEndsControl = true;
+		
+		// allow splitting regardless of rank
+		onlySplitOnSameRank = false;
+		
+		// less house edge
+		doubleAllowedAfterSplit = false;
+		
 		// best house edge
 		numberOfDecks = 8;
+		
+		// bestHouseEdge
+		blackjackPayRatio = 1;
 	}
 
 	/**
@@ -724,6 +796,7 @@ public class GameBoard  {
 	 * @since 1.0
 	 */
 	private void endMain() {
+		
 		if (dealer.getPoints() > player.getPoints()) {
 
 			// the player loses!
@@ -734,6 +807,11 @@ public class GameBoard  {
 			// the player wins!
 			winMain();
 
+		} else if (player.hasBlackjack() && !dealer.hasBlackjack() && !handHasSplit) {
+			
+			// player wins!
+			winMain();
+			
 		} else {
 
 			pushMain();
@@ -848,7 +926,14 @@ public class GameBoard  {
 		if (mainHandState == GameState.DOUBLE) {
 			cash += bet*2;
 			losses -= bet*2;
+		} else if (player.hasBlackjack() && !handHasSplit) {
+		
+			// blackjacks pay differently
+			cash += bet * blackjackPayRatio;
+			losses -= bet * blackjackPayRatio;
 		} else {
+			
+			// no change
 			cash += bet;
 			losses -= bet;
 		}
@@ -896,6 +981,13 @@ public class GameBoard  {
 		mainHandState = GameState.END;
 		System.out.println("Push on main hand.");
 
+		// bad rule
+		if (dealerWinsPush) {
+			// update money
+			cash -= bet;
+			losses += bet;
+		}
+
 	}
 
 	/**
@@ -910,6 +1002,14 @@ public class GameBoard  {
 		// end the hand and do nothing
 		splitHandState = GameState.END;
 		System.out.println("Push on split hand.");
+		
+		// bad rule
+		if (dealerWinsPush) {
+			
+			// update money
+			cash -= bet;
+			losses += bet;
+		}
 	}
 
 	/**
@@ -979,6 +1079,28 @@ public class GameBoard  {
 	public boolean handHasSplit() {
 		return handHasSplit;
 	}
+	
+	/**
+	 * Sets whether the dealer wins the push or not
+	 * 
+	 * @param newDealerWinsPush the new value for the rule.
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setDealerWinsPush(boolean newDealerWinsPush) {
+		dealerWinsPush = newDealerWinsPush;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the dealer wins the push. 
+	 * 
+	 * @param none
+	 * @return dealerWinsPush a boolean value of whether the dealer wins the push
+	 * @since 1.0
+	 */
+	public boolean isDealerWinsPush() {
+		return dealerWinsPush;
+	}
 
 	/**
 	 * Sets the soft seventeen rule.
@@ -992,14 +1114,104 @@ public class GameBoard  {
 	}
 
 	/**
-	 * Returns a boolean representing whether or not the game is using the soft 17 rule. 
+	 * Returns a boolean representing whether or not the game uses the soft 17 rule
 	 * 
 	 * @param none
-	 * @return softSeventeen a boolean value of whether the game uses the soft 17 rule
+	 * @return softSeventeenRule a boolean value of whether the game uses the rule
 	 * @since 1.0
 	 */
 	public boolean isSoftSeventeenRule() {
 		return softSeventeenRule;
+	}
+	
+	/**
+	 * Sets whether the player may surrender or not
+	 * 
+	 * @param newSurrenderAllowed the new value for the rule.
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setSurrenderAllowed(boolean newSurrenderAllowed) {
+		surrenderAllowed = newSurrenderAllowed;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the game allows surrenders
+	 * 
+	 * @param none
+	 * @return surrenderAllowed a boolean value of whether the player may surrender
+	 * @since 1.0
+	 */
+	public boolean isSurrenderAllowed() {
+		return surrenderAllowed;
+	}
+	
+	/**
+	 * Sets whether the player may control split hands from split aces
+	 * 
+	 * @param newSplittingAcesEndsControl the new value for the rule.
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setSplittingAcesEndsControl(boolean newSplittingAcesEndsControl) {
+		splittingAcesEndsControl = newSplittingAcesEndsControl;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the game disallows the player to control split
+	 * aces.
+	 * 
+	 * @param none
+	 * @return splittingAcesEndsControl a boolean value of whether the game ends control
+	 * @since 1.0
+	 */
+	public boolean isSplittingAcesEndsControl() {
+		return splittingAcesEndsControl;
+	}
+	/**
+	 * Sets whether the player may only split on the same rank
+	 * 
+	 * @param newOnlySplitOnSameRank the new value for the rule.
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setOnlySplitOnSameRank(boolean newOnlySplitOnSameRank) {
+		onlySplitOnSameRank = newOnlySplitOnSameRank;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the player only may split on the same rank.
+	 * 
+	 * @param none
+	 * @return onlySplitOnSameRank a boolean value of whether the player may only split on same rank
+	 * @since 1.0
+	 */
+	public boolean isOnlySplitOnSameRank() {
+		return onlySplitOnSameRank;
+	}
+	
+	/**
+	 * Sets whether the player may double after a split
+	 * 
+	 * @param newDoubleAllowedAfterSplit the new value for the rule.
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setDoubleAllowedAfterSplit(boolean newDoubleAllowedAfterSplit) {
+		doubleAllowedAfterSplit = newDoubleAllowedAfterSplit;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the game allows the player to double after the
+	 * split
+	 * 
+	 * @param none
+	 * @return doubleAllowedAfterSplit a boolean value of whether the game allows doubling after
+	 * a split.
+	 * @since 1.0
+	 */
+	public boolean isDoubleAllowedAfterSplit() {
+		return doubleAllowedAfterSplit;
 	}
 	
 	/**
@@ -1024,6 +1236,30 @@ public class GameBoard  {
 	 */
 	public int getNumberOfDecks() {
 		return numberOfDecks;
+	}
+	
+	/**
+	 * Sets the blackjack pay ratio.
+	 * 
+	 * @param newBlackjackPayRatio the new blackjackPayRatio
+	 * @return none
+	 * @since 1.0
+	 */
+	public void setBlackjackPayRatio(double newBlackjackPayRatio) {
+		
+		// no restrictions!
+		blackjackPayRatio = newBlackjackPayRatio;
+	}
+
+	/**
+	 * Returns a boolean representing whether or not the game is using the soft 17 rule. 
+	 * 
+	 * @param none
+	 * @return blackjackPayRatio the double for the pay ratio
+	 * @since 1.0
+	 */
+	public double getBlackjackPayRatio() {
+		return blackjackPayRatio;
 	}
 
 	/**
