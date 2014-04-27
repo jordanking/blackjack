@@ -14,12 +14,13 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 
 /**
  * @author Alex Post
@@ -27,11 +28,18 @@ import javax.swing.JTabbedPane;
  */
 public class SettingsPanel extends BPanel implements ActionListener{
 	// list of strategies for each dealer + player hand combination for the game
-	private ArrayList<Strategy> gameStrategy; 
+	private Strategy strategy; // game strategy 
 	Button setStrategyButton; // button that setsGameStrategy
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
+	String strategyState[] = {"Hit", "Stand"};
+	
+	String[] dealerShowing = {"2", "3", "4", "5", "6", 
+			   "7", "8", "9", "10", "A"}; // initialize the column names for the table
+	
+	JButton[][] strategyArray = null; // initialize the 2d array for the strategy table.
+	
 	/**
 	 * 
 	 */
@@ -39,32 +47,8 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		// TODO Auto-generated constructor stub
 	}
 
-//	/**
-//	 * @param layout
-//	 */
-//	public SettingsPanel(LayoutManager layout) {
-//		super(layout);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	/**
-//	 * @param isDoubleBuffered
-//	 */
-//	public SettingsPanel(boolean isDoubleBuffered) {
-//		super(isDoubleBuffered);
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	/**
-//	 * @param layout
-//	 * @param isDoubleBuffered
-//	 */
-//	public SettingsPanel(LayoutManager layout, boolean isDoubleBuffered) {
-//		super(layout, isDoubleBuffered);
-//		// TODO Auto-generated constructor stub
-//	}
 	public void init(){
-		gameStrategy = new ArrayList<Strategy>();
+		strategy = new Strategy();
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
@@ -78,52 +62,42 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			
 			e.printStackTrace();
 		}
+		
+		add(drawTable());
 
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 		
 	}
 	
-	
-	
-
 	/**
-	 * @return the gameStrategy
+	 * drawTable()
+	 * 
+	 * Creates a table of buttons for the user to select a strategy
+	 * for every combination of cards.
+	 * 
+	 * @return strategyOptions The visual table of buttons for the user to choose
+	 * 						   their strategy
 	 */
-	public ArrayList<Strategy> getGameStrategy() {
-		return gameStrategy;
+	public JTable drawTable(){
+		 /*
+		  * create all the buttons in the table.  They will all start
+		  * out with the text "hit".
+		  */
+		 
+		 for (int i = 2; i < 12; i++){
+			 for(int j = 21; j > 1; j--){
+				 strategyArray[j][i] = new JButton();
+				 //Strategy strategy = new Strategy(j, i, strategyState);
+				 strategyArray[j][i].setText("Hit");
+				 strategyArray[j][i].addActionListener(this);
+			 }
+		 }
+		 
+		 JTable strategyOptions = new JTable(strategyArray, dealerShowing);
+		 
+		 return strategyOptions;
 	}
-
-	/**
-	 * @param gameStrategy the gameStrategy to set
-	 */
-	public void setGameStrategy(ArrayList<Strategy> gameStrategy) {
-		this.gameStrategy = gameStrategy;
-	}
-
-	public void tabbedPane() {
-        //super(new GridLayout(1, 1));
-        
-        JTabbedPane tabbedPane = new JTabbedPane();
-        
-        JComponent panel1 = makeTextPanel("Panel #1");
-        tabbedPane.addTab("Manual", null, panel1,
-                "Manual Play");
-        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-        
-        JComponent panel2 = makeTextPanel("Panel #2");
-        tabbedPane.addTab("Automatic", null, panel2,
-                "Simulation Settings");
-        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-        
-        
-        
-        //Add the tabbed pane to this panel.
-        add(tabbedPane);
-        
-        //The following line enables to use scrolling tabs.
-        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    }
 	
 	/**
 	 * initializeInputButtons()
@@ -161,7 +135,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	
 	public void ActionPerformed(ActionEvent event){
 		if(event.getSource() == setStrategyButton){
-			properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
+			properties.put("Game Strategy", strategy); // add gameStrategy to properties object
 			// go to autoPanel
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
 		}
@@ -171,6 +145,17 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		if(event.getSource() == backButton) {
 			//go back a screen
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
+		}
+		for(int i = 0; i < 10; i++){
+			for (int j = 21; j > 1; j++){
+				if (event.getSource() == strategyArray[j][i]){
+					if (strategyArray[j][i].getText() == "Hit"){
+						strategyArray[j][i].setText("Stand");
+					}else{
+						strategyArray[j][i].setText("Hit");
+					}
+				}
+			}
 		}
 	}
 	
@@ -183,22 +168,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	        return panel;
 	    }
 	 
-	 /**
-	  * setStrategy() 
-	  * 
-	  * creates a new strategy for a player hand and dealerFaceUpCard combination 
-	  * and adds the strategy to the gameStrategy ArrayList
-	  * 
-	  * @param firstPlayerCard
-	  * @param secondPlayerCard
-	  * @param dealerFaceUpCard
-	  * @param desiredAction
-	  */
-	 public void setStrategy(Card firstPlayerCard, Card secondPlayerCard, Card dealerFaceUpCard, GameAction desiredAction) {
-		 // create new strategy
-		 Strategy strategy = new Strategy(firstPlayerCard, secondPlayerCard, dealerFaceUpCard, desiredAction);
-		// add to gameStrategy ArrayList
-		 gameStrategy.add(strategy);
-	 }
+//	 public Strategy getStrategy(Integer playerTotal, Integer dealerShowing){
+//		 
+//	 }
+	 
+	
 	
 }

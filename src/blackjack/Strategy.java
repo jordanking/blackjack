@@ -3,8 +3,6 @@
  */
 package blackjack;
 
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author alyssamiller
@@ -21,7 +19,6 @@ public class Strategy {
 	
 	private GameAction desiredAction; // the action to take with the dealt hand 
 	
-	
 	/**
 	 * Constructor. Sets totalPlayerHand and desiredGameAction
 	 * @param totalPlayerHand
@@ -35,6 +32,12 @@ public class Strategy {
 		this.setFirstPlayerCard(firstPlayerCard);
 		this.setSecondPlayerCard(secondPlayerCard);
 		this.setDealerFaceUpCard(dealerFaceUpCard);
+		this.setDesiredAction(desiredAction);
+	}
+	
+	public Strategy(Integer playerTotal, Card dealerShowing, GameAction desiredAction){
+		this.setTotalPlayerHand(playerTotal);
+		this.setDealerFaceUpCard(dealerShowing);
 		this.setDesiredAction(desiredAction);
 	}
 
