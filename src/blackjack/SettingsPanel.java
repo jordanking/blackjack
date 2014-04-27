@@ -14,12 +14,13 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 
 /**
  * @author Alex Post
@@ -32,6 +33,13 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
+	String strategyState[] = {"Hit", "Stand"};
+	
+	String[] dealerShowing = {"2", "3", "4", "5", "6", 
+			   "7", "8", "9", "10", "A"}; // initialize the column names for the table
+	
+	JButton[][] strategyArray = null; // initialize the 2d array for the strategy table.
+	
 	/**
 	 * 
 	 */
@@ -54,36 +62,42 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			
 			e.printStackTrace();
 		}
+		
+		add(drawTable());
 
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 		
 	}
 	
-
-	public void tabbedPane() {
-        //super(new GridLayout(1, 1));
-        
-        JTabbedPane tabbedPane = new JTabbedPane();
-        
-        JComponent panel1 = makeTextPanel("Panel #1");
-        tabbedPane.addTab("Manual", null, panel1,
-                "Manual Play");
-        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-        
-        JComponent panel2 = makeTextPanel("Panel #2");
-        tabbedPane.addTab("Automatic", null, panel2,
-                "Simulation Settings");
-        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-        
-        
-        
-        //Add the tabbed pane to this panel.
-        add(tabbedPane);
-        
-        //The following line enables to use scrolling tabs.
-        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    }
+	/**
+	 * drawTable()
+	 * 
+	 * Creates a table of buttons for the user to select a strategy
+	 * for every combination of cards.
+	 * 
+	 * @return strategyOptions The visual table of buttons for the user to choose
+	 * 						   their strategy
+	 */
+	public JTable drawTable(){
+		 /*
+		  * create all the buttons in the table.  They will all start
+		  * out with the text "hit".
+		  */
+		 
+		 for (int i = 2; i < 12; i++){
+			 for(int j = 21; j > 1; j--){
+				 strategyArray[j][i] = new JButton();
+				 //Strategy strategy = new Strategy(j, i, strategyState);
+				 strategyArray[j][i].setText("Hit");
+				 strategyArray[j][i].addActionListener(this);
+			 }
+		 }
+		 
+		 JTable strategyOptions = new JTable(strategyArray, dealerShowing);
+		 
+		 return strategyOptions;
+	}
 	
 	/**
 	 * initializeInputButtons()
@@ -132,6 +146,17 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			//go back a screen
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
 		}
+		for(int i = 0; i < 10; i++){
+			for (int j = 21; j > 1; j++){
+				if (event.getSource() == strategyArray[j][i]){
+					if (strategyArray[j][i].getText() == "Hit"){
+						strategyArray[j][i].setText("Stand");
+					}else{
+						strategyArray[j][i].setText("Hit");
+					}
+				}
+			}
+		}
 	}
 	
 	 protected JComponent makeTextPanel(String text) {
@@ -142,6 +167,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	        panel.add(filler);
 	        return panel;
 	    }
+	 
+//	 public Strategy getStrategy(Integer playerTotal, Integer dealerShowing){
+//		 
+//	 }
 	 
 	
 	

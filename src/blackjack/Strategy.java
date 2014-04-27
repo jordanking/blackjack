@@ -34,6 +34,12 @@ public class Strategy {
 		this.setDealerFaceUpCard(dealerFaceUpCard);
 		this.setDesiredAction(desiredAction);
 	}
+	
+	public Strategy(Integer playerTotal, Card dealerShowing, GameAction desiredAction){
+		this.setTotalPlayerHand(playerTotal);
+		this.setDealerFaceUpCard(dealerShowing);
+		this.setDesiredAction(desiredAction);
+	}
 
 	/**
 	 * @return the totalPlayerHand
