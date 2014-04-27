@@ -90,7 +90,6 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		
 		gridBagLayout.setConstraints(buttonsPanel, gridBagConstraints);
 		add(buttonsPanel);
-		
 	}
 	
 	public void actionPerformed(ActionEvent event) {

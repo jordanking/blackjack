@@ -10,7 +10,8 @@ package blackjack;
 public enum GameAction {
 	HIT,
 	STAND,
-	DOUBLE,
+	DOUBLE_HIT,
+	DOUBLE_STAND,
 	SPLIT,
-	Surrender
+	SURRENDER
 }
