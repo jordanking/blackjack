@@ -1,0 +1,25 @@
+I know how to git - jordan
+Test for app
+I also know how to git. Get at me Jordan. - KT
+
+Allie is here now!!
+
+Wild cards - Riya
+whatupp
+
+public void actionPerformed(ActionEvent event) {
+		
+		
+		// TODO: Logic to determine if it's time to go to the next panel
+		// 
+		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel")); // To go to the next panel
+		// To pass stats to next panel (statsPanel): properties.put(key, value);
+		
+		// To go back to welcome screen:
+		// TODO: Logic to determine if the user wants to go back
+		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.PlayPanel"));
+		// To exit:
+		// TODO: Logic to determine if the user wants to exit
+		System.exit(0);
+	
+	}
