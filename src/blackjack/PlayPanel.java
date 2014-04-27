@@ -72,8 +72,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * The buttons
 	 */
-	JButton hitButton, standButton, handButton, dealButton, 
-		exitButton, skipButton, betButton1, betButton2, betButton3;
+	JButton hitButton, standButton, handButton, splitButton, dealButton, 
+		exitButton, skipButton, doubleDownButton,
+		surrenderButton, betButton1, betButton2, betButton3;
 
 	
 	/**
@@ -146,36 +147,46 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 
 		hitButton = new JButton("Hit");
 		standButton = new JButton("Stand");
+		splitButton = new JButton("Split Hand");
+		doubleDownButton = new JButton("Double Down");
+		surrenderButton = new JButton("Surrender");
 		handButton = new JButton("Next Hand");
 		dealButton = new JButton("Deal");
-		exitButton = new JButton("Exit");
-		skipButton = new JButton("Skip");
 		betButton1 = new JButton("Bet 10");
 		betButton2 = new JButton("Bet 50");
 		betButton3 = new JButton("Bet 100");
-
-
+		skipButton = new JButton("Skip to Stats");
+		exitButton = new JButton("Exit");
+		
 		// Add listeners to buttons.
 		hitButton.addActionListener(this);
 		standButton.addActionListener(this);
+		splitButton.addActionListener(this);
+		doubleDownButton.addActionListener(this);
+		surrenderButton.addActionListener(this);
 		handButton.addActionListener(this);
 		dealButton.addActionListener(this);
-		exitButton.addActionListener(this);
-		skipButton.addActionListener(this);
 		betButton1.addActionListener(this);
 		betButton2.addActionListener(this);
 		betButton3.addActionListener(this);
+		skipButton.addActionListener(this);
+		exitButton.addActionListener(this);
+		
 
 		// Add buttons to panel.
 		buttonsPanel.add(hitButton);
 		buttonsPanel.add(standButton);
+		buttonsPanel.add(splitButton);
+		buttonsPanel.add(doubleDownButton);
+		buttonsPanel.add(surrenderButton);
 		buttonsPanel.add(handButton);
 		buttonsPanel.add(dealButton);
-		buttonsPanel.add(exitButton);
-		buttonsPanel.add(skipButton);
 		buttonsPanel.add(betButton1);
 		buttonsPanel.add(betButton2);
 		buttonsPanel.add(betButton3);
+		buttonsPanel.add(skipButton);
+		buttonsPanel.add(exitButton);
+		
 
 		return buttonsPanel;
 	}
@@ -216,18 +227,62 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		    buttonText = button.getText();
 		
 		// evaluate button text
+		// and call methods accordingly
 		switch (buttonText) {
 		
 		case ("Hit"):
-			gameBoard.hit();
+			// if the main hand hasn't resolved or resolved,
+			// then main hit
+			if (gameBoard.getMainHandState() != GameState.RESOLVED 
+				&& gameBoard.getMainHandState() != GameState.END) 
+			{
+				gameBoard.hit();
+			}
+			// otherwise hit split
+			else {
+				gameBoard.hitSplit();
+			}
 			break;
-		
+			
 		case ("Exit"): 
 			System.exit(0);
 			break;
 			
 		case ("Stand"):
-			gameBoard.stand();
+			// if the main hand hasn't resolved or resolved,
+			// then main stand
+			if (gameBoard.getMainHandState() != GameState.RESOLVED 
+				&& gameBoard.getMainHandState() != GameState.END) 
+			{
+				gameBoard.stand();
+			}
+			// otherwise stand split
+			else {
+				gameBoard.standSplit();
+			}
+			break;
+			
+			
+		case ("Split Hand"):
+			gameBoard.split();
+			break;
+			
+		case ("Double Down"):
+			// if the main hand hasn't resolved or resolved,
+			// then main double down
+			if (gameBoard.getMainHandState() != GameState.RESOLVED 
+				&& gameBoard.getMainHandState() != GameState.END) 
+			{
+				gameBoard.doubleDown();
+			}
+			// otherwise double down split
+			else {
+				gameBoard.doubleDownSplit();
+			}
+			break;
+			
+		case ("Surrender"):
+			gameBoard.surrender();
 			break;
 			
 		case ("Next Hand"):
@@ -238,7 +293,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			gameBoard.deal();
 			break;
 			
-		case("Skip"):
+		case("Skip to Stats"):
 			skip();
 			break;
 			
@@ -503,6 +558,111 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	}
     
     /**
+     * resetButtonVisibility()
+     * 
+     * Sets all buttons to invisible
+     * except exit and skip buttons.
+     */
+    public void resetButtonVisibility() {
+    	
+    	hitButton.setVisible(false);
+		standButton.setVisible(false);
+		splitButton.setVisible(false);
+		doubleDownButton.setVisible(false);
+		surrenderButton.setVisible(false);
+		handButton.setVisible(false);
+		dealButton.setVisible(false);
+		betButton1.setVisible(false);
+		betButton2.setVisible(false);
+		betButton3.setVisible(false);
+		
+    }
+    
+    /**
+     * setRelevantButtonsVisible()
+     * 
+     * Sets the relevant buttons visible
+     * based off game states.
+     */
+    public void setRelevantButtonsVisible() {
+    	
+    	// reset button visibility
+    	resetButtonVisibility();
+    	
+		// determine which buttons are visible
+		// based off main hand state
+    	switch(gameBoard.getMainHandState()) {
+    		
+    	case BET: 
+    		betButton1.setVisible(true);
+			betButton2.setVisible(true);
+			betButton3.setVisible(true);
+			dealButton.setVisible(true);
+			break;
+			
+    	case DEAL:
+    		hitButton.setVisible(true);
+    		standButton.setVisible(true);
+    		// show split if cards are equal
+    		if (gameBoard.getPlayerHand().get(0).getCardRank() 
+    				== gameBoard.getPlayerHand().get(1).getCardRank()){
+    			splitButton.setVisible(true);
+    		}
+    		doubleDownButton.setVisible(true);
+    		surrenderButton.setVisible(true);
+    		break;
+    		
+    	case HIT:
+    		hitButton.setVisible(true);
+    		standButton.setVisible(true);
+    		break;
+    		
+    	case SPLIT:
+    		hitButton.setVisible(true);
+    		standButton.setVisible(true);
+    		doubleDownButton.setVisible(true);
+    		break;
+    	
+    	case END: 
+    		handButton.setVisible(true);
+    		// determine which buttons are visible
+        	// based off split hand state
+        	switch(gameBoard.getSplitHandState()) {
+        	    		
+        		case SPLIT: 
+        	    	hitButton.setVisible(true);
+        			standButton.setVisible(true);
+        			doubleDownButton.setVisible(true);
+        			break;
+        				
+        	    case HIT:
+        	    	hitButton.setVisible(true);
+        	    	standButton.setVisible(true);
+        	    	break;
+        	    		
+        	    default:
+        	    	break;
+        	    }
+        	break;
+    		
+    	default:
+    		break;
+    	}
+    	
+    }
+    
+    /**
+     * storeProperties()
+     * 
+     * Store properties for next panel.
+     */
+    private void storeProperties() {
+    	properties.put("AverageHold", 17);
+    	properties.put("TotalWins", gameBoard.getTotalWins());
+    	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    }
+    
+    /**
      * cycle()
      * 
      * Checks to see if hand is above total hands to play.
@@ -510,9 +670,13 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
     public void cycle() {
     	
+    	// determine which buttons should show
+    	setRelevantButtonsVisible();
+    	
+    	// when hit total hands to play
+    	// proceed to stats panel
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
-    		properties.put("AverageHold", 17);
-    		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+    		skip();
 		}
     }
     
@@ -527,10 +691,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * @see BlackjackApplet
      */
 	public void skip() {
-		// store total wins and losses
-		properties.put("TotalWins", gameBoard.getTotalWins());
-		properties.put("TotalLosses", gameBoard.getTotalLosses());
 		
+		storeProperties();
 		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
 	}
 

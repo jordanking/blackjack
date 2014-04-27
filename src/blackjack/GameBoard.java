@@ -106,6 +106,11 @@ public class GameBoard  {
 	 * A boolean indicating that the player has split their hand!
 	 */
 	private boolean handHasSplit;
+	
+	/**
+	 * A boolean indicating which hand player is currently on.
+	 */
+	private boolean secondHand;
 
 	/////////////////////////////////Rules////////////////////////////////////////////////////////
 	
