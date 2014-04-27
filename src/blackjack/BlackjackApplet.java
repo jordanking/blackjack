@@ -62,6 +62,7 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 		}
 		//sets the size and layout of the applet
 		setPreferredSize(new Dimension(800, 800));
+	
 		setLayout(jCardLayout  = new CardLayout());
 
 		// adds the first panel, the Welcome screen

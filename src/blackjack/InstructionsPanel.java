@@ -59,10 +59,8 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		
 		appInstructions.setEditable(false);
 		appInstructions.setText("Instructions go here.");
-		appInstructions.setAlignmentX(CENTER_ALIGNMENT);
-		appInstructions.setAlignmentY(CENTER_ALIGNMENT);
 		
-		add(instructionsPanel, BorderLayout.CENTER);
+		add(instructionsPanel, BorderLayout.NORTH);
 		
 	}
 	
@@ -77,12 +75,11 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
-		//buttonsPanel.add(helpButton = new Button("Help"));
 		buttonsPanel.add(exitButton = new Button("Exit"));
 		buttonsPanel.add(backButton = new Button("Back"));
 		buttonsPanel.add(getStartedButton = new Button("Get Started"));
 		
-		//helpButton.addActionListener(this);
+		
 		exitButton.addActionListener(this);
 		getStartedButton.addActionListener(this);
 		backButton.addActionListener(this);

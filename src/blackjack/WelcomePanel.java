@@ -3,12 +3,15 @@
  */
 package blackjack;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Panel;
@@ -27,27 +30,31 @@ public class WelcomePanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions;
 	Button getStartedButton, helpButton, exitButton, instructionsButton;
+	Panel buttonsPanel;
 	
 	public void init() {
 		
+		// set the size of this panel
+		setPreferredSize(new Dimension(800, 800));
 		
-		Panel buttonsPanel = new Panel();
-		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+		setLayout(new BorderLayout());
 		
-		//buttonsPanel.add(helpButton = new Button("Help"));
-		buttonsPanel.add(exitButton = new Button("Exit"));
-		buttonsPanel.add(getStartedButton = new Button("Get Started"));
-		buttonsPanel.add(instructionsButton = new Button("How to Play"));
-		
-		//helpButton.addActionListener(this);
-		exitButton.addActionListener(this);
-		getStartedButton.addActionListener(this);
-		instructionsButton.addActionListener(this);
+		// make the input buttons
+		try {
+			buttonsPanel = initializeInputButtons();
+		} catch (HeadlessException e) {
+			
+			e.printStackTrace();
+		}
+
+		// add the button panel
+		add(buttonsPanel, BorderLayout.SOUTH);
 		
 		Panel instructionsPanel = new Panel();
-		instructionsPanel.setLayout(new GridLayout(2, 1));
 		
-		instructionsPanel.add(appInstructions = new JTextArea());
+		instructionsPanel.setLayout(new BorderLayout());
+		instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
+
 		
 		appInstructions.setEditable(false);
 		appInstructions.setText("Welcome! \n \n" +
@@ -66,30 +73,28 @@ public class WelcomePanel extends BPanel implements ActionListener{
 				"\n amount of games automatically played. The results from these games will be displayed \n " +
 				"so that you may see the monetary outcome of an excess amount of gambling.");
 		
-		appInstructions.setAlignmentX(CENTER_ALIGNMENT);
-		appInstructions.setAlignmentY(CENTER_ALIGNMENT);
+		add(instructionsPanel, BorderLayout.NORTH);
 		
 		
-		/**
-		 * What does gridBag do guys?
-		 */
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		setLayout(gridBagLayout);
+	}
+	
+	private Panel initializeInputButtons() throws HeadlessException {
+		
+		// a panel for the buttons for fun
+		Panel buttonsPanel = new Panel();
+		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+		
+		buttonsPanel.add(exitButton = new Button("Exit"));
+		buttonsPanel.add(getStartedButton = new Button("Get Started"));
+		buttonsPanel.add(instructionsButton = new Button("How to Play"));
 		
 		
-		gridBagConstraints.anchor = GridBagConstraints.NORTH;
-		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+		exitButton.addActionListener(this);
+		getStartedButton.addActionListener(this);
+		instructionsButton.addActionListener(this);
 		
-		gridBagLayout.setConstraints(instructionsPanel, gridBagConstraints);
-		add(instructionsPanel);
+		return buttonsPanel;
 		
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		
-		
-		gridBagLayout.setConstraints(buttonsPanel, gridBagConstraints);
-		add(buttonsPanel);
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -107,6 +112,6 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	
 	 public Insets getInsets()
 	   {
-	      return new Insets(0, 0, 0, 0);
+	      return new Insets(5, 5, 5, 5);
 	   }
 }
