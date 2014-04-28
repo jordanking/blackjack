@@ -5,6 +5,7 @@ package blackjack;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -13,14 +14,17 @@ import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
-import javax.swing.JButton;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  * @author Alex Post
@@ -34,11 +38,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
 	String strategyState[] = {"Hit", "Stand"};
-	
-	String[] dealerShowing = {"2", "3", "4", "5", "6", 
-			   "7", "8", "9", "10", "A"}; // initialize the column names for the table
-	
-	JButton[][] strategyArray = null; // initialize the 2d array for the strategy table.
 	
 	/**
 	 * 
@@ -63,8 +62,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		
-		add(drawTable());
 
+		JTable strategy = drawTable();
+		JScrollPane scrollPane = new JScrollPane(strategy);
+		add(scrollPane);
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 		
@@ -83,20 +84,53 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		 /*
 		  * create all the buttons in the table.  They will all start
 		  * out with the text "hit".
-		  */
+		 */
+		
+		StrategyTableModel model = new StrategyTableModel(); 
+		JTable strategy = new JTable(model);
+		for (int i = 0; i < 10; i++){
+			createOptions(strategy, strategy.getColumnModel().getColumn(i));
+		}
 		 
-		 for (int i = 2; i < 12; i++){
-			 for(int j = 21; j > 1; j--){
-				 strategyArray[j][i] = new JButton();
-				 //Strategy strategy = new Strategy(j, i, strategyState);
-				 strategyArray[j][i].setText("Hit");
-				 strategyArray[j][i].addActionListener(this);
-			 }
-		 }
-		 
-		 JTable strategyOptions = new JTable(strategyArray, dealerShowing);
-		 
-		 return strategyOptions;
+		return strategy;
+	}
+	
+	public void initColumnSizes(JTable table){
+		StrategyTableModel model = (StrategyTableModel)table.getModel();
+        TableColumn column = null;
+        Component comp = null;
+        int headerWidth = 0;
+        int cellWidth = 0;
+        Object[] longValues = model.longValues;
+        TableCellRenderer headerRenderer =
+            table.getTableHeader().getDefaultRenderer();
+
+        for (int i = 0; i < 5; i++) {
+            column = table.getColumnModel().getColumn(i);
+
+            comp = headerRenderer.getTableCellRendererComponent(
+                                 null, column.getHeaderValue(),
+                                 false, false, 0, 0);
+            headerWidth = comp.getPreferredSize().width;
+
+            comp = table.getDefaultRenderer(model.getColumnClass(i)).
+                             getTableCellRendererComponent(
+                                 table, "Double",
+                                 false, false, 0, i);
+            cellWidth = comp.getPreferredSize().width;
+        }
+	}
+	
+	public void createOptions(JTable Table, TableColumn column){
+		JComboBox strategyOption = new JComboBox();
+		strategyOption.addItem("Hit");
+		strategyOption.addItem("Stand");
+		strategyOption.addItem("Double");
+		column.setCellEditor(new DefaultCellEditor(strategyOption));
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		renderer.setToolTipText("Click to choose action");
+		column.setCellRenderer(renderer);
 	}
 	
 	/**
@@ -145,17 +179,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		if(event.getSource() == backButton) {
 			//go back a screen
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
-		}
-		for(int i = 0; i < 10; i++){
-			for (int j = 21; j > 1; j++){
-				if (event.getSource() == strategyArray[j][i]){
-					if (strategyArray[j][i].getText() == "Hit"){
-						strategyArray[j][i].setText("Stand");
-					}else{
-						strategyArray[j][i].setText("Hit");
-					}
-				}
-			}
 		}
 	}
 	
