@@ -76,24 +76,17 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
-	 * Panel for the buttons
-	 */
-	Panel buttonsPanel;
-	
-	/**
 	 * variable for card image
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
 
-<<<<<<< HEAD
+
 	
 	/**
 	 * Panel for the buttons
 	 */
 	JPanel buttonsPanel;
 	
-=======
->>>>>>> 955b5cc5611dd1bfcc03572bd925d361f51bc368
 	/**
 	 * The buttons
 	 */
@@ -417,16 +410,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         drawBackground(graphicsObject2d);
         
         // draw my stuff
-<<<<<<< HEAD
-        //drawDealer(graphicsObject2d);
-        //drawPlayer(graphicsObject2d);
-        //drawDeck(graphicsObject2d);
-=======
         drawDealer(graphicsObject2d);
         drawPlayer(graphicsObject2d);
         drawPlayerSplit(graphicsObject2d);
         drawDeck(graphicsObject2d);
->>>>>>> 955b5cc5611dd1bfcc03572bd925d361f51bc368
         
         // Draw the meta (like cash, bet, etc...)
         drawMeta(graphicsObject2d);
