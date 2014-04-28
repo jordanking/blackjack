@@ -19,8 +19,12 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -61,11 +65,16 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * A constant for the total hands to play in this panel.
 	 */
 	static private final int TOTAL_HANDS_TO_PLAY = 1000;
+	
+	/**
+	 * A constant for the background color
+	 */
+	static private final Color GREEN_BACKGROUND = new Color(0,102,0);
     
 	/**
 	 * A constant for the text color.
 	 */
-	static private final Color TEXT_COLOR = Color.red;
+	static private final Color TEXT_COLOR = Color.white;
 	
 	/**
 	 * A constant for the bet display text.
@@ -81,6 +90,16 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * A constant for the losses display text.
 	 */
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
+	
+	/**
+	 * variable for the card image
+	 */
+	private BufferedImage cardImage;
+	
+	/**
+	 * variable for the deck image
+	 */
+	private BufferedImage deckImage;
 	
 	/**
 	 * Panel for the buttons
@@ -305,6 +324,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	// draw the background
     	//graphicsObject2d.drawImage(backImageAsset, 0, 0, this);
         
+    	//set the background color
+    	setBackground(GREEN_BACKGROUND);
+    	
         // Synchronize the graphics state - now is the time to draw! (magic)
         Toolkit.getDefaultToolkit().sync();
         
@@ -337,12 +359,28 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 //    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
     		int x = 310 + 100*index;
     		int y = 160;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    		
+
+    		//create dealer's card image
+    		try {
+        		cardImage = ImageIO.read(new File("images/" + card.getCardRank().toString() +
+        										"-" + card.getCardSuit().toString() + ".png"));
+        	} catch (IOException error) {
+        		// TODO Auto-generated catch block
+        		System.out.println("couldn't create image");
+        		error.printStackTrace();
+        	}
+    		
+    		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,null);
+    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
             
+    		/*
             // Draw the card's rank and suit
        		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
        		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
-       		
+       		*/
+    		
     		index++;
 		}
         
@@ -375,18 +413,31 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: playerHand) {
     		
+    		//create player's card image
+    		try {
+        		cardImage = ImageIO.read(new File("images/" + card.getCardRank().toString() +
+        										"-" + card.getCardSuit().toString() + ".png"));
+        	} catch (IOException error) {
+        		// TODO Auto-generated catch block
+        		System.out.println("couldn't create image");
+        		error.printStackTrace();
+        	}
+    		
     		// the spacing
     		int x = 100 + 100*index;
     		int y = 350;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,null);
+    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
     		
 
 //    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
 
+    		/*
             // Draw the card rank and suit
        		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
        		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
-
+			*/
     		
     		index++;
 		}
@@ -413,11 +464,21 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
         graphicsObject2d.setColor(TEXT_COLOR);
     	
+      //create deck image
+        try {
+    		deckImage = ImageIO.read(new File("images/deck.jpg"));
+    	} catch (IOException error) {
+    		// TODO Auto-generated catch block
+    		System.out.println("couldn't create deckImage");
+    		error.printStackTrace();
+    	}
     	
     		// the spacing
     		int x = 700;
     		int y = 160;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    		
+    		graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
+    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
 
 //    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
 
