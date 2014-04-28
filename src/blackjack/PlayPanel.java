@@ -83,9 +83,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 
 	
 	/**
-	 * Panel for the buttons
+	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	JPanel buttonsPanel;
+	Panel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -205,10 +205,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private JPanel initializeInputButtons() throws HeadlessException {
+	private Panel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		JPanel buttonsPanel = new JPanel();
+		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
@@ -392,7 +392,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * @since 1.0 
      */
     @Override
-    public void paintComponent(Graphics graphicsObject) {
+    public void paint(Graphics graphicsObject) {
     	
     	// draw all the other stuff (actually erases it!)
         super.paintComponent(graphicsObject);

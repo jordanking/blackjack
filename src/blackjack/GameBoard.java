@@ -672,7 +672,7 @@ public class GameBoard  {
 		numberOfDecks = 8;
 		
 		// bestHouseEdge
-		blackjackPayRatio = 1;
+		blackjackPayRatio = 1.2;
 	}
 
 	/**
@@ -813,6 +813,11 @@ public class GameBoard  {
 			
 			// player wins!
 			winMain();
+			
+		} else if (!player.hasBlackjack() && dealer.hasBlackjack() && !handHasSplit) {
+			
+			// player loses!
+			loseMain();
 			
 		} else {
 
@@ -983,6 +988,7 @@ public class GameBoard  {
 		mainHandState = GameState.END;
 		System.out.println("Push on main hand.");
 
+	
 		// bad rule
 		if (dealerWinsPush) {
 			// update money
