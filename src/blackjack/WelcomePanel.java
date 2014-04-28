@@ -20,8 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
@@ -32,34 +30,33 @@ import javax.swing.JTextArea;
 public class WelcomePanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions;
-	JButton getStartedButton, helpButton, exitButton, instructionsButton;
-	JPanel buttonsPanel;
-	
+	Button getStartedButton, helpButton, exitButton, instructionsButton;
+	Panel buttonsPanel;
+
 	public void init() {
-		
+
 		// set the size of this panel
-		setSize(800, 800);
-		
+		setPreferredSize(new Dimension(800, 800));
+
 		setLayout(new BorderLayout());
-		
+
 		// make the input buttons
 		try {
 			buttonsPanel = initializeInputButtons();
 		} catch (HeadlessException e) {
-			
+
 			e.printStackTrace();
 		}
 
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
-		
-		
+
 		Panel instructionsPanel = new Panel();
-		
+
 		instructionsPanel.setLayout(new BorderLayout());
 		instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
 
-		
+
 		appInstructions.setEditable(false);
 		appInstructions.setText("Welcome! \n \n" +
 				" Whether you are new to gambling or are a well-seasoned gambler, \n " +
@@ -76,31 +73,31 @@ public class WelcomePanel extends BPanel implements ActionListener{
 				"\n You will then be instructed to either use these values as your \"strategy\" for a specified" +
 				"\n amount of games automatically played. The results from these games will be displayed \n " +
 				"so that you may see the monetary outcome of an excess amount of gambling.");
-		
+
 		add(instructionsPanel, BorderLayout.NORTH);
-		
-		
+
+
 	}
-	
-	private JPanel initializeInputButtons() throws HeadlessException {
-		
+
+	private Panel initializeInputButtons() throws HeadlessException {
+
 		// a panel for the buttons for fun
-		JPanel buttonsPanel = new JPanel();
+		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
-		
-		buttonsPanel.add(exitButton = new JButton("Exit"));
-		buttonsPanel.add(getStartedButton = new JButton("Get Started"));
-		buttonsPanel.add(instructionsButton = new JButton("How to Play"));
-		
-		
+
+		buttonsPanel.add(exitButton = new Button("Exit"));
+		buttonsPanel.add(getStartedButton = new Button("Get Started"));
+		buttonsPanel.add(instructionsButton = new Button("How to Play"));
+
+
 		exitButton.addActionListener(this);
 		getStartedButton.addActionListener(this);
 		instructionsButton.addActionListener(this);
-		
+
 		return buttonsPanel;
-		
+
 	}
-	
+
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == exitButton) {
 			System.exit(0);
@@ -113,7 +110,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.InstructionsPanel"));
 		}
 	}
-	
+
 	 public Insets getInsets()
 	   {
 	      return new Insets(5, 5, 5, 5);
