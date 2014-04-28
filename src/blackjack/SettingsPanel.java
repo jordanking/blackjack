@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -38,6 +39,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
 	String strategyState[] = {"Hit", "Stand"};
+	Object[][] strategyArray = new String[9][10];
 	
 	/**
 	 * 
@@ -85,7 +87,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		  * create all the buttons in the table.  They will all start
 		  * out with the text "hit".
 		 */
-		
+		makeStrategyArray();
 		StrategyTableModel model = new StrategyTableModel(); 
 		JTable strategy = new JTable(model);
 		for (int i = 0; i < 10; i++){
@@ -93,6 +95,15 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 		 
 		return strategy;
+	}
+	
+	public Object[][] makeStrategyArray(){
+		for (int i = 0; i < 10; i++){
+			 for(int j = 0; j < 9; j++){
+				 strategyArray[j][i] = "Hit";
+			 }
+		 }
+		return strategyArray;
 	}
 	
 	public void initColumnSizes(JTable table){
@@ -182,19 +193,49 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 	}
 	
-	 protected JComponent makeTextPanel(String text) {
-	        JPanel panel = new JPanel(false);
-	        JLabel filler = new JLabel(text);
-	        filler.setHorizontalAlignment(JLabel.CENTER);
-	        panel.setLayout(new GridLayout(1, 1));
-	        panel.add(filler);
-	        return panel;
-	    }
-	 
-//	 public Strategy getStrategy(Integer playerTotal, Integer dealerShowing){
-//		 
-//	 }
-	 
-	
-	
+	 public class StrategyTableModel extends AbstractTableModel{
+
+			String[] dealerShowing = {"2", "3", "4", "5", "6", 
+					   			      "7", "8", "9", "10", "A"};
+			
+			Object[] longValues = {"Double"};
+			@Override
+			public int getRowCount() {
+				// TODO Auto-generated method stub
+				return strategyArray.length;
+			}
+
+			@Override
+			public int getColumnCount() {
+				// TODO Auto-generated method stub
+				return dealerShowing.length;
+			}
+			
+			@Override
+			public String getColumnName(int column){
+				return dealerShowing[column];
+			}
+			
+			
+			@Override
+			public Object getValueAt(int row, int column){
+				return strategyArray[row][column];
+			}
+			
+			@Override
+			public Class getColumnClass(int c) {
+			      return getValueAt(0, c).getClass();
+			}
+			
+			public boolean isCellEditable(int row, int col) {
+		        return true;
+		    }
+			
+			public void setValueAt(Object value, int row, int col) {
+				strategyArray[row][col] = value;
+		        fireTableCellUpdated(row, col);
+		    }
+		}
 }
+
+
