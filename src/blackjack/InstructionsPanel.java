@@ -58,7 +58,15 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 
 		
 		appInstructions.setEditable(false);
-		appInstructions.setText("Instructions go here.");
+		appInstructions.setText("Blackjack: HOW TO PLAY\n\n" +
+				"The goal of Blackjack is to beat the dealer's cards, which" +
+				"\ncan be done in one of three ways:\n\n" +
+				"- Having a total of 21 on the first two cards dealt to the player \n" +
+				"- Reach a final score higher than the dealer without exceeding 21 \n" +
+				"- Allow the dealer to draw additional cards, \"Hit,\" until the hand exceeds 21 \n\n" +
+				"VALUE OF CARDS:\n\n" +
+				"The value of a numerical card is that of its integer value, the value of \n" +
+				"a face card is 10, and an Ace is either 1 or 11.");
 		
 		add(instructionsPanel, BorderLayout.NORTH);
 		

@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -43,16 +44,16 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * Allows the drawing on a thread.
 	 */
     private Thread animator;
-	
-	/**
-	 * A constant for the total hands to play in this panel.
-	 */
-	static private final int TOTAL_HANDS_TO_PLAY = 8;
-	
+    
 	/**
 	 * A constant for the background color
 	 */
 	static private final Color GREEN_BACKGROUND = new Color(0,102,0);
+	
+	/**
+	 * A constant for the total hands to play in this panel.
+	 */
+	static private final int TOTAL_HANDS_TO_PLAY = 25;
     
 	/**
 	 * A constant for the text color.
@@ -75,34 +76,35 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
-	 * variable for card image
+	 * Panel for the buttons
 	 */
-	private BufferedImage cardImage;
+	Panel buttonsPanel;
 	
 	/**
-	 * variable for deck image
+	 * variable for card image
 	 */
-	private BufferedImage deckImage;
+	private HashMap<String, BufferedImage> cardImagesMap;
 
+<<<<<<< HEAD
 	
 	/**
 	 * Panel for the buttons
 	 */
 	JPanel buttonsPanel;
 	
+=======
+>>>>>>> 955b5cc5611dd1bfcc03572bd925d361f51bc368
 	/**
 	 * The buttons
 	 */
 	JButton hitButton, standButton, handButton, splitButton, dealButton, 
 		exitButton, skipButton, doubleDownButton,
 		surrenderButton, betButton1, betButton2, betButton3;
-
 	
 	/**
 	 * The game model.
 	 */
 	GameBoard gameBoard;
-	
 	
 	/**
 	 * PlayPanel()
@@ -127,6 +129,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
 		// gets model
 		gameBoard = new GameBoard();
+		
+		// load Images
+		loadImages();
 
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
@@ -146,6 +151,55 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
 		// play hand in game
 		gameBoard.playHand();
+
+	}
+	
+	/**
+	 * loadImages()
+	 * 
+	 * Loads all of the card images
+	 * 
+	 * @return none
+	 * @throws none
+	 * @since 1.0
+	 */
+	private void loadImages() {
+		cardImagesMap = new HashMap<String, BufferedImage>();
+
+		BufferedImage cardImage;
+
+		// load all 52 cards
+		for (Rank rank: Rank.values()) {
+			for (Suit suit: Suit.values()) {
+
+				// construct the card name
+				String cardName = rank.toString() + "-" + suit.toString();
+
+				//create card image
+				try {
+					// load the image
+					cardImage = ImageIO.read(new File("images/" + cardName + ".png"));
+
+					// store the image in the map
+					cardImagesMap.put(cardName, cardImage);
+
+				} catch (IOException error) {
+					System.out.println("couldn't create dealer card image");
+					error.printStackTrace();
+				}
+
+			}
+		}
+
+		// load the deck image
+		try {
+			cardImage = ImageIO.read(new File("images/deck.jpg"));
+			cardImagesMap.put("deck", cardImage);
+
+		} catch (IOException error) {
+			System.out.println("couldn't create deckImage");
+			error.printStackTrace();
+		}
 
 	}
 	
@@ -363,9 +417,16 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         drawBackground(graphicsObject2d);
         
         // draw my stuff
+<<<<<<< HEAD
         //drawDealer(graphicsObject2d);
         //drawPlayer(graphicsObject2d);
         //drawDeck(graphicsObject2d);
+=======
+        drawDealer(graphicsObject2d);
+        drawPlayer(graphicsObject2d);
+        drawPlayerSplit(graphicsObject2d);
+        drawDeck(graphicsObject2d);
+>>>>>>> 955b5cc5611dd1bfcc03572bd925d361f51bc368
         
         // Draw the meta (like cash, bet, etc...)
         drawMeta(graphicsObject2d);
@@ -413,39 +474,23 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	
     	// get the dealer's hand
     	ArrayList<Card> dealerHand = gameBoard.getDealerHand();
-    	
-		// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
-    	
+
     	int index = 0;
+    	
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: dealerHand) {
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
     		
-    		//create card image
-    		try {
-        		cardImage = ImageIO.read(new File("images/" + card.getCardRank().toString() +
-        										"-" + card.getCardSuit().toString() + ".png"));
-        	} catch (IOException error) {
-        		// TODO Auto-generated catch block
-        		System.out.println("couldn't create dealer card image");
-        		error.printStackTrace();
-        	}
-    		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+        	
+        	// get coords
     		int x = 310 + 100*index;
     		int y = 160;
     		
-    		graphicsObject2d.drawImage(cardImage,x,y,80,120,null);
-    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
-            
-    		/*
-            // Draw the card's rank and suit
-       		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
-       		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
-       		*/
     		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
+
     		index++;
 		}
         
@@ -465,11 +510,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * @since 1.0
      */
     private void drawPlayer(Graphics2D graphicsObject2d) {
-
-		// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
     	
     	// get the player's hand
     	ArrayList<Card> playerHand = gameBoard.getPlayerHand();
@@ -480,31 +520,56 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: playerHand) {
     		
-    		//create cardImage 
-    		try {
-        		cardImage = ImageIO.read(new File("images/" + card.getCardRank().toString() +
-        										"-" + card.getCardSuit().toString() + ".png"));
-        	} catch (IOException error) {
-        		// TODO Auto-generated catch block
-        		System.out.println("couldn't create player card image");
-        		error.printStackTrace();
-        	}
-    		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+    		    		
     		// the spacing
     		int x = 100 + 100*index;
     		int y = 350;
     		
-    		graphicsObject2d.drawImage(cardImage,x,y,80,120,null);
-    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
+
     		
+    		index++;
+		}
+        
+        // Synchronize the graphics state (more magic)
+        Toolkit.getDefaultToolkit().sync();
 
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+        // DONT DELETE THE OBJECT
+    }
+    
+    /**
+     * drawPlayerSplit()
+     * 
+     * Draws the player's split hand on the screen
+     * 
+     * @param graphicsObject2d - the 2d graphics object we draw with
+     * @return none
+     * @since 1.0
+     */
+    private void drawPlayerSplit(Graphics2D graphicsObject2d) {
+    	
+    	// get the player's hand
+    	ArrayList<Card> playerHandSplit = gameBoard.getPlayerHandSplit();
+    	
+    	// an index for spacing things out
+    	int index = 0;
+    	
+    	// iterate through all cards of the player and draw them on the board
+    	for (Card card: playerHandSplit) {
+    		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+    		    		
+    		// the spacing
+    		int x = 100 + 100*index;
+    		int y = 500;
+    		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
-    		/*
-            // Draw the card rank and suit
-       		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
-       		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
-			*/
     		
     		index++;
 		}
@@ -525,39 +590,30 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * @since 1.0
      */
     private void drawDeck(Graphics2D graphicsObject2d) {
-    	
+
     	// graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
     	// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
-      //create deck image
-        try {
-    		deckImage = ImageIO.read(new File("images/deck.jpg"));
-    	} catch (IOException error) {
-    		// TODO Auto-generated catch block
-    		System.out.println("couldn't create deckImage");
-    		error.printStackTrace();
-    	}
-    	
-    		// the spacing
-    		int x = 700;
-    		int y = 160;
-    		
-    		graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
-    		//graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
+    	graphicsObject2d.setColor(TEXT_COLOR);
 
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+    	// get the image
+    	BufferedImage deckImage = cardImagesMap.get("deck");
 
-    		/*
-            // Draw the card rank and suit
-       		graphicsObject2d.drawString("Deck", x+10, y+10);
-			*/
-    		
-        // Synchronize the graphics state (more magic)
-        Toolkit.getDefaultToolkit().sync();
+    	// the spacing
+    	int x = 700;
+    	int y = 160;
+    	//    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
 
-        // DONT DELETE THE OBJECT PLZ
+    	//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+
+    	// Draw the card rank and suit
+    	//       		graphicsObject2d.drawString("Deck", x+10, y+10);
+
+    	// Synchronize the graphics state (more magic)
+    	Toolkit.getDefaultToolkit().sync();
+
+    	// DONT DELETE THE OBJECT PLZ
     }
     
     /**

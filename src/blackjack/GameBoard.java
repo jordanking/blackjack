@@ -107,10 +107,7 @@ public class GameBoard  {
 	 */
 	private boolean handHasSplit;
 	
-	/**
-	 * A boolean indicating which hand player is currently on.
-	 */
-	private boolean secondHand;
+
 
 	/////////////////////////////////Rules////////////////////////////////////////////////////////
 	
@@ -385,7 +382,7 @@ public class GameBoard  {
 		}
 		
 		// make sure the cards are the same rank
-		if (player.hasPair(onlySplitOnSameRank)){
+		if (!player.hasPair(onlySplitOnSameRank)){
 
 			System.out.println("The hand may only be split when the player has a pair.");
 			return false;

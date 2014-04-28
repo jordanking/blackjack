@@ -136,15 +136,15 @@ public class Player {
 			return (playerHand.get(0).getCardRank() == playerHand.get(1).getCardRank()
 					&& playerHand.size() == 2);
 		} else {
-			
+
 			// true if they have 2 cards, and they have the same value ( 10 / 10 or 10/Jack)
-						return (playerHand.get(0).getCardRank().getCardPoints() == 
-								playerHand.get(1).getCardRank().getCardPoints()
-								&& playerHand.size() == 2);
+			return (playerHand.get(0).getCardRank().getCardPoints() == 
+					playerHand.get(1).getCardRank().getCardPoints()
+					&& playerHand.size() == 2);
 		}
-		
+
 	}
-	
+
 	/**
 	 * returns the ArrayList representing the player's split hand of Card objects
 	 * 
