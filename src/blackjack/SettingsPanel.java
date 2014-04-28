@@ -8,18 +8,16 @@ import java.awt.Button;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -31,15 +29,20 @@ import javax.swing.table.TableColumn;
  * @author Alex Post
  *
  */
+@SuppressWarnings("serial")
 public class SettingsPanel extends BPanel implements ActionListener{
 	// list of strategies for each dealer + player hand combination for the game
-	private Strategy strategy; // game strategy 
+	private Strategy gameStrategy; // game strategy 
 	Button setStrategyButton; // button that setsGameStrategy
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
-	String strategyState[] = {"Hit", "Stand"};
-	Object[][] strategyArray = new String[9][10];
+	Object[][] strategyArray = new String[9][11];
+	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
+	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
+	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
+					  "6,6", "5,5", "4,4", "2,2-3,3"};
+	
 	
 	/**
 	 * 
@@ -49,7 +52,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	}
 
 	public void init(){
-		strategy = new Strategy();
+		gameStrategy = new Strategy();
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
@@ -67,7 +70,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 
 		JTable strategy = drawTable();
 		JScrollPane scrollPane = new JScrollPane(strategy);
-		add(scrollPane);
+		add(scrollPane, BorderLayout.CENTER);
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 		
@@ -79,7 +82,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	 * Creates a table of buttons for the user to select a strategy
 	 * for every combination of cards.
 	 * 
-	 * @return strategyOptions The visual table of buttons for the user to choose
+	 * @return strategy The visual table of buttons for the user to choose
 	 * 						   their strategy
 	 */
 	public JTable drawTable(){
@@ -93,18 +96,51 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		for (int i = 0; i < 10; i++){
 			createOptions(strategy, strategy.getColumnModel().getColumn(i));
 		}
+		strategy.setRowSelectionAllowed(false);
 		 
 		return strategy;
 	}
 	
+	/**
+	 * Populates the strategyArray with the players options
+	 * 
+	 * @return strategyArray The populated strategyArray
+	 */
+	
 	public Object[][] makeStrategyArray(){
-		for (int i = 0; i < 10; i++){
-			 for(int j = 0; j < 9; j++){
-				 strategyArray[j][i] = "Hit";
+		Map<Integer, GameAction> dealerGameActionCombination = 
+				new HashMap<Integer, GameAction>();
+		GameAction desiredAction = null;
+		
+		for (int i = 0; i < 11; i++){
+			 for(int j = 0; j < hardTotal.length; j++){
+				 
+				 // the first column will be the string of ranges for the player total
+				 
+				 if ( i == 0){
+					 strategyArray[j][i] = hardTotal[j];
+				 }
+				 
+				 /*	
+				  * the rest of the table will be populated with options for the player to hit, 
+				  * stand, or double.  They will be initialized as "hit"
+				  */
+				 else{
+//				 	dealerGameActionCombination = gameStrategy.getStrategyTable().get(playerTotal[j]);
+//				 	System.out.println(dealerGameActionCombination);
+//				 	desiredAction = dealerGameActionCombination.get(i);
+//					System.out.println(desiredAction);
+				 	strategyArray[j][i] = "HIT";
+				 }
 			 }
 		 }
 		return strategyArray;
 	}
+	
+	/**
+	 * Sets preferred column sizes to the size of the largest word.
+	 * @param table
+	 */
 	
 	public void initColumnSizes(JTable table){
 		StrategyTableModel model = (StrategyTableModel)table.getModel();
@@ -132,11 +168,24 @@ public class SettingsPanel extends BPanel implements ActionListener{
         }
 	}
 	
+	/**
+	 * createOptions
+	 * 
+	 * Creates a ComboBox of gameActions for the strategy table.
+	 * 
+	 * @param Table the table we are adding the ComboBoxes to
+	 * @param column the column in the table we are adding the ComboBoxes to
+	 */
+	
 	public void createOptions(JTable Table, TableColumn column){
-		JComboBox strategyOption = new JComboBox();
-		strategyOption.addItem("Hit");
-		strategyOption.addItem("Stand");
-		strategyOption.addItem("Double");
+		JComboBox<Object> strategyOption = new JComboBox<Object>();
+		strategyOption.addItem("HIT");
+		strategyOption.addItem("STAND");
+		strategyOption.addItem("DOUBLE_HIT");
+		strategyOption.addItem("DOUBLE_STAND");
+		strategyOption.addItem("SURRENDER");
+		strategyOption.addItem("SPLIT");
+		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
 		
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
@@ -180,7 +229,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	
 	public void ActionPerformed(ActionEvent event){
 		if(event.getSource() == setStrategyButton){
-			properties.put("Game Strategy", strategy); // add gameStrategy to properties object
+			properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
 			// go to autoPanel
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
 		}
@@ -193,10 +242,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 	}
 	
-	 public class StrategyTableModel extends AbstractTableModel{
+	public class StrategyTableModel extends AbstractTableModel{
 
-			String[] dealerShowing = {"2", "3", "4", "5", "6", 
-					   			      "7", "8", "9", "10", "A"};
+			String[] dealerShowing ={"", "A","2", "3", "4", "5", "6", 
+					   			      "7", "8", "9", "10"};
 			
 			Object[] longValues = {"Double"};
 			@Override
