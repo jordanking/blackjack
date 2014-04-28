@@ -19,6 +19,8 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
@@ -29,13 +31,13 @@ import javax.swing.JTextArea;
 public class WelcomePanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions;
-	Button getStartedButton, helpButton, exitButton, instructionsButton;
-	Panel buttonsPanel;
+	JButton getStartedButton, helpButton, exitButton, instructionsButton;
+	JPanel buttonsPanel;
 	
 	public void init() {
 		
 		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
+		setSize(800, 800);
 		
 		setLayout(new BorderLayout());
 		
@@ -49,6 +51,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
+		
 		
 		Panel instructionsPanel = new Panel();
 		
@@ -78,15 +81,15 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		
 	}
 	
-	private Panel initializeInputButtons() throws HeadlessException {
+	private JPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
-		buttonsPanel.add(exitButton = new Button("Exit"));
-		buttonsPanel.add(getStartedButton = new Button("Get Started"));
-		buttonsPanel.add(instructionsButton = new Button("How to Play"));
+		buttonsPanel.add(exitButton = new JButton("Exit"));
+		buttonsPanel.add(getStartedButton = new JButton("Get Started"));
+		buttonsPanel.add(instructionsButton = new JButton("How to Play"));
 		
 		
 		exitButton.addActionListener(this);

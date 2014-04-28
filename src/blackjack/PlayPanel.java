@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -87,7 +88,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * Panel for the buttons
 	 */
-	Panel buttonsPanel;
+	JPanel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -139,7 +140,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			
 			e.printStackTrace();
 		}
-
+		
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 		
@@ -157,10 +158,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private Panel initializeInputButtons() throws HeadlessException {
+	private JPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
@@ -192,7 +193,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		skipButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		
-
+		resetButtonVisibility();
+		
 		// Add buttons to panel.
 		buttonsPanel.add(hitButton);
 		buttonsPanel.add(standButton);
@@ -207,7 +209,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.add(skipButton);
 		buttonsPanel.add(exitButton);
 		
-
 		return buttonsPanel;
 	}
 	
@@ -344,7 +345,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * @since 1.0 
      */
     @Override
-    public void paint(Graphics graphicsObject) {
+    public void paintComponent(Graphics graphicsObject) {
     	
     	// draw all the other stuff (actually erases it!)
         super.paintComponent(graphicsObject);
@@ -362,9 +363,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         drawBackground(graphicsObject2d);
         
         // draw my stuff
-        drawDealer(graphicsObject2d);
-        drawPlayer(graphicsObject2d);
-        drawDeck(graphicsObject2d);
+        //drawDealer(graphicsObject2d);
+        //drawPlayer(graphicsObject2d);
+        //drawDeck(graphicsObject2d);
         
         // Draw the meta (like cash, bet, etc...)
         drawMeta(graphicsObject2d);
@@ -736,6 +737,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	// determine which buttons should show
     	setRelevantButtonsVisible();
     	
+    	buttonsPanel.revalidate();
+    	buttonsPanel.repaint();
+    	
+    	
     	// when hit total hands to play
     	// proceed to stats panel
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
@@ -793,8 +798,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
             	
             	cycle();
                 // Update the view
+            	revalidate();
                 repaint();
                 
+            
             }
             
         });
