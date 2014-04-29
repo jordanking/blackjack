@@ -71,6 +71,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
+	 * constant for computations
+	 */
+	public final static int hoursInWorkYear = 2080;
+	
+	/**
 	 * variable for card image
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
@@ -600,27 +605,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         
         // Draw the progress bar
         drawProgressBar(graphicsObject2d);
-        
+  
         // Explicitly release the memory storing the graphics. Do not wait for garbage collection
         graphicsObject2d.dispose();
     }
-    
-    public int calculateLostHours(){
-    	
-    	//calculate how much the player makes per hour from actual job
-    	int salary = (Integer) properties.get("Salary");
-    	int hoursInWorkYear = 2080;
-    	int dollarsPerHour = salary/hoursInWorkYear;
-    	
-    	//get player's losses from the game
-    	int playersLosses = gameBoard.getLosses();
-    	
-    	//calculate how much work time player spent on game
-    	int timeSpentOnGame = playersLosses/dollarsPerHour;
- 
-    	return timeSpentOnGame;
-    }
-    
     
     /**
      * drawBackground()
