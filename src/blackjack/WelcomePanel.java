@@ -8,6 +8,8 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -19,7 +21,12 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 
@@ -32,14 +39,16 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	JTextArea appInstructions;
 	Button getStartedButton, helpButton, exitButton, instructionsButton;
 	Panel buttonsPanel;
+	
 
 	public void init() {
 		
 		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
+		//setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(1000, 700));
 
 		setLayout(new BorderLayout());
-
+		    	
 		// make the input buttons
 		try {
 			buttonsPanel = initializeInputButtons();
@@ -54,9 +63,16 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		Panel instructionsPanel = new Panel();
 
 		instructionsPanel.setLayout(new BorderLayout());
-		instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
+		
+		//create and add the background image
+		JLabel background = new JLabel(new ImageIcon("images/welcomePageImage.png"));
+		instructionsPanel.add(background);
+		//background.setPreferredSize(new Dimension(100,100));
+		background.setVisible(true);
+		add(instructionsPanel, BorderLayout.CENTER);
+		//instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
 
-
+/*
 		appInstructions.setEditable(false);
 		appInstructions.setText("Welcome! \n \n" +
 				" Whether you are new to gambling or are a well-seasoned gambler, \n " +
@@ -74,9 +90,10 @@ public class WelcomePanel extends BPanel implements ActionListener{
 				"\n amount of games automatically played. The results from these games will be displayed \n " +
 				"so that you may see the monetary outcome of an excess amount of gambling.");
 
-		add(instructionsPanel, BorderLayout.NORTH);
-
-
+		//add(instructionsPanel, BorderLayout.NORTH);
+		 * 
+		 */
+	
 	}
 
 	private Panel initializeInputButtons() throws HeadlessException {
