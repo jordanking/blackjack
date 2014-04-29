@@ -605,10 +605,27 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         
         // Draw the progress bar
         drawProgressBar(graphicsObject2d);
-
+        
         // Explicitly release the memory storing the graphics. Do not wait for garbage collection
         graphicsObject2d.dispose();
     }
+    
+    public int calculateLostHours(){
+    	
+    	//calculate how much the player makes per hour from actual job
+    	int salary = (Integer) properties.get("Salary");
+    	int hoursInWorkYear = 2080;
+    	int dollarsPerHour = salary/hoursInWorkYear;
+    	
+    	//get player's losses from the game
+    	int playersLosses = gameBoard.getLosses();
+    	
+    	//calculate how much work time player spent on game
+    	int timeSpentOnGame = playersLosses/dollarsPerHour;
+ 
+    	return timeSpentOnGame;
+    }
+    
     
     /**
      * drawBackground()

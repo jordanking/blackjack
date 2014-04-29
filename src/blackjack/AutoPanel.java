@@ -286,6 +286,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         
         // Draw the progress bar
         drawProgressBar(graphicsObject2d);
+        
+        //Draw losses
+        drawLosses(graphicsObject2d);
 
         // Explicitly release the memory storing the graphics. Do not wait for garbage collection
         graphicsObject2d.dispose();
@@ -309,6 +312,41 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         Toolkit.getDefaultToolkit().sync();
         
         // DONT DISPOSE OF THE GRAPHICS OBJECT HERE IT'LL SUCK EVERYTHING UP
+    }
+    
+    /**
+     * 
+     * Calculates how much time the player spent on the game
+     * in terms of work hours
+     * 
+     * @return timeSpentOnGame
+     */
+    public int calculateLostHours(){
+    	
+    	//calculate how much the player makes per hour from actual job
+    	int salary = (Integer) properties.get("Salary");
+    	int hoursInWorkYear = 2080;
+    	int dollarsPerHour = salary/hoursInWorkYear;
+    	
+    	//get player's losses from the game
+    	int playersLosses = gameBoard.getLosses();
+    	
+    	//calculate how much work time player spent on game
+    	int timeSpentOnGame = playersLosses/dollarsPerHour;
+ 
+    	return timeSpentOnGame;
+    }
+    
+    /**
+     * 
+     * Draws the losses
+     * 
+     * @param graphicsObject2d
+     * @return none
+     */
+    private void drawLosses(Graphics2D graphicsObject2d){
+    	int lostHours = calculateLostHours();
+    	graphicsObject2d.drawString("You have lost: " + lostHours + "hours you could have been at work", 400, 600);
     }
     
     /**
