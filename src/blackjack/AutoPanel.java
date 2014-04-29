@@ -131,7 +131,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	public AutoPanel() {
 		
-		strategy = (Strategy) properties.get("Game Strategy");
+		
 		
 	}
 	
@@ -148,6 +148,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		
 		// gets model
 		gameBoard = new GameBoard();
+		strategy = (Strategy) properties.get("Game Strategy");
 				
 		// load Images
 		loadImages();
@@ -746,7 +747,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		GameAction desiredAction;
     		
     		while (gameBoard.getMainHandState() != GameState.END
-    				&& gameBoard.getSplitHandState() != GameState.END) {
+    				|| gameBoard.getSplitHandState() != GameState.END) {
     			
     			if (gameBoard.getSplitHandState() != GameState.END) {
     				desiredAction = getStrategy(true);
@@ -754,7 +755,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     			else {
     				desiredAction = getStrategy(false);
     			}
-    			
+    			if (desiredAction == null) {
+    				desiredAction = GameAction.STAND;
+    			}
     			switch (desiredAction) {
     				case HIT:
     					if (gameBoard.getSplitHandState() != GameState.END) {
@@ -765,7 +768,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					}
     					break;
     				case STAND:
-    					if (gameBoard.getSplitHandState() != GameState.END) {
+    					System.out.println("Jordan: " + gameBoard.getMainHandState());
+    					System.out.println(gameBoard.getSplitHandState());
+
+    					if (gameBoard.getSplitHandState() != GameState.END
+    					&& gameBoard.getSplitHandState() != GameState.RESOLVED) {
     						gameBoard.standSplit();
     					}
     					else {
@@ -773,6 +780,13 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					}
     					break;
     				case DOUBLE:
+    					
+    					// hit if you can't double
+    					if (gameBoard.getMainHandState() != GameState.DEAL ||
+    					gameBoard.getMainHandState() != GameState.SPLIT) {
+    						gameBoard.hit();
+    					}
+    					
     					if (gameBoard.getSplitHandState() != GameState.END) {
     						gameBoard.doubleDownSplit();
     					}
@@ -781,14 +795,24 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					}
     					break;
     				case SPLIT:
-    					gameBoard.split();
+    					if (gameBoard.getMainHandState() == GameState.DEAL) {
+    						gameBoard.split();
+    					} else {
+    						gameBoard.hit();
+    					}
     					break;
     				case SURRENDER:
-    					gameBoard.surrender();
+    					if (gameBoard.getMainHandState() == GameState.DEAL) {
+    						gameBoard.surrender();
+    					}
+    					else {
+    						gameBoard.stand();
+    					}
     					break;
     				default:
     					break;
     			}
+    			System.out.println(gameBoard.getMainHandState());
     		}
     	}
     }
@@ -812,7 +836,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		Card playerCardTwo;
 		int playerHandSize;
 		
-	
+		if (gameBoard.getPlayerHandValue() == 21 || gameBoard.getPlayerHandValueSplit() == 21) {
+			return GameAction.STAND;
+		}
+		
 		//if the player has split the cards then change
 		//the playerHandSize and first and second
 		//player cards accordingly
@@ -832,6 +859,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
 			
 		}
+		
 		
 		//checks to see if the player has two cards
 		//and they are a pair
@@ -953,8 +981,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 						break;
 				}
 			}	
+		
+		System.out.println(playerHand);
 		// get the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
-		return strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
+		GameAction temp = strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
+		System.out.println(temp);
+		return temp;
 	}
 
 	 /**

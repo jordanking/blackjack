@@ -273,6 +273,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
 			}else{
 				properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
+				System.out.println(gameStrategy);
 				properties.put("Salary", mySalary);
 				// go to autoPanel
 				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
