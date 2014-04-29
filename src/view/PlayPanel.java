@@ -441,19 +441,26 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @param isBottomHand
 	 */
 	public void updateStrategy(boolean isBottomHand, GameAction desiredAction) {
-		//gets the int value of the dealer's face up card
+		 
+		// String value of player hand
+		String playerHand = null;	
+		
+		// get dealer face up card
 		int dealerFaceUpCard = gameBoard.getDealerHand().get(0).getCardRank().getCardPoints();
-		String playerHand = null;	//String value of player hand
-		Card playerCardOne = gameBoard.getPlayerHand().get(0);//first player card
-		Card playerCardTwo = gameBoard.getPlayerHand().get(1);	//second player card
-		int playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
-	
-		//if the player has split the cards then change
-		//the playerHandSize and first and second
-		//player cards accordingly
+		
+		// declare player variables
+		Card playerCardOne;
+		Card playerCardTwo;
+		int playerHandSize;
+		
+		
+		// if the player is looking at his bottom hand,
+		// set values accordingly
 		if (gameBoard.handHasSplit() && isBottomHand){
-			//change the size of the hand to the size of the split hand
+			
+			// set the size of the hand to the size of the split hand
 			playerHandSize = gameBoard.getPlayerHandSplit().size();
+			
 			// set first two cards to the split hand that is
 			// being acted upon so that we can later determine
 			// if there is a soft total
@@ -461,17 +468,27 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			playerCardTwo = gameBoard.getPlayerHandSplit().get(1);
 		} 
 		
-		//checks to see if the player has two cards
-		//and they are a pair
+		else {
+			
+			// otherwise set values based off main hand
+			playerCardOne = gameBoard.getPlayerHand().get(0);
+			playerCardTwo = gameBoard.getPlayerHand().get(1);	
+			playerHandSize= gameBoard.getPlayerHand().size();
+			
+		}
+		
+		// checks to see if the player has two cards
+		// and they are a pair
 		if ((playerHandSize == 2) && (gameBoard.getPlayer().hasPair(false))) {
-			//gets the point value of one of the cards of the pair
+			
+			// gets the point value of one of the cards of the pair
 			int playerCardValue = playerCardOne.getCardRank().getCardPoints();
 			
-			//checks to see if its an Ace
+			// checks to see if its an Ace
 			if (playerCardOne.getCardRank() == Rank.ACE)
 				playerHand = "A,A";
 				
-			//sets playerHand to the correct bin for the strategy
+			// sets playerHand to the correct bin for the strategy
 			switch(playerCardValue) {
 				case 2: 
 				case 3:
@@ -502,20 +519,24 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 					break;
 			}
 		} else
-			//checks to see if one card is an Ace for a soft total if
-			//there are only two cards in the hand
+			// checks to see if one card is an Ace for a soft total if
+			// there are only two cards in the hand
 			if ((playerHandSize == 2) && ((playerCardOne.getCardRank() == Rank.ACE) ||
 					(playerCardTwo.getCardRank() == Rank.ACE))) {
+				
 				Card playerCardNotAce; // the player card that's not an Ace
-				//determines which card is not an Ace and sets it equal 
-				//to playerCardNotAce
+				
+				// determines which card is not an Ace and sets it equal 
+				// to playerCardNotAce
 				if (playerCardOne.getCardRank() == Rank.ACE) {
 					playerCardNotAce = playerCardTwo;
-				} else
+				} else {
 					playerCardNotAce = playerCardOne;
-				//checks the value of the other card and sets 
-				//the correct string value for the playerHand
-				//for the strategy
+				}
+					
+				// checks the value of the other card and sets 
+				// the correct string value for the playerHand
+				// for the strategy
 				switch (playerCardNotAce.getCardRank().getCardPoints()) {
 					case 2:
 					case 3:
@@ -539,9 +560,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 						break;
 				}
 			} else {
-				//determine the total value of the player hand
-				//and set the playerHand string to that value
-				//for the strategy
+				// determine the total value of the player hand
+				// and set the playerHand string to that value
+				// for the strategy
 				switch (gameBoard.getPlayerHandValue()) {
 					case 5:
 					case 6:
@@ -581,6 +602,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 						break;
 				}
 			}	
+		
 		// update the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
 		strategy.setGameActionForHands(playerHand, dealerFaceUpCard, desiredAction);
 	}
@@ -607,6 +629,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         // make it antialiasing (fuzzy) for fun
     	graphicsObject2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
   	          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
     	graphicsObject2d.setRenderingHint(RenderingHints.KEY_RENDERING,
   	          RenderingHints.VALUE_RENDER_QUALITY);
         
@@ -640,16 +663,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
     private void drawBackground(Graphics2D graphicsObject2d) {
     	
-    	// draw the background
-    	//graphicsObject2d.drawImage(backImageAsset, 0, 0, this);
-        
     	//set the background color
     	setBackground(GREEN_BACKGROUND);
     	
         // Synchronize the graphics state - now is the time to draw! (magic)
         Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE IT'LL SUCK EVERYTHING UP
     }
     
     /**
@@ -685,19 +703,15 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		index++;
 		}
     	
-    	//Draw the value of the dealer's hand
-    	
     	// Set the font and color
         graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
         graphicsObject2d.setColor(TEXT_COLOR);
         
-        //Draw the number of points
+        // Draw the number of points
    		graphicsObject2d.drawString("Dealer's Hand Value: " + gameBoard.getDealerHandValue(), 20, 205);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE ITLL SUCK EVERYTHING UP
     }
 
     /**
@@ -734,8 +748,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		index++;
 		}
     	
-    	//Draw the value of the player's hand
-    	
     	// Set the font and color
         graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
         graphicsObject2d.setColor(TEXT_COLOR);
@@ -745,8 +757,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT
     }
     
    
@@ -798,8 +808,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT
     }
     
     /**
@@ -824,18 +832,12 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	// the spacing
     	int x = 910;
     	int y = 160;
-    	//    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	
+    	// draw image
     	graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
-
-    	//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-
-    	// Draw the card rank and suit
-    	//       		graphicsObject2d.drawString("Deck", x+10, y+10);
 
     	// Synchronize the graphics state (more magic)
     	Toolkit.getDefaultToolkit().sync();
-
-    	// DONT DELETE THE OBJECT PLZ
     }
     
     /**
@@ -891,11 +893,13 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
     	int totalHandsToPlay = TOTAL_HANDS_TO_PLAY;
     	
+    	// set progress bar size
     	int barWidth = 600;
     	int barHeight = 25;
     	int barX = 200;
     	int barY = 10;
     	
+    	// determine slice width
     	int sliceWidth = barWidth/totalHandsToPlay;
     	
     	// draw a border
@@ -1023,9 +1027,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * Store properties for next panel.
      */
     private void storeProperties() {
-    	properties.put("AverageHold", 17);
-
-    	properties.put("TotalLosses", gameBoard.getTotalHandLosses());
+    	// store game strategy
     	properties.put("Game Strategy", strategy);
     }
     
@@ -1040,6 +1042,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	// determine which buttons should show
     	setRelevantButtonsVisible();
     	
+    	// revalidate and repaint panel
     	buttonsPanel.revalidate();
     	buttonsPanel.repaint();
     	
@@ -1063,6 +1066,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
 	public void skip() {
 		
+		// store properties and proceed to settings panel
 		storeProperties();
 		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.SettingsPanel"));
 	}
@@ -1077,12 +1081,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      * 
      * @param none
      * @return none
-     * @see the parent class?
      * @since 1.0
      */
     @Override
     public void addNotify() {
-    	// call the supah
+    
         super.addNotify();
 
         // create and run the magical artist
