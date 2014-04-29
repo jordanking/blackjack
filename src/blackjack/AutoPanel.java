@@ -4,9 +4,7 @@
 package blackjack;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -14,7 +12,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.LayoutManager;
-import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -28,7 +25,6 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -60,7 +56,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	private Integer standValue = 17;
 	
 	/**
-	 * Bet value for simulation.
+	 * Default bet value for simulation.
 	 */
 	private Integer betValue = 50;
 	
@@ -329,7 +325,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			break;
 		
 		case ("Help"):
-			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.HelpPanel"));
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.InstructionsPanel"));
 			break;
 			
 		case ("Exit"): 
@@ -705,7 +701,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      */
     private void storeProperties() {
     	properties.put("AverageHold", 17);
-    	properties.put("TotalWins", gameBoard.getTotalWins());
     	properties.put("TotalLosses", gameBoard.getTotalLosses());
     }
     
