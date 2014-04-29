@@ -46,7 +46,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		// set the size of this panel
 
 		//setPreferredSize(new Dimension(800, 800));
-		setPreferredSize(new Dimension(1000, 700));
+		setPreferredSize(new Dimension(1000, 800));
 
 		Strategy gameStrategy = new Strategy();
 		properties.put("Game Strategy", gameStrategy);

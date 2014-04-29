@@ -153,7 +153,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		loadImages();
 
 		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(1000, 800));
 				
 		setLayout(new BorderLayout());
 				
@@ -625,7 +625,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	BufferedImage deckImage = cardImagesMap.get("deck");
 
     	// the spacing
-    	int x = 700;
+    	int x = 910;
     	int y = 160;
     	//    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
     	graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
@@ -685,7 +685,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		
     	int totalHandsToPlay = TOTAL_HANDS_TO_PLAY;
     	
-    	int barWidth = 400;
+    	int barWidth = 600;
     	int barHeight = 25;
     	int barX = 200;
     	int barY = 10;
