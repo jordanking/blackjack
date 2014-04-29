@@ -90,7 +90,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * The buttons
 	 */
-	JButton hitButton, standButton, handButton, splitButton, dealButton, 
+	JButton hitButton, standButton, handButton, splitButton, dealButton,
+		hitSplitButton, standSplitButton, doubleDownSplitButton,
 		exitButton, skipButton, doubleDownButton,
 		surrenderButton, betButton1, betButton2, betButton3;
 	
@@ -217,6 +218,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton = new JButton("Stand");
 		splitButton = new JButton("Split Hand");
 		doubleDownButton = new JButton("Double Down");
+		hitSplitButton = new JButton("Hit Bottom");
+		standSplitButton = new JButton("Stand Bottom");
+		doubleDownSplitButton = new JButton("Double Down Bottom");
 		surrenderButton = new JButton("Surrender");
 		handButton = new JButton("Next Hand");
 		dealButton = new JButton("Deal");
@@ -231,6 +235,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton.addActionListener(this);
 		splitButton.addActionListener(this);
 		doubleDownButton.addActionListener(this);
+		hitSplitButton.addActionListener(this);;
+		standSplitButton.addActionListener(this);;
+		doubleDownSplitButton.addActionListener(this);
 		surrenderButton.addActionListener(this);
 		handButton.addActionListener(this);
 		dealButton.addActionListener(this);
@@ -247,6 +254,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.add(standButton);
 		buttonsPanel.add(splitButton);
 		buttonsPanel.add(doubleDownButton);
+		buttonsPanel.add(hitSplitButton);
+		buttonsPanel.add(standSplitButton);
+		buttonsPanel.add(doubleDownSplitButton);
 		buttonsPanel.add(surrenderButton);
 		buttonsPanel.add(handButton);
 		buttonsPanel.add(dealButton);
@@ -298,55 +308,46 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		// and call methods accordingly
 		switch (buttonText) {
 		
+		// hit top is the same as normal hit
+		// call mainhand hit
+		case ("Hit Top"):
 		case ("Hit"):
-			// if the main hand hasn't resolved or resolved,
-			// then main hit
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.hit();
-			}
-			// otherwise hit split
-			else {
-				gameBoard.hitSplit();
-			}
+			gameBoard.hit();
 			break;
 			
 		case ("Exit"): 
 			System.exit(0);
 			break;
 			
+		case ("Stand Top"):
 		case ("Stand"):
-			// if the main hand hasn't resolved or resolved,
-			// then main stand
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.stand();
-			}
-			// otherwise stand split
-			else {
-				gameBoard.standSplit();
-			}
+			gameBoard.stand();
 			break;
-			
 			
 		case ("Split Hand"):
 			gameBoard.split();
+			// distinguish main hand buttons
+			// vs split buttons
+			hitButton.setText("Hit Top");
+			standButton.setText("Stand Top");
+			doubleDownButton.setText("Double Down Top");
+			break;
+		
+		case ("Double Down Top"):
+		case ("Double Down"):
+			gameBoard.doubleDown();
 			break;
 			
-		case ("Double Down"):
-			// if the main hand hasn't resolved or resolved,
-			// then main double down
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.doubleDown();
-			}
-			// otherwise double down split
-			else {
-				gameBoard.doubleDownSplit();
-			}
+		case ("Hit Bottom"):
+			gameBoard.hitSplit();
+			break;
+			
+		case ("Stand Bottom"):
+			gameBoard.standSplit();
+			break;
+			
+		case ("Double Down Bottom"):
+			gameBoard.doubleDownSplit();
 			break;
 			
 		case ("Surrender"):
@@ -355,6 +356,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			
 		case ("Next Hand"):
 			gameBoard.playHand();
+			hitButton.setText("Hit");
+			standButton.setText("Stand");
+			doubleDownButton.setText("Double Down");
 			break;
 			
 		case ("Deal"):
@@ -730,24 +734,30 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		doubleDownButton.setVisible(true);
     		break;
     	
+    	case RESOLVED:
     	case END: 
-    		handButton.setVisible(true);
+    		
     		// determine which buttons are visible
         	// based off split hand state
         	switch(gameBoard.getSplitHandState()) {
         	    		
         		case SPLIT: 
-        	    	hitButton.setVisible(true);
-        			standButton.setVisible(true);
-        			doubleDownButton.setVisible(true);
+        	    	hitSplitButton.setVisible(true);
+        			standSplitButton.setVisible(true);
+        			doubleDownSplitButton.setVisible(true);
         			break;
         				
         	    case HIT:
-        	    	hitButton.setVisible(true);
-        	    	standButton.setVisible(true);
+        	    	hitSplitButton.setVisible(true);
+        	    	standSplitButton.setVisible(true);
         	    	break;
-        	    		
+        	    
+        	    	
+        	    // if at end for both states
+        	    // or at end for first state 
+        	    // and none for second
         	    default:
+        	    	handButton.setVisible(true);
         	    	break;
         	    }
         	break;
