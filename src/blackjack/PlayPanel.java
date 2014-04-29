@@ -484,6 +484,15 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 
     		index++;
 		}
+    	
+    	//Draw the value of the dealer's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Dealer's Hand Value: " + gameBoard.getDealerHandValue(), 20, 205);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -524,12 +533,23 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		
     		index++;
 		}
+    	
+    	//Draw the value of the player's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValue(), 20, 335);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
 
         // DONT DELETE THE OBJECT
     }
+    
+   
     
     /**
      * drawPlayerSplit()
@@ -564,6 +584,17 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		
     		index++;
 		}
+    	
+    	//Draw the value of the player's hand if there's a split
+    	if (gameBoard.handHasSplit()==true){
+    		// Set the font and color
+            graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+            graphicsObject2d.setColor(TEXT_COLOR);
+            
+            //Draw the number of points
+       		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValueSplit(), 20, 485);
+    	}
+    	
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();

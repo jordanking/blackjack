@@ -1346,6 +1346,17 @@ public class GameBoard  {
 	public ArrayList<Card> getDealerHand() {
 		return dealer.getHand();
 	}
+	
+	/**
+	 * Returns the current value of the hand of the dealer.
+	 * 
+	 * @param none
+	 * @return handValue the dealer's hand value.
+	 * @since 1.0
+	 */
+	public int getDealerHandValue() {
+		return dealer.getPoints();
+	}
 
 	/**
 	 * Returns the current hand of the player.
