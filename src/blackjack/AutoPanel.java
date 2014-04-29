@@ -895,6 +895,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			}	
 		// update the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
 		strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
+		
 	}
 
 	 /**

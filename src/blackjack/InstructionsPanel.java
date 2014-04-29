@@ -59,7 +59,7 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		instructionsPanel.setLayout(new BorderLayout());
 		
 		//create and add the background image
-		JLabel background = new JLabel(new ImageIcon("images/instructions.jpg"));
+		JLabel background = new JLabel(new ImageIcon("images/instructions2.jpg"));
 		instructionsPanel.add(background);
 		background.setVisible(true);
 		add(instructionsPanel, BorderLayout.CENTER);
