@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -37,7 +38,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
-	Object[][] strategyArray = new String[9][11];
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
@@ -52,6 +52,8 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	}
 
 	public void init(){
+		//***************needs to get strategy from play panel
+		//gameStrategy = (Strategy) properties.get("Game Strategy");
 		gameStrategy = new Strategy();
 		
 		// set the size of this panel
@@ -67,12 +69,23 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		
-
-		JTable strategy = drawTable();
-		JScrollPane scrollPane = new JScrollPane(strategy);
-		add(scrollPane, BorderLayout.CENTER);
-		// add the button panel
+		Panel panel = new Panel();
+		panel.setLayout((LayoutManager) new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		JTable hardStrategy = drawTable(hardTotal);
+		JTable softStrategy = drawTable(softTotal);
+		JTable pairsStrategy = drawTable(pairs);
+		JScrollPane hardScrollPane = new JScrollPane(hardStrategy);
+		JScrollPane softScrollPane = new JScrollPane(softStrategy);
+		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
+		
 		add(buttonsPanel, BorderLayout.SOUTH);
+		panel.add(hardScrollPane);
+		panel.add(softScrollPane);
+		panel.add(pairsScrollPane);
+		add(panel);
+		// add the button panel
+		
 		
 	}
 	
@@ -85,21 +98,23 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	 * @return strategy The visual table of buttons for the user to choose
 	 * 						   their strategy
 	 */
-	public JTable drawTable(){
+	public JTable drawTable(String[] cards){
 		 /*
-		  * create all the buttons in the table.  They will all start
-		  * out with the text "hit".
-		 */
-		makeStrategyArray();
-		StrategyTableModel model = new StrategyTableModel(); 
+		  * draws the table for the hard totals. 
+		  */
+		
+		StrategyTableModel model = new StrategyTableModel(makeStrategyArray(cards));
 		JTable strategy = new JTable(model);
+		
 		for (int i = 0; i < 10; i++){
 			createOptions(strategy, strategy.getColumnModel().getColumn(i));
 		}
+		
 		strategy.setRowSelectionAllowed(false);
 		 
 		return strategy;
 	}
+	
 	
 	/**
 	 * Populates the strategyArray with the players options
@@ -107,18 +122,19 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	 * @return strategyArray The populated strategyArray
 	 */
 	
-	public Object[][] makeStrategyArray(){
+	public Object[][] makeStrategyArray(String[] cards){
+		Object[][] strategyArray = new Object[cards.length][11];
 		Map<Integer, GameAction> dealerGameActionCombination = 
 				new HashMap<Integer, GameAction>();
 		GameAction desiredAction = null;
 		
 		for (int i = 0; i < 11; i++){
-			 for(int j = 0; j < hardTotal.length; j++){
+			 for(int j = 0; j < cards.length; j++){
 				 
 				 // the first column will be the string of ranges for the player total
 				 
 				 if ( i == 0){
-					 strategyArray[j][i] = hardTotal[j];
+					 strategyArray[j][i] = cards[j];
 				 }
 				 
 				 /*	
@@ -126,11 +142,9 @@ public class SettingsPanel extends BPanel implements ActionListener{
 				  * stand, or double.  They will be initialized as "hit"
 				  */
 				 else{
-//				 	dealerGameActionCombination = gameStrategy.getStrategyTable().get(playerTotal[j]);
-//				 	System.out.println(dealerGameActionCombination);
-//				 	desiredAction = dealerGameActionCombination.get(i);
-//					System.out.println(desiredAction);
-				 	strategyArray[j][i] = "HIT";
+				 	dealerGameActionCombination = gameStrategy.getStrategyTable().get(cards[j]);
+				 	desiredAction = dealerGameActionCombination.get(i);
+				 	strategyArray[j][i] = (Object) desiredAction.toString();
 				 }
 			 }
 		 }
@@ -178,13 +192,13 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	 */
 	
 	public void createOptions(JTable Table, TableColumn column){
-		JComboBox<Object> strategyOption = new JComboBox<Object>();
-		strategyOption.addItem("HIT");
-		strategyOption.addItem("STAND");
-		strategyOption.addItem("DOUBLE_HIT");
-		strategyOption.addItem("DOUBLE_STAND");
-		strategyOption.addItem("SURRENDER");
-		strategyOption.addItem("SPLIT");
+		JComboBox<GameAction> strategyOption = new JComboBox<GameAction>();
+		strategyOption.addItem(GameAction.HIT);
+		strategyOption.addItem(GameAction.STAND);
+		strategyOption.addItem(GameAction.DOUBLE_HIT);
+		strategyOption.addItem(GameAction.DOUBLE_STAND);
+		strategyOption.addItem(GameAction.SURRENDER);
+		strategyOption.addItem(GameAction.SPLIT);
 		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
 		
@@ -192,6 +206,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
 	}
+
 	
 	/**
 	 * initializeInputButtons()
@@ -234,7 +249,8 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
 		}
 		if(event.getSource() == exitButton) {
-			System.exit(0); // exit the application
+			System.out.println("exit");
+			System.exit(1); // exit the application
 		}
 		if(event.getSource() == backButton) {
 			//go back a screen
@@ -248,7 +264,12 @@ public class SettingsPanel extends BPanel implements ActionListener{
 					   			      "7", "8", "9", "10"};
 			
 			Object[] longValues = {"Double"};
-			@Override
+			Object[][] strategyArray;
+			
+			StrategyTableModel(Object[][] cardsArray){
+				strategyArray = cardsArray;
+			}
+			
 			public int getRowCount() {
 				// TODO Auto-generated method stub
 				return strategyArray.length;
@@ -277,12 +298,22 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			}
 			
 			public boolean isCellEditable(int row, int col) {
-		        return true;
+		        if (col == 0){
+		        	return false;
+		        }
+		        else{
+		        	return true;
+		        }
 		    }
 			
 			public void setValueAt(Object value, int row, int col) {
-				strategyArray[row][col] = value;
-		        fireTableCellUpdated(row, col);
+				strategyArray[row][col] = (GameAction) value;
+				fireTableCellUpdated(row, col);
+				String playerHand = strategyArray[row][0].toString();
+				GameAction desiredAction = (GameAction) value;
+		        
+		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
+		        System.out.println(gameStrategy.getGameActionForHands(playerHand, col));
 		    }
 		}
 }
