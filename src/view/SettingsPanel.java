@@ -222,6 +222,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		Panel southPanel = new Panel();
 		Panel salaryPanel = new Panel();
 		
+		Font font = new Font("Verdana", Font.PLAIN, 14);
+		
 		buttonsPanel = new Panel();
 		buttonsPanel = initializeInputButtons();
 		
@@ -231,6 +233,15 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
 		betTitle = new JTextArea("How much do you want to bet?");
 		submitButton = new JButton("Proceed to simulation");
+		
+		salaryTitle.setBackground(GREEN_BACKGROUND);
+		betTitle.setBackground(GREEN_BACKGROUND);
+		
+		salaryTitle.setFont(font);
+		salaryTitle.setForeground(Color.WHITE);
+		
+		betTitle.setFont(font);
+		betTitle.setForeground(Color.WHITE);
 		
 		salaryPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
