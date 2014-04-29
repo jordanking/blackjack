@@ -4,86 +4,101 @@
 package blackjack;
 
 /**
- * Card
- * 
  * A card object indicating rank and suit.
  * 
  * @author Riya Modi
- *
+ * @version 1.0
  */
 public class Card {
 	
 	/**
-	 * Declare private variables storing rank and suit.
+	 * Stores the rank of the card.
 	 */
 	private Rank cardRank;
+	
+	/**
+	 * Stores the suit of the card.
+	 */
 	private Suit cardSuit;
 
 	/**
-	 * Card()
+	 * Default constructor, sets to ace of clubs.
 	 * 
-	 * Default constructor.
+	 * @param none
+	 * @return none
+	 * @since 1.0
 	 */
 	public Card() {
-		// Defaults rank and suit
+		
+		// Defaults rank and suit to ace of clubs
 		cardRank = Rank.ACE;
 		cardSuit = Suit.CLUBS;
 	}
 	
 	/**
-	 * Card()
+	 *Explicit constructor, allows manual declaration of rank and suit.
 	 * 
-	 * Explicit constructor. 
-	 * 
-	 * @param cardRank 
-	 * @param cardSuit
+	 * @param cardRank the rank of the new card
+	 * @param cardSuit the suit of the new card
+	 * @return none
+	 * @since 1.0
 	 */
 	public Card (Rank cardRank, Suit cardSuit){
+		
+		// set the rank and the suit
 		this.cardRank=cardRank;
 		this.cardSuit=cardSuit;
 	}
 	
 	/**
-	 * setCardRank()
+	 * Sets the rank of the card.
 	 * 
-	 * cardRank setter.
-	 * 
-	 * @param cardRank
+	 * @param cardRank the new rank
+	 * @return none
+	 * @since 1.0
 	 */
 	public void setCardRank(Rank cardRank){
+		
+		// set the new rank
 		this.cardRank=cardRank;
 	}
 	
 	/**
-	 * setCardSuit()
+	 * Sets the suit of the card.
 	 * 
-	 * cardSuit setter.
-	 * 
-	 * @param cardSuit
+	 * @param cardSuit the new suit of the card.
+	 * @return none
+	 * @since 1.0
 	 */
 	public void setCardSuit(Suit cardSuit){
+		
+		// set the new suit
 		this.cardSuit=cardSuit;
 	}
 
 	/**
-	 * getCardRank()
+	 * Returns the rank of the card.
 	 * 
-	 * cardRank getter.
-	 * 
-	 * @return cardRank
+	 * @param none
+	 * @return cardRank the rank of the card.
+	 * @since 1.0
 	 */
 	public Rank getCardRank(){
+		
+		// returns the rank of the card
 		return cardRank;
 	}
 	
 	/**
-	 * getCardSuit()
+	 * Returns the suit of the card.
 	 * 
-	 * cardSuit getter.
-	 * 
+	 * @param none
 	 * @return cardSuit
+	 * @since 1.0
 	 */
 	public Suit getCardSuit(){
+		
+		// returns the suit of the card.
 		return cardSuit;
 	}
 	
