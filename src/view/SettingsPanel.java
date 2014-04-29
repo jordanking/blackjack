@@ -42,23 +42,23 @@ import controller.Strategy;
  *
  */
 @SuppressWarnings("serial")
-public class SettingsPanel extends BPanel implements ActionListener{
+public class SettingsPanel extends BPanel implements ActionListener, KeyListener{
 	
 	private Strategy gameStrategy; 
 	Integer betValue;
-	Button setStrategyButton, submit, betButton; 
+	Button setStrategyButton, submit; 
 	Button backButton; 
 	Button exitButton; 
 	Panel buttonsPanel; 
 	JTextArea title, salaryTitle, betTitle;
 	JTextField salary, bet;
 	JComboBox<String> betComboBox;
-	String mySalary;
+	String mySalary, betNumber;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
 					  "6,6", "5,5", "4,4", "2,2-3,3"};
-	String[] betValueString = {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"};
+	String[] betValueString = {"-", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"};
 	
 	
 	/**
@@ -91,10 +91,11 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		betTitle.setEditable(false);
 		salaryTitle.setEditable(false);
 
-		submit = new Button("Submit Wage");
-		betButton = new Button("Submit Bet");
+		submit = new Button("Submit Values");
 		submit.addActionListener(this);
 		salary.addActionListener(this);
+		submit.addKeyListener(this);
+		
 				
 		setLayout(new BorderLayout());
 		
@@ -134,10 +135,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
-		salaryPanel.add(submit);
 		salaryPanel.add(betTitle);
 		salaryPanel.add(betComboBox);
-		salaryPanel.add(betButton);
+		salaryPanel.add(submit);
+		submit.setFocusable(true);
 
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
@@ -173,11 +174,23 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		  * draws the table for the hard totals. 
 		  */
 		
+		Boolean isPair = false;
+		if (cards == pairs){
+			isPair = true;
+		}
+		
 		StrategyTableModel model = new StrategyTableModel(makeStrategyArray(cards));
 		JTable strategy = new JTable(model);
 		
-		for (int i = 0; i < 10; i++){
-			createOptions(strategy, strategy.getColumnModel().getColumn(i));
+		if (isPair == false){
+			for (int i = 0; i < 10; i++){
+				createOptions(strategy, strategy.getColumnModel().getColumn(i));
+			}
+		}
+		else{
+			for (int i = 0; i < 10; i++){
+				createPairOptions(strategy, strategy.getColumnModel().getColumn(i));
+			}
 		}
 		
 		strategy.setRowSelectionAllowed(false);
@@ -267,6 +280,20 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		strategyOption.addItem(GameAction.STAND);
 		strategyOption.addItem(GameAction.DOUBLE);
 		strategyOption.addItem(GameAction.SURRENDER);
+		
+		column.setCellEditor(new DefaultCellEditor(strategyOption));
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		renderer.setToolTipText("Click to choose action");
+		column.setCellRenderer(renderer);
+	}
+	
+	public void createPairOptions(JTable Table, TableColumn column){
+		JComboBox<GameAction> strategyOption = new JComboBox<GameAction>();
+		strategyOption.addItem(GameAction.HIT);
+		strategyOption.addItem(GameAction.STAND);
+		strategyOption.addItem(GameAction.DOUBLE);
+		strategyOption.addItem(GameAction.SURRENDER);
 		strategyOption.addItem(GameAction.SPLIT);
 		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
@@ -278,7 +305,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	
 	public JComboBox<String> createBetOptions(){
 		JComboBox<String> comboBox = new JComboBox<String>(betValueString);
-		comboBox.setSelectedIndex(4);
+		comboBox.setSelectedIndex(0);
 		comboBox.addActionListener(this);
 		
 		return comboBox;
@@ -307,7 +334,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 		// add Action Listeners for the buttons
 		setStrategyButton.addActionListener(this);
-		betButton.addActionListener(this);
 		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		
@@ -348,35 +374,45 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 		
 		if(event.getSource() == submit){
-			if(salary.getText().trim().isEmpty()){
-				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
+			if(salary.getText().trim().isEmpty() || betNumber == "-"){
+				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
 			}
 			else{
 				mySalary = salary.getText();
+				betValue = Integer.parseInt(betNumber);
 				properties.put("Salary", mySalary);
-				JOptionPane.showMessageDialog(null, "Salary Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
+				properties.put("Bet Value", betValue);
+				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
+				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
-		if(event.getSource() == betButton){
-			if(bet.getText().trim().isEmpty()){
-				JOptionPane.showMessageDialog(null,"Please enter a bet value.", "Error",JOptionPane.OK_OPTION);
-			}else{
-				betValue = Integer.parseInt(bet.getText());
-				if (betValue > 100 || betValue < 0){
-					JOptionPane.showMessageDialog(null, "Bet must be between 0 and 100", "Blackjack", JOptionPane.OK_OPTION);
-				}
-				else{
-					properties.put("Bet Value", betValue);
-					JOptionPane.showMessageDialog(null, "Bet Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
-		}
+	
+		
 		if(event.getSource() == betComboBox){
 			JComboBox<String> cb = (JComboBox<String>) event.getSource();
-			String betNumber = (String) cb.getSelectedItem();
-			betValue = Integer.parseInt(betNumber);
+			betNumber = (String) cb.getSelectedItem();
 		}
 	}
+	
+	public void keyPressed(KeyEvent event){
+		if(event.getKeyCode() == KeyEvent.VK_ENTER){
+			if(salary.getText().trim().isEmpty() || betNumber == "-"){
+				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
+			}
+			else{
+				mySalary = salary.getText();
+				betValue = Integer.parseInt(betNumber);
+				properties.put("Salary", mySalary);
+				properties.put("Bet Value", betValue);
+				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
+				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+	
+	public void keyTyped(KeyEvent event){}
+	
+	public void keyReleased(KeyEvent event){} 
 	
 	/**
 	 * StrategyTableModel
