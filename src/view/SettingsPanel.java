@@ -240,7 +240,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		salaryField = new JTextField(10);
 		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
 		betTitle = new JTextArea("How much do you want to bet?");
-		submitButton = new JButton("Proceed to simulation");
+		submitButton = new JButton("Proceed to Simulation");
 		
 		salaryTitle.setBackground(GREEN_BACKGROUND);
 		betTitle.setBackground(GREEN_BACKGROUND);
