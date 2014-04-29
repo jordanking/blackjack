@@ -249,7 +249,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		pauseButton = new JButton("Pause");
 		backButton = new JButton("Back");
 		nextButton = new JButton("Next");
-		helpButton = new JButton("Help");
+		helpButton = new JButton("Continue");
 		exitButton = new JButton("Exit");
 		
 		// Add listeners to buttons.
@@ -467,9 +467,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * @return none
      */
     private void drawLosses(Graphics2D graphicsObject2d){
-    	double lostWages = calculateLostWages();
-
-    	graphicsObject2d.drawString("You lost: " + Double.toString(lostWages) + " work hours!", 300, 600);
+    	Double lostWages = calculateLostWages();
+    	int money = (int) Math.ceil(lostWages);
+    	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 600);
 
     }
     
@@ -1070,10 +1070,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
             public void actionPerformed(ActionEvent timeTick) {
             	
             	cycle();
+
                 // Update the view
             	revalidate();
                 repaint();
                 
+
             
             }
             

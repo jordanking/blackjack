@@ -74,7 +74,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 
 		salaryTitle.setEditable(false);
 
-		submit = new Button("Submit Salary");
+		submit = new Button("Submit Wage");
 		submit.addActionListener(this);
 		salary.addActionListener(this);
 				
