@@ -47,9 +47,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	
 	private Strategy gameStrategy; 
 	Integer betValue;
-	JButton setStrategyButton, submit; 
-	Button backButton; 
-	Button exitButton; 
+	JButton setStrategyButton, submit, backButton, exitButton, helpButton; 
 	Panel buttonsPanel; 
 	JTextArea title, salaryTitle, betTitle;
 	JTextField salary, bet;
@@ -68,100 +66,124 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	public SettingsPanel() {}
 
 	public void init(){
-
+		
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
-		//images for the x and y axis labels of the table
-		JLabel dealerHandText = new JLabel(new ImageIcon("images/DealerHandText.jpg"));
-		JLabel playerHandText = new JLabel(new ImageIcon("images/PlayerHandText.jpg"));
-		
-		playerHandText.setSize(50, 300);
-		
-		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
-		title = new JTextArea("Settings");
-		title.setFont(new Font("Times", Font.BOLD, 20));
-		title.setEditable(false);
-		
-		salary = new JTextField(10);
-		betComboBox = createBetOptions();
-
-		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
-		betTitle = new JTextArea("How much do you want to bet?");
-		
-		betTitle.setEditable(false);
-		salaryTitle.setEditable(false);
-
-		submit = new JButton("Submit Values");
-		submit.addActionListener(this);
-		salary.addActionListener(this);
-		submit.addKeyListener(this);
-		salary.setFocusable(true);
-		betComboBox.setFocusable(true);
-		setFocusable(true);
-		
-				
 		setLayout(new BorderLayout());
 		
-		//Panels for the axes labels
-		Panel xAxisPanel = new Panel();
-		Panel yAxisPanel = new Panel();
-		
-		// add the x and y axes labels and set them visible
-		yAxisPanel.add(playerHandText);
-		add(yAxisPanel,BorderLayout.WEST);
-		yAxisPanel.setVisible(true);
-		
-		xAxisPanel.add(dealerHandText);
-		add(xAxisPanel, BorderLayout.NORTH);
-		xAxisPanel.setVisible(true);
-				
-		//make input buttons
-		try {
-			buttonsPanel = initializeInputButtons();
-		} catch (HeadlessException e) {
-			
-			e.printStackTrace();
-		}
-		
 		Panel tables = new Panel();
-		Panel salaryPanel = new Panel();
-		salaryPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+		Panel northPanel = new Panel();
+		Panel southPanel = new Panel();
+		Panel westPanel = new Panel();
+		
+		tables = drawTablePanel();
+		northPanel = drawNorthPanel();
+		southPanel = drawSouthPanel();
+		westPanel = drawWestPanel();
+		
+		add(northPanel, BorderLayout.NORTH);
+		add(westPanel, BorderLayout.WEST);
+		add(tables, BorderLayout.CENTER);
+		add(southPanel, BorderLayout.SOUTH);
+		
+		showInitMessage();
+	}
+	
+	public void showInitMessage(){
+		JOptionPane.showMessageDialog(null,"You are about to see the \"optimal\" strategy.  If you think you are smarter, you can change the value \n of any cell by clicking on it.  Then you can see a simulation of your choices.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void showHelpMessage(){
+		JOptionPane.showMessageDialog(null,"The simulation will run this strategy. You can change any of the values by clicking on them.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public Panel drawWestPanel(){
+		Panel westPanel = new Panel();
+		JLabel playerHandText = new JLabel(new ImageIcon("images/PlayerHandText.jpg"));
+		
+		westPanel.add(playerHandText);
+		add(westPanel,BorderLayout.WEST);
+		westPanel.setVisible(true);
+		
+		return westPanel;
+	}
+	
+	public Panel drawNorthPanel(){
+		Panel northPanel = new Panel();
+		JLabel dealerHandText = new JLabel(new ImageIcon("images/DealerHandText.jpg"));
+		
+		northPanel.add(dealerHandText);
+		add(northPanel, BorderLayout.NORTH);
+		northPanel.setVisible(true);
+		
+		return northPanel;
+	}
+	
+	public Panel drawTablePanel(){
+		Panel tables = new Panel();
 		tables.setLayout((LayoutManager) new BoxLayout(tables, BoxLayout.Y_AXIS));
 		
 		JTable hardStrategy = drawTable(hardTotal);
 		JTable softStrategy = drawTable(softTotal);
 		JTable pairsStrategy = drawTable(pairs);
+		
 		JScrollPane hardScrollPane = new JScrollPane(hardStrategy);
 		JScrollPane softScrollPane = new JScrollPane(softStrategy);
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
 		
+
+		tables.add(hardScrollPane);
+		tables.add(softScrollPane);
+		tables.add(pairsScrollPane);
+		
+		return tables;
+	}
+	
+	public Panel drawSouthPanel(){
+		Panel southPanel = new Panel();
+		Panel salaryPanel = new Panel();
+		
+		buttonsPanel = new Panel();
+		buttonsPanel = initializeInputButtons();
+		
+		southPanel.setLayout((LayoutManager) new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+		
+		salary = new JTextField(10);
+		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
+		betTitle = new JTextArea("How much do you want to bet?");
+		submit = new JButton("Proceed to simulation");
+		
+		salaryPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+		
+		submit.addActionListener(this);
+		salary.addActionListener(this);
+		submit.addKeyListener(this);
+		salaryPanel.addKeyListener(this);
+		salaryPanel.addKeyListener(this);
+		salaryPanel.setFocusable(true);
+		submit.setFocusable(true);
+		
+		betComboBox = createBetOptions();
+		
+		betTitle.setEditable(false);
+		salaryTitle.setEditable(false);
+		
+		submit.setFocusable(true);
+		salary.setFocusable(true);
+		betComboBox.setFocusable(true);
+		salaryPanel.setFocusable(true);
+		setFocusable(true);
 		
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
 		salaryPanel.add(betTitle);
 		salaryPanel.add(betComboBox);
 		salaryPanel.add(submit);
-		submit.setFocusable(true);
-
-		tables.add(hardScrollPane);
-		tables.add(softScrollPane);
-		tables.add(pairsScrollPane);
-		//tables.add(salaryPanel);
-		add(tables, BorderLayout.CENTER);
-		// add the button panel
 		
-		//panel for the south border that holds the salary and bet info (salaryPanel)
-		//as well as the buttonsPanel
-		Panel southBorderPanel = new Panel();
-		southBorderPanel.setLayout((LayoutManager) new BoxLayout(southBorderPanel, BoxLayout.Y_AXIS));
+		southPanel.add(salaryPanel);
+		southPanel.add(buttonsPanel);
 		
-		southBorderPanel.add(salaryPanel);
-		southBorderPanel.add(buttonsPanel);
-		add(southBorderPanel, BorderLayout.SOUTH);
-
-		
-		
+		return southPanel;
 	}
 	
 	/**
@@ -332,36 +354,25 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// make buttons
-		setStrategyButton = new JButton("Set Strategy");
-		backButton = new Button("Back");
-		exitButton = new Button("Exit");
+		helpButton = new JButton("Help");
+		backButton = new JButton("Back");
+		exitButton = new JButton("Exit");
 		
 		// add Action Listeners for the buttons
-		setStrategyButton.addActionListener(this);
+		helpButton.addActionListener(this);
 		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		
 		// add buttons to the panel
 		buttonsPanel.add(exitButton);
 		buttonsPanel.add(backButton);
-		buttonsPanel.add(setStrategyButton);
+		buttonsPanel.add(helpButton);
 		
 		return buttonsPanel;
 		
 	}
 	
 	public void actionPerformed(ActionEvent event){
-		if(event.getSource() == setStrategyButton){
-			if(properties.get("Salary") == null){
-				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
-			}else{
-				properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
-				System.out.println(gameStrategy);
-				properties.put("Salary", mySalary);
-				// go to autoPanel
-				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.AutoPanel"));
-			}
-		}
 		if(event.getSource() == exitButton) {
 			System.out.println("exit");
 			System.exit(1); 
@@ -382,25 +393,38 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
 			}
 			else{
+				properties.put("Game Strategy", gameStrategy);
 				mySalary = salary.getText();
 				betValue = Integer.parseInt(betNumber);
 				properties.put("Salary", mySalary);
 				properties.put("Bet Value", betValue);
 				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
-				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
+				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.AutoPanel"));
 			}
 		}
 	
-		
 		if(event.getSource() == betComboBox){
 			JComboBox<String> cb = (JComboBox<String>) event.getSource();
 			betNumber = (String) cb.getSelectedItem();
+		}
+		
+		if(event.getSource() == helpButton){
+			showHelpMessage();
 		}
 	}
 	
 	public void keyPressed(KeyEvent event){
 		if(event.getKeyCode() == KeyEvent.VK_ENTER){
-			submit.doClick();
+			if(event.getSource() == submit){
+				submit.doClick();
+			}else if( event.getSource() == backButton){
+				backButton.doClick();
+			}else if(event.getSource() == exitButton){
+				exitButton.doClick();
+			}else if(event.getSource() == setStrategyButton){
+				setStrategyButton.doClick();
+			}
+		
 		}
 	}
 	
