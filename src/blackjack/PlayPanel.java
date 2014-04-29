@@ -126,7 +126,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
 		// gets model
 		gameBoard = new GameBoard();
-		//strategy = new Strategy();
+		strategy = new Strategy();
 		
 		// load Images
 		loadImages();
@@ -443,6 +443,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			//gets the point value of one of the cards of the pair
 			int playerCardValue = playerCardOne.getCardRank().getCardPoints();
 			
+			//checks to see if its an Ace
+			if (playerCardOne.getCardRank() == Rank.ACE)
+				playerHand = "A,A";
+				
 			//sets playerHand to the correct bin for the strategy
 			switch(playerCardValue) {
 				case 2: 
@@ -469,9 +473,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 					break;
 				case 10: 
 					playerHand = "10,10";
-					break;
-				case 11:
-					playerHand = "A,A";
 					break;
 				default:
 					break;
@@ -1009,6 +1010,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	properties.put("AverageHold", 17);
 
     	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    	properties.put("Game Strategy", strategy);
     }
     
     /**

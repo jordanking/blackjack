@@ -59,7 +59,9 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	public SettingsPanel() {}
 
 	public void init(){
-		gameStrategy = (Strategy) properties.get("Game Strategy");
+		gameStrategy = new Strategy();
+		//gameStrategy = (Strategy) properties.get("Game Strategy");
+		System.out.println(gameStrategy);
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
@@ -166,7 +168,9 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 				  */
 				 else{
 				 	dealerGameActionCombination = gameStrategy.getStrategyTable().get(cards[j]);
+				 	System.out.println(dealerGameActionCombination);
 				 	desiredAction = dealerGameActionCombination.get(i);
+				 	System.out.println(desiredAction);
 				 	strategyArray[j][i] = (Object) desiredAction.toString();
 				 }
 			 }

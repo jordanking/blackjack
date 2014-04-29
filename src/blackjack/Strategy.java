@@ -89,7 +89,7 @@ public class Strategy {
 		//For all of the hard totals:
 		
 		//GameActions for all dealer cards and player's hand total of 17-20
-		hardTotalRowOne.put(11, GameAction.STAND);
+		hardTotalRowOne.put(1, GameAction.STAND);
 		hardTotalRowOne.put(2, GameAction.STAND);
 		hardTotalRowOne.put(3, GameAction.STAND);
 		hardTotalRowOne.put(4, GameAction.STAND);
@@ -104,7 +104,7 @@ public class Strategy {
 		
 		
 		//GameActions for all dealer cards and player's hand total of 16
-		hardTotalRowTwo.put(11, GameAction.SURRENDER);
+		hardTotalRowTwo.put(1, GameAction.SURRENDER);
 		hardTotalRowTwo.put(2, GameAction.STAND);
 		hardTotalRowTwo.put(3, GameAction.STAND);
 		hardTotalRowTwo.put(4, GameAction.STAND);
@@ -118,7 +118,7 @@ public class Strategy {
 		strategyTable.put("16", hardTotalRowTwo);
 		
 		//GameActions for all dealer cards and player's hand total of 15
-		hardTotalRowThree.put(11, GameAction.HIT);
+		hardTotalRowThree.put(1, GameAction.HIT);
 		hardTotalRowThree.put(2, GameAction.STAND);
 		hardTotalRowThree.put(3, GameAction.STAND);
 		hardTotalRowThree.put(4, GameAction.STAND);
@@ -132,7 +132,7 @@ public class Strategy {
 		strategyTable.put("15", hardTotalRowThree);
 		
 		//GameActions for all dealer cards and player's hand total of 13-14
-		hardTotalRowFour.put(11, GameAction.HIT);
+		hardTotalRowFour.put(1, GameAction.HIT);
 		hardTotalRowFour.put(2, GameAction.STAND);
 		hardTotalRowFour.put(3, GameAction.STAND);
 		hardTotalRowFour.put(4, GameAction.STAND);
@@ -146,7 +146,7 @@ public class Strategy {
 		strategyTable.put("13-14", hardTotalRowFour);
 		
 		//GameActions for all dealer cards and player's hand total of 12
-		hardTotalRowFive.put(11, GameAction.HIT);
+		hardTotalRowFive.put(1, GameAction.HIT);
 		hardTotalRowFive.put(2, GameAction.HIT);
 		hardTotalRowFive.put(3, GameAction.HIT);
 		hardTotalRowFive.put(4, GameAction.STAND);
@@ -160,7 +160,7 @@ public class Strategy {
 		strategyTable.put("12", hardTotalRowFive);
 		
 		//GameActions for all dealer cards and player's hand total of 11
-		hardTotalRowSix.put(11, GameAction.HIT);
+		hardTotalRowSix.put(1, GameAction.HIT);
 		hardTotalRowSix.put(2, GameAction.DOUBLE);
 		hardTotalRowSix.put(3, GameAction.DOUBLE);
 		hardTotalRowSix.put(4, GameAction.DOUBLE);
@@ -174,7 +174,7 @@ public class Strategy {
 		strategyTable.put("11", hardTotalRowSix);
 		
 		//GameActions for all dealer cards and player's hand total of 10
-		hardTotalRowSeven.put(11, GameAction.HIT);
+		hardTotalRowSeven.put(1, GameAction.HIT);
 		hardTotalRowSeven.put(2, GameAction.DOUBLE);
 		hardTotalRowSeven.put(3, GameAction.DOUBLE);
 		hardTotalRowSeven.put(4, GameAction.DOUBLE);
@@ -188,7 +188,7 @@ public class Strategy {
 		strategyTable.put("10", hardTotalRowSeven);
 		
 		//GameActions for all dealer cards and player's hand total of 9
-		hardTotalRowEight.put(11, GameAction.HIT);
+		hardTotalRowEight.put(1, GameAction.HIT);
 		hardTotalRowEight.put(2, GameAction.DOUBLE);
 		hardTotalRowEight.put(3, GameAction.DOUBLE);
 		hardTotalRowEight.put(4, GameAction.DOUBLE);
@@ -202,7 +202,7 @@ public class Strategy {
 		strategyTable.put("9", hardTotalRowEight);
 		
 		//GameActions for all dealer cards and player's hand total of 5-8
-		hardTotalRowNine.put(11, GameAction.HIT);
+		hardTotalRowNine.put(1, GameAction.HIT);
 		hardTotalRowNine.put(2, GameAction.HIT);
 		hardTotalRowNine.put(3, GameAction.HIT);
 		hardTotalRowNine.put(4, GameAction.HIT);
@@ -218,7 +218,7 @@ public class Strategy {
 		//For Soft Totals:
 		
 		//GameActions for all dealer cards and player's hand of A,8-A,9
-		softTotalRowOne.put(11, GameAction.STAND);
+		softTotalRowOne.put(1, GameAction.STAND);
 		softTotalRowOne.put(2, GameAction.STAND);
 		softTotalRowOne.put(3, GameAction.STAND);
 		softTotalRowOne.put(4, GameAction.STAND);
@@ -232,7 +232,7 @@ public class Strategy {
 		strategyTable.put("A,8-A,9", softTotalRowOne);
 		
 		//GameActions for all dealer cards and player's hand of A,7
-		softTotalRowTwo.put(11, GameAction.HIT);
+		softTotalRowTwo.put(1, GameAction.HIT);
 		softTotalRowTwo.put(2, GameAction.STAND);
 		softTotalRowTwo.put(3, GameAction.DOUBLE);
 		softTotalRowTwo.put(4, GameAction.DOUBLE);
@@ -246,7 +246,7 @@ public class Strategy {
 		strategyTable.put("A,7", softTotalRowTwo);
 		
 		//GameActions for all dealer cards and player's hand of A,6
-		softTotalRowThree.put(11, GameAction.HIT);
+		softTotalRowThree.put(1, GameAction.HIT);
 		softTotalRowThree.put(2, GameAction.HIT);
 		softTotalRowThree.put(3, GameAction.DOUBLE);
 		softTotalRowThree.put(4, GameAction.DOUBLE);
@@ -260,7 +260,7 @@ public class Strategy {
 		strategyTable.put("A,6", softTotalRowThree);
 		
 		//GameActions for all dealer cards and player's hand total of A,4-A,5
-		softTotalRowFour.put(11, GameAction.HIT);
+		softTotalRowFour.put(1, GameAction.HIT);
 		softTotalRowFour.put(2, GameAction.HIT);
 		softTotalRowFour.put(3, GameAction.HIT);
 		softTotalRowFour.put(4, GameAction.DOUBLE);
@@ -274,7 +274,7 @@ public class Strategy {
 		strategyTable.put("A,4-A,5", softTotalRowFour);
 		
 		//GameActions for all dealer cards and player's hand of A,2-A,3
-		softTotalRowFive.put(11, GameAction.HIT);
+		softTotalRowFive.put(1, GameAction.HIT);
 		softTotalRowFive.put(2, GameAction.HIT);
 		softTotalRowFive.put(3, GameAction.HIT);
 		softTotalRowFive.put(4, GameAction.HIT);
@@ -290,7 +290,7 @@ public class Strategy {
 		//For pairs:
 		
 		//GameActions for all dealer cards and player's hand of A,A
-		pairRowOne.put(11, GameAction.SPLIT);
+		pairRowOne.put(1, GameAction.SPLIT);
 		pairRowOne.put(2, GameAction.SPLIT);
 		pairRowOne.put(3, GameAction.SPLIT);
 		pairRowOne.put(4, GameAction.SPLIT);
@@ -304,7 +304,7 @@ public class Strategy {
 		strategyTable.put("A,A", pairRowOne);
 		
 		//GameActions for all dealer cards and player's hand of 10,10
-		pairRowTwo.put(11, GameAction.STAND);
+		pairRowTwo.put(1, GameAction.STAND);
 		pairRowTwo.put(2, GameAction.STAND);
 		pairRowTwo.put(3, GameAction.STAND);
 		pairRowTwo.put(4, GameAction.STAND);
@@ -318,7 +318,7 @@ public class Strategy {
 		strategyTable.put("10,10", pairRowTwo);
 		
 		//GameActions for all dealer cards and player's hand of 9,9
-		pairRowThree.put(11, GameAction.STAND);
+		pairRowThree.put(1, GameAction.STAND);
 		pairRowThree.put(2, GameAction.SPLIT);
 		pairRowThree.put(3, GameAction.SPLIT);
 		pairRowThree.put(4, GameAction.SPLIT);
@@ -332,7 +332,7 @@ public class Strategy {
 		strategyTable.put("9,9", pairRowThree);
 		
 		//GameActions for all dealer cards and player's hand of 8,8
-		pairRowFour.put(11, GameAction.SPLIT);
+		pairRowFour.put(1, GameAction.SPLIT);
 		pairRowFour.put(2, GameAction.SPLIT);
 		pairRowFour.put(3, GameAction.SPLIT);
 		pairRowFour.put(4, GameAction.SPLIT);
@@ -346,7 +346,7 @@ public class Strategy {
 		strategyTable.put("8,8", pairRowFour);
 		
 		//GameActions for all dealer cards and player's hand of 7,7
-		pairRowFive.put(11, GameAction.HIT);
+		pairRowFive.put(1, GameAction.HIT);
 		pairRowFive.put(2, GameAction.SPLIT);
 		pairRowFive.put(3, GameAction.SPLIT);
 		pairRowFive.put(4, GameAction.SPLIT);
@@ -360,7 +360,7 @@ public class Strategy {
 		strategyTable.put("7,7", pairRowFive);
 		
 		//GameActions for all dealer cards and player's hand of 6,6
-		pairRowSix.put(11, GameAction.HIT);
+		pairRowSix.put(1, GameAction.HIT);
 		pairRowSix.put(2, GameAction.SPLIT);
 		pairRowSix.put(3, GameAction.SPLIT);
 		pairRowSix.put(4, GameAction.SPLIT);
@@ -374,7 +374,7 @@ public class Strategy {
 		strategyTable.put("6,6", pairRowSix);
 		
 		//GameActions for all dealer cards and player's hand of 5,5
-		pairRowSeven.put(11, GameAction.HIT);
+		pairRowSeven.put(1, GameAction.HIT);
 		pairRowSeven.put(2, GameAction.DOUBLE);
 		pairRowSeven.put(3, GameAction.DOUBLE);
 		pairRowSeven.put(4, GameAction.DOUBLE);
@@ -388,7 +388,7 @@ public class Strategy {
 		strategyTable.put("5,5", pairRowSeven);
 		
 		//GameActions for all dealer cards and player's hand of 4,4
-		pairRowEight.put(11, GameAction.HIT);
+		pairRowEight.put(1, GameAction.HIT);
 		pairRowEight.put(2, GameAction.HIT);
 		pairRowEight.put(3, GameAction.HIT);
 		pairRowEight.put(4, GameAction.HIT);
@@ -402,7 +402,7 @@ public class Strategy {
 		strategyTable.put("4,4", pairRowEight);
 		
 		//GameActions for all dealer cards and player's hand of 2,2-3,3
-		pairRowNine.put(11, GameAction.HIT);
+		pairRowNine.put(1, GameAction.HIT);
 		pairRowNine.put(2, GameAction.SPLIT);
 		pairRowNine.put(3, GameAction.SPLIT);
 		pairRowNine.put(4, GameAction.SPLIT);
