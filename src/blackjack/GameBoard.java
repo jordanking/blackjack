@@ -189,6 +189,9 @@ public class GameBoard  {
 			System.out.println("There was not enough cash to play a hand.");
 			return false;
 		}
+		
+		// reset states
+		resetHandStates();
 
 		// reset player
 		player.reset();
@@ -1345,6 +1348,17 @@ public class GameBoard  {
 	 */
 	public ArrayList<Card> getDealerHand() {
 		return dealer.getHand();
+	}
+	
+	/**
+	 * Returns the current value of the hand of the dealer.
+	 * 
+	 * @param none
+	 * @return handValue the dealer's hand value.
+	 * @since 1.0
+	 */
+	public int getDealerHandValue() {
+		return dealer.getPoints();
 	}
 
 	/**
