@@ -267,25 +267,28 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-		pauseButton = new JButton("Pause");
-		backButton = new JButton("Back");
-		nextButton = new JButton("Next");
-		helpButton = new JButton("Instructions");
 		exitButton = new JButton("Exit");
+		backButton = new JButton("Back");
+		helpButton = new JButton("Instructions");
+		nextButton = new JButton("Next");
+		pauseButton = new JButton("Pause");
 		
 		// Add listeners to buttons.
-		pauseButton.addActionListener(this);
-		backButton.addActionListener(this);
-		nextButton.addActionListener(this);
-		helpButton.addActionListener(this);
 		exitButton.addActionListener(this);
+		backButton.addActionListener(this);
+		helpButton.addActionListener(this);
+		nextButton.addActionListener(this);
+		pauseButton.addActionListener(this);
 		
 		// Add buttons to panel.
-		buttonsPanel.add(pauseButton);
-		buttonsPanel.add(backButton);
-		buttonsPanel.add(nextButton);
-		buttonsPanel.add(helpButton);
 		buttonsPanel.add(exitButton);
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(helpButton);
+		buttonsPanel.add(nextButton);
+		buttonsPanel.add(pauseButton);
+		
+		// set transparent
+		buttonsPanel.setBackground(null);
 		
 		return buttonsPanel;
 	}

@@ -4,19 +4,17 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Panel;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JTextArea;
 
 
@@ -30,17 +28,22 @@ import javax.swing.JTextArea;
 public class HelpPanel extends BPanel implements ActionListener{
 
 	JTextArea helpInstructions;
-	Button backButton, playAgainButton, exitButton;
+	JButton backButton, playAgainButton, exitButton;
+	int totalWins, totalLosses, hoursLost;
 	
 	public void init() {
 		setBackground(Color.white);
 		
-		Panel buttonsPanel = new Panel();
+		totalWins = (int) properties.get("Total Wins");
+		totalLosses = (int) properties.get("Total Losses");
+		hoursLost = (int) properties.get("Hours Lost");
+		
+		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
-		buttonsPanel.add(playAgainButton = new Button("Play Again"));
-		buttonsPanel.add(backButton = new Button("Back"));
-		buttonsPanel.add(exitButton = new Button("Exit"));
+		buttonsPanel.add(playAgainButton = new JButton("Play Again"));
+		buttonsPanel.add(backButton = new JButton("Back"));
+		buttonsPanel.add(exitButton = new JButton("Exit"));
 		
 		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
