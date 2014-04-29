@@ -4,13 +4,12 @@
 package jUnitTests;
 
 import static org.junit.Assert.assertEquals;
+import model.Card;
+import model.Deck;
+import model.Rank;
+import model.Suit;
 
 import org.junit.Test;
-
-import blackjack.Card;
-import blackjack.Deck;
-import blackjack.Rank;
-import blackjack.Suit;
 
 /**
  * Tests all of the public methods of the deck class.
@@ -21,7 +20,7 @@ import blackjack.Suit;
 public class DeckTest {
 
 	/**
-	 * Test method for {@link blackjack.Deck#Deck()}.
+	 * Test method for {@link model.Deck#Deck()}.
 	 */
 	@Test
 	public final void testDeck() {
@@ -41,7 +40,7 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Deck#Deck(int)}.
+	 * Test method for {@link model.Deck#Deck(int)}.
 	 */
 	@Test
 	public final void testDeckInt() {
@@ -60,7 +59,7 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Deck#getNumCardsInDeck()}.
+	 * Test method for {@link model.Deck#getNumCardsInDeck()}.
 	 */
 	@Test
 	public final void testGetNumCardsInDeck() {
@@ -79,7 +78,7 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Deck#shuffle()}.
+	 * Test method for {@link model.Deck#shuffle()}.
 	 */
 	@Test
 	public final void testShuffle() {
@@ -97,7 +96,7 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Deck#drawCard()}.
+	 * Test method for {@link model.Deck#drawCard()}.
 	 */
 	@Test
 	public final void testDrawCard() {
@@ -119,7 +118,7 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Deck#isEmpty()}.
+	 * Test method for {@link model.Deck#isEmpty()}.
 	 */
 	@Test
 	public final void testIsEmpty() {

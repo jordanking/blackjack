@@ -4,13 +4,12 @@
 package jUnitTests;
 
 import static org.junit.Assert.*;
+import model.Card;
+import model.Player;
+import model.Rank;
+import model.Suit;
 
 import org.junit.Test;
-
-import blackjack.Card;
-import blackjack.Player;
-import blackjack.Rank;
-import blackjack.Suit;
 
 /**
  * Tests all of the public methods of the player class.
@@ -21,7 +20,7 @@ import blackjack.Suit;
 public class PlayerTest {
 
 	/**
-	 * Test method for {@link blackjack.Player#Player()}.
+	 * Test method for {@link model.Player#Player()}.
 	 */
 	@Test
 	public final void testPlayer() {
@@ -36,7 +35,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#addCard(blackjack.Card)}.
+	 * Test method for {@link model.Player#addCard(model.Card)}.
 	 */
 	@Test
 	public final void testAddCard() {
@@ -51,7 +50,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#addCardSplit(blackjack.Card)}.
+	 * Test method for {@link model.Player#addCardSplit(model.Card)}.
 	 */
 	@Test
 	public final void testAddCardSplit() {
@@ -66,7 +65,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getPoints()}.
+	 * Test method for {@link model.Player#getPoints()}.
 	 */
 	@Test
 	public final void testGetPoints() {
@@ -87,7 +86,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getPointsSplit()}.
+	 * Test method for {@link model.Player#getPointsSplit()}.
 	 */
 	@Test
 	public final void testGetPointsSplit() {
@@ -108,7 +107,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getNumOfCards()}.
+	 * Test method for {@link model.Player#getNumOfCards()}.
 	 */
 	@Test
 	public final void testGetNumOfCards() {
@@ -129,7 +128,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getNumOfCardsSplit()}.
+	 * Test method for {@link model.Player#getNumOfCardsSplit()}.
 	 */
 	@Test
 	public final void testGetNumOfCardsSplit() {
@@ -150,7 +149,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getHand()}.
+	 * Test method for {@link model.Player#getHand()}.
 	 */
 	@Test
 	public final void testGetHand() {
@@ -169,7 +168,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#getHandSplit()}.
+	 * Test method for {@link model.Player#getHandSplit()}.
 	 */
 	@Test
 	public final void testGetHandSplit() {
@@ -187,7 +186,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#hasPair(boolean)}.
+	 * Test method for {@link model.Player#hasPair(boolean)}.
 	 */
 	@Test
 	public final void testHasPair() {
@@ -205,7 +204,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#hasBlackjack()}.
+	 * Test method for {@link model.Player#hasBlackjack()}.
 	 */
 	@Test
 	public final void testHasBlackjack() {
@@ -223,7 +222,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Player#reset()}.
+	 * Test method for {@link model.Player#reset()}.
 	 */
 	@Test
 	public final void testReset() {

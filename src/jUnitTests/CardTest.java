@@ -4,12 +4,11 @@
 package jUnitTests;
 
 import static org.junit.Assert.assertEquals;
+import model.Card;
+import model.Rank;
+import model.Suit;
 
 import org.junit.Test;
-
-import blackjack.Card;
-import blackjack.Rank;
-import blackjack.Suit;
 
 /**
  * This tests all public methods of the card class.
@@ -20,7 +19,7 @@ import blackjack.Suit;
 public class CardTest {
 
 	/**
-	 * Test method for {@link blackjack.Card#Card()}.
+	 * Test method for {@link model.Card#Card()}.
 	 */
 	@Test
 	public final void testCard() {
@@ -36,7 +35,7 @@ public class CardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Card#Card(blackjack.Rank, blackjack.Suit)}.
+	 * Test method for {@link model.Card#Card(model.Rank, model.Suit)}.
 	 */
 	@Test
 	public final void testCardRankSuit() {
@@ -52,7 +51,7 @@ public class CardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Card#setCardRank(blackjack.Rank)}.
+	 * Test method for {@link model.Card#setCardRank(model.Rank)}.
 	 */
 	@Test
 	public final void testSetCardRank() {
@@ -67,7 +66,7 @@ public class CardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Card#setCardSuit(blackjack.Suit)}.
+	 * Test method for {@link model.Card#setCardSuit(model.Suit)}.
 	 */
 	@Test
 	public final void testSetCardSuit() {
@@ -82,7 +81,7 @@ public class CardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Card#getCardRank()}.
+	 * Test method for {@link model.Card#getCardRank()}.
 	 */
 	@Test
 	public final void testGetCardRank() {
@@ -94,7 +93,7 @@ public class CardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.Card#getCardSuit()}.
+	 * Test method for {@link model.Card#getCardSuit()}.
 	 */
 	@Test
 	public final void testGetCardSuit() {
