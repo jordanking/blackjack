@@ -27,7 +27,7 @@ import javax.swing.JTextArea;
 public class HelpPanel extends BPanel implements ActionListener{
 
 	JTextArea helpInstructions;
-	Button playAgainButton, exitButton;
+	Button backButton, playAgainButton, exitButton;
 	
 	public void init() {
 		setBackground(Color.white);
@@ -35,9 +35,11 @@ public class HelpPanel extends BPanel implements ActionListener{
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
-		buttonsPanel.add(exitButton = new Button("Exit"));
 		buttonsPanel.add(playAgainButton = new Button("Play Again"));
+		buttonsPanel.add(backButton = new Button("Back"));
+		buttonsPanel.add(exitButton = new Button("Exit"));
 		
+		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		playAgainButton.addActionListener(this);
 		
@@ -102,9 +104,10 @@ public class HelpPanel extends BPanel implements ActionListener{
 
 		if (event.getSource() == exitButton) {
 			System.exit(0);
-//			panelManager.actionPerformed(new ActionEvent(this, JPanelManager.REMOVE, "view.HelpPanel"));
 		} else if (event.getSource() == playAgainButton) {
-			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.DummyPanel"));
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.PlayPanel"));
+		} else if (event.getSource() == backButton) {
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "view.HelpPanel"));
 		}
 	}
 	

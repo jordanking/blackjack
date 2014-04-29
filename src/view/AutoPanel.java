@@ -338,7 +338,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.HelpPanel"));
 			break;
 		
-		case ("Help"):
+		case ("Continue"):
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.InstructionsPanel"));
 			break;
 			
