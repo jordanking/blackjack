@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import blackjack.GameAction;
-import blackjack.Strategy;
+import controller.GameAction;
+import controller.Strategy;
 
 /**
  * @author alyssamiller
@@ -29,7 +29,7 @@ public class StrategyTest {
 
 	/**
 	 * 
-	 * Test method for {@link blackjack.Strategy#setGameActionForHands(java.lang.String, java.lang.Integer, blackjack.GameAction)}.
+	 * Test method for {@link controller.Strategy#setGameActionForHands(java.lang.String, java.lang.Integer, controller.GameAction)}.
 	 * Calls the set and get method for updating the strategy
 	 */
 	@Test

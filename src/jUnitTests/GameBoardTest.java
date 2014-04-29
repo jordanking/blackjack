@@ -4,12 +4,12 @@
 package jUnitTests;
 
 import static org.junit.Assert.*;
+import model.GameState;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import blackjack.GameBoard;
-import blackjack.GameState;
+import controller.GameBoard;
 
 /**
  * Tests all of the public methods of the gameboard class. THERE ARE FOURTY-FOUR
@@ -33,7 +33,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#GameBoard()}.
+	 * Test method for {@link controller.GameBoard#GameBoard()}.
 	 */
 	@Test
 	public final void testGameBoard() {
@@ -51,7 +51,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#playHand()}.
+	 * Test method for {@link controller.GameBoard#playHand()}.
 	 */
 	@Test
 	public final void testPlayHand() {
@@ -64,7 +64,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#bet(int)}.
+	 * Test method for {@link controller.GameBoard#bet(int)}.
 	 */
 	@Test
 	public final void testBet() {
@@ -83,7 +83,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#deal()}.
+	 * Test method for {@link controller.GameBoard#deal()}.
 	 */
 	@Test
 	public final void testDeal() {
@@ -103,7 +103,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#hit()}.
+	 * Test method for {@link controller.GameBoard#hit()}.
 	 */
 	@Test
 	public final void testHit() {
@@ -123,7 +123,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#stand()}.
+	 * Test method for {@link controller.GameBoard#stand()}.
 	 */
 	@Test
 	public final void testStand() {
@@ -144,7 +144,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#split()}.
+	 * Test method for {@link controller.GameBoard#split()}.
 	 */
 	@Test
 	public final void testSplit() {
@@ -182,7 +182,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#doubleDown()}.
+	 * Test method for {@link controller.GameBoard#doubleDown()}.
 	 */
 	@Test
 	public final void testDoubleDown() {
@@ -200,7 +200,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#surrender()}.
+	 * Test method for {@link controller.GameBoard#surrender()}.
 	 */
 	@Test
 	public final void testSurrender() {
@@ -218,7 +218,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#hitSplit()}.
+	 * Test method for {@link controller.GameBoard#hitSplit()}.
 	 */
 	@Test
 	public final void testHitSplit() {
@@ -258,7 +258,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#standSplit()}.
+	 * Test method for {@link controller.GameBoard#standSplit()}.
 	 */
 	@Test
 	public final void testStandSplit() {
@@ -297,7 +297,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#doubleDownSplit()}.
+	 * Test method for {@link controller.GameBoard#doubleDownSplit()}.
 	 */
 	@Test
 	public final void testDoubleDownSplit() {
@@ -337,7 +337,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getMainHandState()}.
+	 * Test method for {@link controller.GameBoard#getMainHandState()}.
 	 */
 	@Test
 	public final void testGetMainHandState() {
@@ -347,7 +347,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getSplitHandState()}.
+	 * Test method for {@link controller.GameBoard#getSplitHandState()}.
 	 */
 	@Test
 	public final void testGetSplitHandState() {
@@ -357,7 +357,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#handHasSplit()}.
+	 * Test method for {@link controller.GameBoard#handHasSplit()}.
 	 */
 	@Test
 	public final void testHandHasSplit() {
@@ -367,7 +367,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setDealerWinsPush(boolean)}.
+	 * Test method for {@link controller.GameBoard#setDealerWinsPush(boolean)}.
 	 */
 	@Test
 	public final void testSetDealerWinsPush() {
@@ -383,7 +383,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isDealerWinsPush()}.
+	 * Test method for {@link controller.GameBoard#isDealerWinsPush()}.
 	 */
 	@Test
 	public final void testIsDealerWinsPush() {
@@ -399,7 +399,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setSoftSeventeenRule(boolean)}.
+	 * Test method for {@link controller.GameBoard#setSoftSeventeenRule(boolean)}.
 	 */
 	@Test
 	public final void testSetSoftSeventeenRule() {
@@ -415,7 +415,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isSoftSeventeenRule()}.
+	 * Test method for {@link controller.GameBoard#isSoftSeventeenRule()}.
 	 */
 	@Test
 	public final void testIsSoftSeventeenRule() {
@@ -431,7 +431,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setSurrenderAllowed(boolean)}.
+	 * Test method for {@link controller.GameBoard#setSurrenderAllowed(boolean)}.
 	 */
 	@Test
 	public final void testSetSurrenderAllowed() {
@@ -447,7 +447,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isSurrenderAllowed()}.
+	 * Test method for {@link controller.GameBoard#isSurrenderAllowed()}.
 	 */
 	@Test
 	public final void testIsSurrenderAllowed() {
@@ -463,7 +463,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setSplittingAcesEndsControl(boolean)}.
+	 * Test method for {@link controller.GameBoard#setSplittingAcesEndsControl(boolean)}.
 	 */
 	@Test
 	public final void testSetSplittingAcesEndsControl() {
@@ -479,7 +479,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isSplittingAcesEndsControl()}.
+	 * Test method for {@link controller.GameBoard#isSplittingAcesEndsControl()}.
 	 */
 	@Test
 	public final void testIsSplittingAcesEndsControl() {
@@ -495,7 +495,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setOnlySplitOnSameRank(boolean)}.
+	 * Test method for {@link controller.GameBoard#setOnlySplitOnSameRank(boolean)}.
 	 */
 	@Test
 	public final void testSetOnlySplitOnSameRank() {
@@ -511,7 +511,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isOnlySplitOnSameRank()}.
+	 * Test method for {@link controller.GameBoard#isOnlySplitOnSameRank()}.
 	 */
 	@Test
 	public final void testIsOnlySplitOnSameRank() {
@@ -527,39 +527,39 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setDoubleAllowedAfterSplit(boolean)}.
+	 * Test method for {@link controller.GameBoard#setDoubleAllowedAfterSplit(boolean)}.
 	 */
 	@Test
 	public final void testSetDoubleAllowedAfterSplit() {
 		
 		// make sure the value is correct with a new board
-		assertEquals(false, game.isDoubleAllowedAfterSplit());
+		assertEquals(true, game.isDoubleAllowedAfterSplit());
 		
 		// set the new value
-		game.setDoubleAllowedAfterSplit(true);
+		game.setDoubleAllowedAfterSplit(false);
 		
 		// make sure the value is correct now
-		assertEquals(true, game.isDoubleAllowedAfterSplit());
+		assertEquals(false, game.isDoubleAllowedAfterSplit());
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#isDoubleAllowedAfterSplit()}.
+	 * Test method for {@link controller.GameBoard#isDoubleAllowedAfterSplit()}.
 	 */
 	@Test
 	public final void testIsDoubleAllowedAfterSplit() {
 		
 		// make sure the value is correct with a new board
-		assertEquals(false, game.isDoubleAllowedAfterSplit());
+		assertEquals(true, game.isDoubleAllowedAfterSplit());
 		
 		// set the new value
-		game.setDoubleAllowedAfterSplit(true);
+		game.setDoubleAllowedAfterSplit(false);
 		
 		// make sure the value is correct now
-		assertEquals(true, game.isDoubleAllowedAfterSplit());	
+		assertEquals(false, game.isDoubleAllowedAfterSplit());	
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setNumberOfDecks(int)}.
+	 * Test method for {@link controller.GameBoard#setNumberOfDecks(int)}.
 	 */
 	@Test
 	public final void testSetNumberOfDecks() {
@@ -575,7 +575,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getNumberOfDecks()}.
+	 * Test method for {@link controller.GameBoard#getNumberOfDecks()}.
 	 */
 	@Test
 	public final void testGetNumberOfDecks() {
@@ -591,7 +591,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setBlackjackPayRatio(double)}.
+	 * Test method for {@link controller.GameBoard#setBlackjackPayRatio(double)}.
 	 */
 	@Test
 	public final void testSetBlackjackPayRatio() {
@@ -607,7 +607,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getBlackjackPayRatio()}.
+	 * Test method for {@link controller.GameBoard#getBlackjackPayRatio()}.
 	 */
 	@Test
 	public final void testGetBlackjackPayRatio() {
@@ -623,7 +623,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getPlayer()}.
+	 * Test method for {@link controller.GameBoard#getPlayer()}.
 	 */
 	@Test
 	public final void testGetPlayer() {
@@ -633,7 +633,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getDealer()}.
+	 * Test method for {@link controller.GameBoard#getDealer()}.
 	 */
 	@Test
 	public final void testGetDealer() {
@@ -641,7 +641,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#setCash(int)}.
+	 * Test method for {@link controller.GameBoard#setCash(int)}.
 	 */
 	@Test
 	public final void testSetCash() {
@@ -657,7 +657,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getCash()}.
+	 * Test method for {@link controller.GameBoard#getCash()}.
 	 */
 	@Test
 	public final void testGetCash() {
@@ -673,7 +673,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getLosses()}.
+	 * Test method for {@link controller.GameBoard#getLosses()}.
 	 */
 	@Test
 	public final void testGetLosses() {
@@ -683,7 +683,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getBet()}.
+	 * Test method for {@link controller.GameBoard#getBet()}.
 	 */
 	@Test
 	public final void testGetBet() {
@@ -693,7 +693,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getDealerHand()}.
+	 * Test method for {@link controller.GameBoard#getDealerHand()}.
 	 */
 	@Test
 	public final void testGetDealerHand() {
@@ -703,7 +703,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getPlayerHand()}.
+	 * Test method for {@link controller.GameBoard#getPlayerHand()}.
 	 */
 	@Test
 	public final void testGetPlayerHand() {
@@ -713,7 +713,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getPlayerHandSplit()}.
+	 * Test method for {@link controller.GameBoard#getPlayerHandSplit()}.
 	 */
 	@Test
 	public final void testGetPlayerHandSplit() {
@@ -723,7 +723,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getPlayerHandValue()}.
+	 * Test method for {@link controller.GameBoard#getPlayerHandValue()}.
 	 */
 	@Test
 	public final void testGetPlayerHandValue() {
@@ -733,7 +733,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getPlayerHandValueSplit()}.
+	 * Test method for {@link controller.GameBoard#getPlayerHandValueSplit()}.
 	 */
 	@Test
 	public final void testGetPlayerHandValueSplit() {
@@ -744,7 +744,7 @@ public class GameBoardTest {
 
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getTotalLosses()}.
+	 * Test method for {@link controller.GameBoard#getTotalLosses()}.
 	 */
 	@Test
 	public final void testGetTotalLosses() {
@@ -754,7 +754,7 @@ public class GameBoardTest {
 	}
 
 	/**
-	 * Test method for {@link blackjack.GameBoard#getHandNumber()}.
+	 * Test method for {@link controller.GameBoard#getHandNumber()}.
 	 */
 	@Test
 	public final void testGetHandNumber() {
