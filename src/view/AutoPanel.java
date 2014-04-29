@@ -500,7 +500,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	// calculate lost wages
     	Double lostWages = calculateLostWages();
-<<<<<<< HEAD
+
     	int money = (int) Math.ceil(lostWages);
     	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
     	
@@ -513,15 +513,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	//draw hourglass image
     	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
-=======
-    	
-    	// type cast as integer
-    	hoursLost = (int) Math.ceil(lostWages);
-    	
-    	// display ;oss message
-    	graphicsObject2d.drawString("You lost " + Integer.toString(hoursLost) + " hours of pay!", 300, 700);
 
->>>>>>> FETCH_HEAD
     }
     
     /**
