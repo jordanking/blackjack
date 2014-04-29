@@ -1076,7 +1076,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
             public void actionPerformed(ActionEvent timeTick) {
             	
             	cycle();
-                
+                revalidate();
+                repaint();
             
             }
             
