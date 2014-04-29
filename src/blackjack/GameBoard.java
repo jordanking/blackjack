@@ -1045,12 +1045,38 @@ public class GameBoard  {
 			return;
 		}
 
-		// checks if the dealer has a soft seventeen
-		for (Card card : dealer.getHand()) {
-			if (card.getCardRank() == Rank.ACE && dealer.getPoints() <= 17) {
+		
+		// some complicated processing
+		while(dealer.getPoints() <= 17) {
+			
+			System.out.println("Here");
+			
+			// reset
+			int dealerValue = 0;
+			
+			// count all points to the max
+			for(Card card: dealer.getHand()){
+				dealerValue += card.getCardRank().getCardPoints();
+			}
+			
+			// adjust for aces until we have the lowest corrected hand
+			for(Card card: dealer.getHand()) {
+				if (dealerValue >= 17 && card.getCardRank() == Rank.ACE) {
+					dealerValue -= 10;
+				}
+			}
+			
+			// if the lowest soft hand is less than 7, hit
+			if (dealerValue <= 7) {
 				dealer.addCard(deck.drawCard());
+			} else if (dealer.getPoints() < 17) {
+				dealer.addCard(deck.drawCard());
+			} else {
+				break;
 			}
 		}
+
+
 	}
 
 	/**
