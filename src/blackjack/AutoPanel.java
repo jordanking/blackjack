@@ -86,6 +86,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String BET_DISPLAY_STRING = "Bet: ";
 	
 	/**
+	 * A constant for the hand display text.
+	 */
+	static private final String HAND_DISPLAY_STRING = "Hand Number: ";
+	
+	/**
 	 * A constant for the cash display text.
 	 */
 	static private final String CASH_DISPLAY_STRING = "Cash: ";
@@ -675,6 +680,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
    		
    		// Draw the bet
    		graphicsObject2d.drawString(BET_DISPLAY_STRING + gameBoard.getBet(), 5, 150);
+   		
+   		// Draw the hand number
+   		graphicsObject2d.drawString(HAND_DISPLAY_STRING + gameBoard.getHandNumber(), 5, 175);
    		
    		// Draw the state
    		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
