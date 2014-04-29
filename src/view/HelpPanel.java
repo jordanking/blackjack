@@ -23,6 +23,9 @@ import javax.swing.JTextArea;
 /**
  * @author Allie Miller
  *
+ *Shows how the user can get help for a gambling addiction.
+ *Allows the user to go back to the AutoPanel or go back 
+ *to the PlayPanel
  */
 public class HelpPanel extends BPanel implements ActionListener{
 
@@ -91,15 +94,14 @@ public class HelpPanel extends BPanel implements ActionListener{
 		
 		gridBagLayout.setConstraints(instructionsPanel, gridBagConstraints);
 		add(instructionsPanel);
-		/**
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		
-		
-		gridBagLayout.setConstraints(buttonsPanel, gridBagConstraints);
-		add(buttonsPanel);
-		*/
 	}
 
+	/**
+	 * actionPerformed()
+	 * Listens for the click events for each button and adds the correct
+	 * panel accordingly, or exits
+	 */
 	public void actionPerformed(ActionEvent event) {
 
 		if (event.getSource() == exitButton) {
@@ -115,33 +117,6 @@ public class HelpPanel extends BPanel implements ActionListener{
    {
       return new Insets(0, 0, 0, 0);
    }
-	/**
-	 * @param layout
-	 */
-	/**
-	public HelpPanel(LayoutManager layout) {
-		super(layout);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param isDoubleBuffered
-	 */
-	/**
-	public HelpPanel(boolean isDoubleBuffered) {
-		super(isDoubleBuffered);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param layout
-	 * @param isDoubleBuffered
-	 */
-	/**
-	public HelpPanel(LayoutManager layout, boolean isDoubleBuffered) {
-		super(layout, isDoubleBuffered);
-		// TODO Auto-generated constructor stub
-	}
-	*/
+	
 
 }
