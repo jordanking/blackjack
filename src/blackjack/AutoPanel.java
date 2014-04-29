@@ -743,15 +743,52 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		
     		gameBoard.deal();
     		
+    		GameAction desiredAction;
+    		
     		while (gameBoard.getMainHandState() != GameState.END
     				&& gameBoard.getSplitHandState() != GameState.END) {
+    			
     			if (gameBoard.getSplitHandState() != GameState.END) {
-    				// get game strategy for split hand
+    				desiredAction = getStrategy(true);
     			}
     			else {
-    				// get game strategy for main hand
+    				desiredAction = getStrategy(false);
     			}
     			
+    			switch (desiredAction) {
+    				case HIT:
+    					if (gameBoard.getSplitHandState() != GameState.END) {
+    						gameBoard.hitSplit();
+    					}
+    					else {
+    						gameBoard.hit();
+    					}
+    					break;
+    				case STAND:
+    					if (gameBoard.getSplitHandState() != GameState.END) {
+    						gameBoard.standSplit();
+    					}
+    					else {
+    						gameBoard.stand();
+    					}
+    					break;
+    				case DOUBLE:
+    					if (gameBoard.getSplitHandState() != GameState.END) {
+    						gameBoard.doubleDownSplit();
+    					}
+    					else {
+    						gameBoard.doubleDown();
+    					}
+    					break;
+    				case SPLIT:
+    					gameBoard.split();
+    					break;
+    				case SURRENDER:
+    					gameBoard.surrender();
+    					break;
+    				default:
+    					break;
+    			}
     		}
     	}
     }
@@ -766,16 +803,15 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * 
 	 * @return recommendedAction - action based off strategy
 	 */
-	public GameAction getStrategy(boolean isBottomHand, int dealerFaceUpCard,
-			Card playerCardOne, Card playerCardTwo, int playerHandSize) {
+	public GameAction getStrategy(boolean isBottomHand) {
 		//gets the int value of the dealer's face up card
 		String playerHand = null;	//String value of player hand
-		/*
+		
 		int dealerFaceUpCard = gameBoard.getDealerHand().get(0).getCardRank().getCardPoints();
-		Card playerCardOne = gameBoard.getPlayerHand().get(0);//first player card
-		Card playerCardTwo = gameBoard.getPlayerHand().get(1);	//second player card
-		int playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
-		*/
+		Card playerCardOne;
+		Card playerCardTwo;
+		int playerHandSize;
+		
 	
 		//if the player has split the cards then change
 		//the playerHandSize and first and second
@@ -789,6 +825,13 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			playerCardOne = gameBoard.getPlayerHandSplit().get(0);
 			playerCardTwo = gameBoard.getPlayerHandSplit().get(1);
 		} 
+		
+		else {
+			playerCardOne = gameBoard.getPlayerHand().get(0);//first player card
+			playerCardTwo = gameBoard.getPlayerHand().get(1);	//second player card
+			playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
+			
+		}
 		
 		//checks to see if the player has two cards
 		//and they are a pair
@@ -910,8 +953,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 						break;
 				}
 			}	
-		// update the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
-		strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
+		// get the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
+		return strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
 	}
 
 	 /**
