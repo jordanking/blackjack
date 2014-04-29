@@ -73,9 +73,19 @@ public class GameBoard  {
 	private int cash;
 	
 	/**
-	 * The totalLosses is a private member that tracks the total losses the player has.
+	 * The totalWins is a private member that tracks the total wins the player has.
 	 */
-	private int totalLosses;
+	private int totalHandWins;
+	
+	/**
+	 * The totalWins is a private member that tracks the total lost hands the player has.
+	 */
+	private int totalHandLosses;
+	
+	/**
+	 * The totalWins is a private member that tracks the total pushed hands the player has.
+	 */
+	private int totalHandTies;
 	
 	/**
 	 * The losses is a private member that tracks the total amount of money lost by the player over
@@ -498,6 +508,9 @@ public class GameBoard  {
 
 		cash -= Math.ceil(bet/2);
 		losses += Math.ceil(bet/2);
+		
+		// update wins
+		totalHandLosses++;
 
 		// set this so the hand is over, because it is.
 		mainHandState = GameState.END;
@@ -642,6 +655,8 @@ public class GameBoard  {
 		losses = 0;
 		bet = MINIMUM_BET;
 		handNumber = 0;
+		totalHandWins = 0;
+		totalHandLosses = 0;
 	
 		// set to a default state that does not accept input
 		resetHandStates();
@@ -897,6 +912,9 @@ public class GameBoard  {
 			cash -= bet;
 			losses += bet;
 		}
+		
+		// update losses
+		totalHandLosses++;
 
 		// update state
 		mainHandState = GameState.END;
@@ -923,6 +941,9 @@ public class GameBoard  {
 			losses += bet;
 		}
 
+		// update losses
+		totalHandLosses++;
+		
 		// update state
 		splitHandState = GameState.END;
 
@@ -955,6 +976,9 @@ public class GameBoard  {
 			losses -= bet;
 		}
 
+		// update wins
+		totalHandWins++;
+		
 		// update state
 		mainHandState = GameState.END;
 
@@ -979,6 +1003,9 @@ public class GameBoard  {
 			losses -= bet;
 		}
 
+		// update wins
+		totalHandWins++;
+		
 		// update state
 		splitHandState = GameState.END;
 
@@ -1004,7 +1031,11 @@ public class GameBoard  {
 			// update money
 			cash -= bet;
 			losses += bet;
+			
+			// update losses
+			totalHandLosses++;
 		}
+		totalHandTies++;
 
 	}
 
@@ -1027,7 +1058,11 @@ public class GameBoard  {
 			// update money
 			cash -= bet;
 			losses += bet;
+		
+			// update losses
+			totalHandLosses++;
 		}
+		totalHandTies++;
 	}
 
 	/**
@@ -1445,14 +1480,42 @@ public class GameBoard  {
 	}
 	
 	/**
-	 * getTotalLosses()
+	 * getTotalHandLosses()
 	 * 
-	 * Return total losses for player.
+	 * Return total hand losses for player.
 	 * 
-	 * @return totalLosses
+	 * @param none
+	 * @return totalHandLosses the number of hands lost
+	 * @since 1.0
 	 */
-	public int getTotalLosses() {
-		return totalLosses;
+	public int getTotalHandLosses() {
+		return totalHandLosses;
+	}
+	
+	/**
+	 * getTotalHandWins()
+	 * 
+	 * Return total hand wins for the player.
+	 * 
+	 * @param none
+	 * @return totalHandWins the number of hands won
+	 * @since 1.0
+	 */
+	public int getTotalHandWins() {
+		return totalHandWins;
+	}
+	
+	/**
+	 * getTotalHandTies()
+	 * 
+	 * Return total hand ties for the player.
+	 * 
+	 * @param none
+	 * @return totalHandTies the number of hands pushed
+	 * @since 1.0
+	 */
+	public int getTotalHandTies() {
+		return totalHandTies;
 	}
 
 	/**

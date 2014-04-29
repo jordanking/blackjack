@@ -93,7 +93,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	ButtonsPanel buttonsPanel;
+	DoubleBufferedPanel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -223,10 +223,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private ButtonsPanel initializeInputButtons() throws HeadlessException {
+	private DoubleBufferedPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		ButtonsPanel buttonsPanel = new ButtonsPanel();
+		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
@@ -1014,7 +1014,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     private void storeProperties() {
     	properties.put("AverageHold", 17);
 
-    	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    	properties.put("TotalLosses", gameBoard.getTotalHandLosses());
     	properties.put("Game Strategy", strategy);
     }
     
