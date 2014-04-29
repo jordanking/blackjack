@@ -66,7 +66,15 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 				"- Allow the dealer to draw additional cards, \"Hit,\" until the hand exceeds 21 \n\n" +
 				"VALUE OF CARDS:\n\n" +
 				"The value of a numerical card is that of its integer value, the value of \n" +
-				"a face card is 10, and an Ace is either 1 or 11.");
+				"a face card is 10, and an Ace is either 1 or 11.\n\n"
+				+ "BLACKJACK PLAYING OPTIONS \n\n "
+				+ "SPLITTING PAIRS: When you have two cards of the same denomination, you may \n"
+				+ "split he pairs into two separate hands and play each hand individually. You \n"
+				+ "must wager the same amount as your original bet on each split hand. If you \n"
+				+ "have split Aces, you get only one \"hit\" on each Ace.\n\n"
+				+ "DOUBLING DOWN: Consider this if you think you can win with only one additional \n"
+				+ "card. You may wager additional money up to your original bet, and receive one \n"
+				+ "more card. A player has the option of doubling down after a hand has been split.");
 		
 		add(instructionsPanel, BorderLayout.NORTH);
 		
