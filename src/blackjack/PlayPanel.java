@@ -500,7 +500,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 				switch (playerCardNotAce.getCardRank().getCardPoints()) {
 					case 2:
 					case 3:
-						playerHand = "A,2–A,3";
+						playerHand = "A,2-A,3";
 						break;
 					case 4:
 					case 5:
