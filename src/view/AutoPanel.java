@@ -1,6 +1,3 @@
-/**
- * 
- */
 package view;
 
 import java.awt.BorderLayout;
@@ -38,7 +35,8 @@ import model.Suit;
 /**
  * AutoPanel 
  * 
- * Play panel class for the Blackjack simulator.
+ * Play panel class for the Blackjack simulator. 
+ * Runs through specified iterations automatically.
  * 
  * @author Kevin Tian
  * Modified version of DummyPanel written up by Jordan King and Allie Miller.
@@ -54,11 +52,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	private boolean simulationOn = true;
 	
 	/**
-	 * constant for computations
-	 */
-	public final static int hoursInWorkYear = 2080;
-	
-	/**
 	 * Indicates if simulation is paused.
 	 */
 	private boolean simulationPaused = false;
@@ -67,6 +60,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * Default bet value for simulation.
 	 */
 	private Integer betValue = 50;
+	
+	/**
+	 * Hours of pay lost.
+	 */
+	private int hoursLost = 0;
 	
 	/**
 	 * Allows the drawing on a thread.
@@ -109,6 +107,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
+<<<<<<< HEAD
+	 * Stores card images.
+=======
 	 * A constant for the losses display text.
 	 */
 	static private final String PERCENT_DISPLAY_STRING = "Average Percent Lost Per Hand: %";
@@ -120,17 +121,18 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	
 	/**
 	 * variable for card image
+>>>>>>> 835e5793fea397cc55206dcfd3e30116b7f61750
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
 
 	
 	/**
-	 * Panel for the buttons DO NOT CHANGE TO JPANEL
+	 * DoubleBufferedPanel for the buttons.
 	 */
 	DoubleBufferedPanel buttonsPanel;
 	
 	/**
-	 * The buttons
+	 * The buttons.
 	 */
 	JButton pauseButton, backButton, nextButton, helpButton, exitButton;
 	
@@ -154,8 +156,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	public AutoPanel() {
 		
-		
-		
 	}
 	
 	/**
@@ -172,21 +172,24 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		// gets model
 		gameBoard = new GameBoard();
 		strategy = (Strategy) properties.get("Game Strategy");
+		betValue = (Integer) properties.get("Bet Value");
 				
 		// load Images
 		loadImages();
 
-		// set the size of this panel
+		// set the size of this panel and layout
 		setPreferredSize(new Dimension(1000, 800));
-				
 		setLayout(new BorderLayout());
 				
 		// make the input buttons
 		try {
+			
 			buttonsPanel = initializeInputButtons();
+			
 		} catch (HeadlessException e) {
-				
+			
 				e.printStackTrace();
+		
 		}
 				
 		// add the button panel
@@ -208,7 +211,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	private void loadImages() {
 		cardImagesMap = new HashMap<String, BufferedImage>();
-
+		
 		BufferedImage cardImage;
 
 		// load all 52 cards
@@ -227,7 +230,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 					cardImagesMap.put(cardName, cardImage);
 
 				} catch (IOException error) {
-					System.out.println("couldn't create dealer card image");
+					// print error message
+					System.out.println("Couldn't create dealer card image.");
 					error.printStackTrace();
 				}
 
@@ -240,7 +244,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 			cardImagesMap.put("deck", cardImage);
 
 		} catch (IOException error) {
-			System.out.println("couldn't create deckImage");
+			System.out.println("Couldn't create deckImage.");
 			error.printStackTrace();
 		}
 
@@ -252,22 +256,21 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * 
 	 * A method to create the buttons panel
 	 * 
-	 * @return panel the panel for the buttons
+	 * @return panel - the panel for the buttons
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
 	private DoubleBufferedPanel initializeInputButtons() throws HeadlessException {
 		
-		// a panel for the buttons for fun
+		// a panel for the buttons, set layout
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-
 		pauseButton = new JButton("Pause");
 		backButton = new JButton("Back");
 		nextButton = new JButton("Next");
-		helpButton = new JButton("Continue");
+		helpButton = new JButton("Instructions");
 		exitButton = new JButton("Exit");
 		
 		// Add listeners to buttons.
@@ -327,31 +330,38 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		// and call methods accordingly
 		switch (buttonText) {
 		
-		// hit top is the same as normal hit
-		// call mainhand hit
+		// pause simulation and 
+		// change text to resume
 		case ("Pause"):
 			simulationPaused = true;
 			pauseButton.setText("Resume");
 			break;
-			
+		
+		// resume simulation and
+		// change text to pause
 		case ("Resume"):
 			simulationPaused = false;
 			pauseButton.setText("Pause");
 			break;
 			
+		// remove this panel
+		// and proceed to previous panel
 		case ("Back"):
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "view.AutoPanel"));
 			break;
 		
+		// proceed to help panel
 		case ("Next"):
 			storeProperties();
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.HelpPanel"));
 			break;
 		
-		case ("Continue"):
+		// proceed to instructions panel
+		case ("Instructions"):
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.InstructionsPanel"));
 			break;
-			
+		
+		// exit program
 		case ("Exit"): 
 			System.exit(0);
 			break;
@@ -430,62 +440,64 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
         // Synchronize the graphics state - now is the time to draw! (magic)
         Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE IT'LL SUCK EVERYTHING UP
     }
     
     /**
+     * calculateLostWages()
      * 
-     * Calculates how much time the player spent on the game
-     * in terms of work hours
+     * Calculates how many hours of pay
+     * the player lost.
      * 
      * @return timeSpentOnGame
      */
     public double calculateLostWages(){
     	
-    	//calculate how much the player makes per hour from actual job
-		double salary = 0;
+    	// calculate how much the player makes per hour from actual job
+		double playerWage = 0;
 		
+		// retrieve playerWage from properties object
 		try {
-			salary = Double.parseDouble( (String) properties.get("Salary"));
+			
+			playerWage = Double.parseDouble( (String) properties.get("Wage"));
+			
 		} catch (NumberFormatException e) {
-			System.out.println("couldn't get salary");
+			
+			// print error message
+			System.out.println("Couldn't get wage.");
 			e.printStackTrace();
+			
 		}
     	
-    	// see if we failed to get a salary
-    	if (salary == 0) {
-    		salary = 10;
+    	// Default wage to 10 if nonpositive
+    	if (playerWage <= 0) {
+    		playerWage = 10;
     	}
-    	
-    	double dollarsPerHour = salary/hoursInWorkYear;
     	
     	//get player's losses from the game
     	int playersLosses = gameBoard.getLosses();
     	
-    	//calculate how much work time player spent on game
-//    	double timeSpentOnGame = playersLosses/dollarsPerHour;
-    	double timeSpentOnGame = playersLosses/salary;
-
-    	//calculate how much money player could have made at work in this time
-//    	double lostWages = timeSpentOnGame * dollarsPerHour;
+    	// calculate how many hours of pay player lost
+    	double hoursOfPayLost = playersLosses/playerWage;
     	
-    	return timeSpentOnGame;
- 
-    	//return timeSpentOnGame;
+    	// return hours lost
+    	return hoursOfPayLost;
     }
     
     
     
     /**
+     * drawLosses()
      * 
-     * Draws the losses
+     * Draws the losses.
      * 
-     * @param graphicsObject2d
+     * @param graphicsObject2d 
      * @return none
      */
     private void drawLosses(Graphics2D graphicsObject2d){
+    	
+    	// calculate lost wages
     	Double lostWages = calculateLostWages();
+<<<<<<< HEAD
     	int money = (int) Math.ceil(lostWages);
     	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
     	
@@ -498,6 +510,15 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	//draw hourglass image
     	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
+=======
+    	
+    	// type cast as integer
+    	hoursLost = (int) Math.ceil(lostWages);
+    	
+    	// display ;oss message
+    	graphicsObject2d.drawString("You lost " + Integer.toString(hoursLost) + " hours of pay!", 300, 700);
+
+>>>>>>> FETCH_HEAD
     }
     
     /**
@@ -513,7 +534,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	// get the dealer's hand
     	ArrayList<Card> dealerHand = gameBoard.getDealerHand();
-
+    	
+    	// index for for loop
     	int index = 0;
     	
     	// iterate through all cards of the player and draw them on the board
@@ -527,13 +549,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		int x = 310 + 100*index;
     		int y = 160;
     		
-    		
+    		// draw card
     		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
-
+    		
+    		// increment index
     		index++;
 		}
-    	
-    	//Draw the value of the dealer's hand
     	
     	// Set the font and color
         graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
@@ -544,8 +565,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-        
-        // DONT DISPOSE OF THE GRAPHICS OBJECT HERE ITLL SUCK EVERYTHING UP
     }
 
     /**
@@ -576,6 +595,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		int x = 100 + 100*index;
     		int y = 350;
     		
+    		// draw card
     		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
     		
@@ -593,8 +613,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT
     }
     
     /**
@@ -644,8 +662,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
-
-        // DONT DELETE THE OBJECT
     }
     
     /**
@@ -670,18 +686,12 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	// the spacing
     	int x = 910;
     	int y = 160;
-    	//    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	
+    	// graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
     	graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
-
-    	//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-
-    	// Draw the card rank and suit
-    	//       		graphicsObject2d.drawString("Deck", x+10, y+10);
 
     	// Synchronize the graphics state (more magic)
     	Toolkit.getDefaultToolkit().sync();
-
-    	// DONT DELETE THE OBJECT PLZ
     }
     
     /**
@@ -743,6 +753,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		
     	int totalHandsToPlay = TOTAL_HANDS_TO_PLAY;
     	
+    	// set bar size
     	int barWidth = 600;
     	int barHeight = 25;
     	int barX = 200;
@@ -756,6 +767,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	// fill in based on hands played!
     	for (int i = 0; i < gameBoard.getHandNumber(); i++) {
+    		
     		// can't fill fractions so
     		// fill 1 from floor of i * sliceWidth
         	graphicsObject2d.fillRect(barX + (int)Math.floor(i*sliceWidth), barY, 1, barHeight);
@@ -770,9 +782,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * Store properties for next panel.
      */
     private void storeProperties() {
-    	properties.put("AverageHold", 17);
-    	properties.put("TotalLosses", gameBoard.getTotalHandLosses());
-    	properties.put("TotalLosses", gameBoard.getTotalHandWins());
+       	// store total wins and total losses
+    	properties.put("Total Wins", gameBoard.getTotalHandWins());
+    	properties.put("Total Losses", gameBoard.getTotalHandLosses());
+    	properties.put("Hours Lost", hoursLost);
     }
     
     /**
@@ -800,68 +813,91 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		// method self-checks to see if it's ready to accept bet
     		gameBoard.bet(betValue);
     		
+    		// deal out hand
     		gameBoard.deal();
     		
+    		// desired action based off strategy
     		GameAction desiredAction;
     		
+    		// while hand is still in play
     		while (gameBoard.getMainHandState() != GameState.END
     				|| gameBoard.getSplitHandState() != GameState.END) {
     			
-    			// if the split hand is not ended, grab the split
+    			// if the split hand is not ended, grab the split action
     			if (gameBoard.getSplitHandState() != GameState.END
     					|| gameBoard.getSplitHandState() != GameState.RESOLVED
     					|| gameBoard.getSplitHandState() != GameState.DOUBLE) {
-
-    				desiredAction = getStrategy(true);
+    				
+    				// get desired action
+    				desiredAction = getStrategyAction(true);
     			}
     			else {
-    				desiredAction = getStrategy(false);
+    				// get desired action
+    				desiredAction = getStrategyAction(false);
     			}
+    			
+    			// if no action (i.e. 21), assume stand
     			if (desiredAction == null) {
     				desiredAction = GameAction.STAND;
     			}
+    			
+    			// evaluate desired action
     			switch (desiredAction) {
+    			
     				case HIT:
+    					// hit split if split hand is in valid state
     					if (gameBoard.getSplitHandState() != GameState.END
     							&& gameBoard.getSplitHandState() != GameState.RESOLVED
     	    					&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
     						gameBoard.hitSplit();
     					}
+    					// otherwise hit on the main hand
     					else {
     						gameBoard.hit();
     					}
     					break;
+ 
     				case STAND:
-
+    					// stand split if split hand is in valid state
     					if (gameBoard.getSplitHandState() != GameState.END
     					&& gameBoard.getSplitHandState() != GameState.RESOLVED
     					&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
     						gameBoard.standSplit();
     					}
+    					// otherwise stand on main hand
     					else {
     						gameBoard.stand();
     					}
     					break;
+    					
     				case DOUBLE:
     					
-    					// hit if you can't double
+    					// hit if you can't double down
     					if (gameBoard.getMainHandState() != GameState.DEAL ||
     					gameBoard.getMainHandState() != GameState.SPLIT) {
     						gameBoard.hit();
     					}
     					
+    					// otherwise double down on split hand
     					if (gameBoard.getSplitHandState() != GameState.END) {
     						gameBoard.doubleDownSplit();
     					}
+    					
+    					// or double down on main hand
     					else {
     						gameBoard.doubleDown();
     					}
     					break;
+    					
     				case SPLIT:
+    					// if in deal state, you can split
     					if (gameBoard.getMainHandState() == GameState.DEAL) {
     						gameBoard.split();
-    					} else {
-
+    					} 
+    					// otherwise,
+    					else {
+    						// hitsplit if less than 16
+    						// or standsplit if greater than 16
     						if (gameBoard.getSplitHandState() != GameState.END
     								&& gameBoard.getSplitHandState() != GameState.RESOLVED
     								&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
@@ -871,7 +907,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     							else{
     								gameBoard.standSplit();
     							}
-    						} else {
+    						} 
+    						// otherwise hit if less than 16 on main hand
+    						// or stand if greater than 16
+    						else {
 
     							if(gameBoard.getPlayerHandValue() < 16){
     								gameBoard.hit();
@@ -882,17 +921,22 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     						}
     					}
     					break;
+    					
     				case SURRENDER:
+    					// surrender in deal state
     					if (gameBoard.getMainHandState() == GameState.DEAL) {
     						gameBoard.surrender();
     					}
     					else {
+    						// otherwise stand on split hand
     						if (gameBoard.getSplitHandState() != GameState.END
     								&& gameBoard.getSplitHandState() != GameState.RESOLVED
     								&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
     							
     								gameBoard.standSplit();
-    						} else {
+    						} 
+    						// or stand on main hand
+    						else {
     								gameBoard.stand();
     						}
     					}
@@ -900,40 +944,45 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     				default:
     					break;
     			}
-    			System.out.println(gameBoard.getMainHandState());
     		}
     	}
     }
     
     /**
-	 * getStrategy()
+	 * getStrategyAction()
 	 * 
-	 * Gets the strategy based on what GameAction the
+	 * Gets the strategy action based on what GameAction the
 	 * player should make for each player hand/dealer face-up
 	 * card combination experienced by the player.
 	 * 
 	 * 
 	 * @return recommendedAction - action based off strategy
 	 */
-	public GameAction getStrategy(boolean isBottomHand) {
-		//gets the int value of the dealer's face up card
-		String playerHand = null;	//String value of player hand
+	public GameAction getStrategyAction(boolean isBottomHand) {
 		
+		// String value of player hand
+		String playerHand = null;	
+		
+		// get dealer face up card
 		int dealerFaceUpCard = gameBoard.getDealerHand().get(0).getCardRank().getCardPoints();
+		
+		// declare player variables
 		Card playerCardOne;
 		Card playerCardTwo;
 		int playerHandSize;
 		
+		// return stand if player has 21
 		if (gameBoard.getPlayerHandValue() == 21 || gameBoard.getPlayerHandValueSplit() == 21) {
 			return GameAction.STAND;
 		}
 		
-		//if the player has split the cards then change
-		//the playerHandSize and first and second
-		//player cards accordingly
+		// if the player is looking at his bottom hand,
+		// set values accordingly
 		if (gameBoard.handHasSplit() && isBottomHand){
-			//change the size of the hand to the size of the split hand
+			
+			// set the size of the hand to the size of the split hand
 			playerHandSize = gameBoard.getPlayerHandSplit().size();
+			
 			// set first two cards to the split hand that is
 			// being acted upon so that we can later determine
 			// if there is a soft total
@@ -942,20 +991,23 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		} 
 		
 		else {
-			playerCardOne = gameBoard.getPlayerHand().get(0);//first player card
-			playerCardTwo = gameBoard.getPlayerHand().get(1);	//second player card
-			playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
+			
+			// otherwise set values based off main hand
+			playerCardOne = gameBoard.getPlayerHand().get(0);
+			playerCardTwo = gameBoard.getPlayerHand().get(1);	
+			playerHandSize= gameBoard.getPlayerHand().size();
 			
 		}
 		
 		
-		//checks to see if the player has two cards
-		//and they are a pair
+		// checks to see if the player has two cards
+		// and they are a pair
 		if ((playerHandSize == 2) && (gameBoard.getPlayer().hasPair(false))) {
-			//gets the point value of one of the cards of the pair
+			
+			// gets the point value of one of the cards of the pair
 			int playerCardValue = playerCardOne.getCardRank().getCardPoints();
 			
-			//checks to see if its an Ace
+			// checks to see if its an Ace
 			if (playerCardOne.getCardRank() == Rank.ACE)
 				playerHand = "A,A";
 				
@@ -989,21 +1041,27 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 				default:
 					break;
 			}
-		} else
-			//checks to see if one card is an Ace for a soft total if
-			//there are only two cards in the hand
+		} 
+		else
+			// checks to see if one card is an Ace for a soft total if
+			// there are only two cards in the hand
 			if ((playerHandSize == 2) && ((playerCardOne.getCardRank() == Rank.ACE) ||
 					(playerCardTwo.getCardRank() == Rank.ACE))) {
-				Card playerCardNotAce; // the player card that's not an Ace
-				//determines which card is not an Ace and sets it equal 
-				//to playerCardNotAce
+				
+				// the player card that's not an Ace
+				Card playerCardNotAce; 
+				
+				// determines which card is not an Ace and sets it equal 
+				// to playerCardNotAce
 				if (playerCardOne.getCardRank() == Rank.ACE) {
 					playerCardNotAce = playerCardTwo;
-				} else
+				} else {
 					playerCardNotAce = playerCardOne;
-				//checks the value of the other card and sets 
-				//the correct string value for the playerHand
-				//for the strategy
+				}
+				
+				// checks the value of the other card and sets 
+				// the correct string value for the playerHand
+				// for the strategy
 				switch (playerCardNotAce.getCardRank().getCardPoints()) {
 					case 2:
 					case 3:
@@ -1027,9 +1085,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 						break;
 				}
 			} else {
-				//determine the total value of the player hand
-				//and set the playerHand string to that value
-				//for the strategy
+				// determine the total value of the player hand
+				// and set the playerHand string to that value
+				// for the strategy
 				switch (gameBoard.getPlayerHandValue()) {
 					case 5:
 					case 6:
@@ -1069,14 +1127,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 						break;
 				}
 			}	
-
 		
-		System.out.println(playerHand);
-		// get the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
-		GameAction temp = strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
-		System.out.println(temp);
-		return temp;
-
+		// return the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
+		return strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
 	}
 
 	 /**
@@ -1088,15 +1141,14 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * 
      * @param none
      * @return none
-     * @see the parent class?
      * @since 1.0
      */
     @Override
     public void addNotify() {
-    	// call the supah
+    
         super.addNotify();
 
-        // create and run the magical artist
+        // create thread
         animator = new Thread(this);
         animator.start();
     } 
@@ -1110,6 +1162,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         	// inner method for ActionListener for this timer
             public void actionPerformed(ActionEvent timeTick) {
             	
+            	// cycle through
             	cycle();
 
                 // Update the view
@@ -1121,6 +1174,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
             }
             
         });
+        
         // Start the timer
         frameTimer.start();		
 	}
