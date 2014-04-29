@@ -218,8 +218,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		JComboBox<GameAction> strategyOption = new JComboBox<GameAction>();
 		strategyOption.addItem(GameAction.HIT);
 		strategyOption.addItem(GameAction.STAND);
-		strategyOption.addItem(GameAction.DOUBLE_HIT);
-		strategyOption.addItem(GameAction.DOUBLE_STAND);
+		strategyOption.addItem(GameAction.DOUBLE);
+		strategyOption.addItem(GameAction.DOUBLE);
 		strategyOption.addItem(GameAction.SURRENDER);
 		strategyOption.addItem(GameAction.SPLIT);
 		
