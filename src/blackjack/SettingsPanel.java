@@ -8,6 +8,7 @@ import java.awt.Button;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.LayoutManager;
 import java.awt.Panel;
@@ -21,6 +22,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -38,6 +40,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
+	JTextArea title;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
@@ -52,12 +55,13 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	}
 
 	public void init(){
-		//***************needs to get strategy from play panel
-		//gameStrategy = (Strategy) properties.get("Game Strategy");
-		gameStrategy = new Strategy();
+		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
+		title = new JTextArea("Settings");
+		title.setFont(new Font("Times", Font.BOLD, 20));
+		title.setEditable(false);
 				
 		setLayout(new BorderLayout());
 				
@@ -79,6 +83,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		JScrollPane softScrollPane = new JScrollPane(softStrategy);
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
 		
+		add(title, BorderLayout.NORTH);
 		add(buttonsPanel, BorderLayout.SOUTH);
 		panel.add(hardScrollPane);
 		panel.add(softScrollPane);
@@ -242,7 +247,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 	}
 	
-	public void ActionPerformed(ActionEvent event){
+	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == setStrategyButton){
 			properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
 			// go to autoPanel
@@ -313,7 +318,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 				GameAction desiredAction = (GameAction) value;
 		        
 		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
-		        System.out.println(gameStrategy.getGameActionForHands(playerHand, col));
 		    }
 		}
 }

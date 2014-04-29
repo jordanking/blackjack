@@ -34,7 +34,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	Panel buttonsPanel;
 
 	public void init() {
-
+		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
 
