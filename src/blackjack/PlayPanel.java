@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.RenderingHints;
@@ -85,12 +86,13 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	Panel buttonsPanel;
+	ButtonsPanel buttonsPanel;
 	
 	/**
 	 * The buttons
 	 */
-	JButton hitButton, standButton, handButton, splitButton, dealButton, 
+	JButton hitButton, standButton, handButton, splitButton, dealButton,
+		hitSplitButton, standSplitButton, doubleDownSplitButton,
 		exitButton, skipButton, doubleDownButton,
 		surrenderButton, betButton1, betButton2, betButton3;
 	
@@ -214,10 +216,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private Panel initializeInputButtons() throws HeadlessException {
+	private ButtonsPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		ButtonsPanel buttonsPanel = new ButtonsPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
@@ -226,6 +228,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton = new JButton("Stand");
 		splitButton = new JButton("Split Hand");
 		doubleDownButton = new JButton("Double Down");
+		hitSplitButton = new JButton("Hit Bottom");
+		standSplitButton = new JButton("Stand Bottom");
+		doubleDownSplitButton = new JButton("Double Down Bottom");
 		surrenderButton = new JButton("Surrender");
 		handButton = new JButton("Next Hand");
 		dealButton = new JButton("Deal");
@@ -240,6 +245,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton.addActionListener(this);
 		splitButton.addActionListener(this);
 		doubleDownButton.addActionListener(this);
+		hitSplitButton.addActionListener(this);;
+		standSplitButton.addActionListener(this);;
+		doubleDownSplitButton.addActionListener(this);
 		surrenderButton.addActionListener(this);
 		handButton.addActionListener(this);
 		dealButton.addActionListener(this);
@@ -256,6 +264,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		buttonsPanel.add(standButton);
 		buttonsPanel.add(splitButton);
 		buttonsPanel.add(doubleDownButton);
+		buttonsPanel.add(hitSplitButton);
+		buttonsPanel.add(standSplitButton);
+		buttonsPanel.add(doubleDownSplitButton);
 		buttonsPanel.add(surrenderButton);
 		buttonsPanel.add(handButton);
 		buttonsPanel.add(dealButton);
@@ -307,73 +318,75 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		// and call methods accordingly
 		switch (buttonText) {
 		
+		// hit top is the same as normal hit
+		// call mainhand hit
+		case ("Hit Top"):
 		case ("Hit"):
+
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(GameAction.HIT);
-			// if the main hand hasn't resolved or resolved,
-			// then main hit
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.hit();
-			}
-			// otherwise hit split
-			else {
-				gameBoard.hitSplit();
-			}
+			updateStrategy(false, GameAction.HIT);
+			gameBoard.hit();
 			break;
 			
 		case ("Exit"): 
 			System.exit(0);
 			break;
 			
+		case ("Stand Top"):
 		case ("Stand"):
+
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(GameAction.STAND);
-			// if the main hand hasn't resolved or resolved,
-			// then main stand
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.stand();
-			}
-			// otherwise stand split
-			else {
-				gameBoard.standSplit();
-			}
+			updateStrategy(false, GameAction.STAND);
+			gameBoard.stand();
 			break;
-			
 			
 		case ("Split Hand"):
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(GameAction.SPLIT);
+			updateStrategy(false, GameAction.SPLIT);
 			gameBoard.split();
+			// distinguish main hand buttons
+			// vs split buttons
+			hitButton.setText("Hit Top");
+			standButton.setText("Stand Top");
+			doubleDownButton.setText("Double Down Top");
 			break;
-			
+		
+		case ("Double Down Top"):
 		case ("Double Down"):
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(GameAction.DOUBLE);
-			// if the main hand hasn't resolved or resolved,
-			// then main double down
-			if (gameBoard.getMainHandState() != GameState.RESOLVED 
-				&& gameBoard.getMainHandState() != GameState.END) 
-			{
-				gameBoard.doubleDown();
-			}
-			// otherwise double down split
-			else {
-				gameBoard.doubleDownSplit();
-			}
+			updateStrategy(false, GameAction.DOUBLE);
+			gameBoard.doubleDown();
+			break;
+			
+		case ("Hit Bottom"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(true, GameAction.HIT);
+			gameBoard.hitSplit();
+			break;
+			
+		case ("Stand Bottom"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(true, GameAction.STAND);
+			gameBoard.standSplit();
+			break;
+			
+		case ("Double Down Bottom"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(true, GameAction.DOUBLE);
+			gameBoard.doubleDownSplit();
 			break;
 			
 		case ("Surrender"):
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(GameAction.SURRENDER);
+			updateStrategy(false, GameAction.SURRENDER);
 			gameBoard.surrender();
 			break;
 			
 		case ("Next Hand"):
 			gameBoard.playHand();
+			hitButton.setText("Hit");
+			standButton.setText("Stand");
+			doubleDownButton.setText("Double Down");
 			break;
 			
 		case ("Deal"):
@@ -407,19 +420,20 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * card combination experienced by the player.
 	 * 
 	 * @param desiredAction
+	 * @param isBottomHand
 	 */
-	public void updateStrategy(GameAction desiredAction) {
+	public void updateStrategy(boolean isBottomHand, GameAction desiredAction) {
 		//gets the int value of the dealer's face up card
 		int dealerFaceUpCard = gameBoard.getDealerHand().get(0).getCardRank().getCardPoints();
 		String playerHand = null;	//String value of player hand
-		Card playerCardOne = gameBoard.getPlayerHandSplit().get(0);//first player card
-		Card playerCardTwo = gameBoard.getPlayerHandSplit().get(1);	//second player card
-		int playerHandSize= gameBoard.getPlayerHandSplit().size(); //the size of the hand being played
+		Card playerCardOne = gameBoard.getPlayerHand().get(0);//first player card
+		Card playerCardTwo = gameBoard.getPlayerHand().get(1);	//second player card
+		int playerHandSize= gameBoard.getPlayerHand().size(); //the size of the hand being played
 	
 		//if the player has split the cards then change
 		//the playerHandSize and first and second
 		//player cards accordingly
-		if (gameBoard.handHasSplit()){
+		if (gameBoard.handHasSplit() && isBottomHand){
 			//change the size of the hand to the size of the split hand
 			playerHandSize = gameBoard.getPlayerHandSplit().size();
 			// set first two cards to the split hand that is
@@ -471,11 +485,19 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		} else
 			//checks to see if one card is an Ace for a soft total if
 			//there are only two cards in the hand
-			if ((playerHandSize == 2) && (playerCardOne.getCardRank() == Rank.ACE)) {
+			if ((playerHandSize == 2) && ((playerCardOne.getCardRank() == Rank.ACE) ||
+					(playerCardTwo.getCardRank() == Rank.ACE))) {
+				Card playerCardNotAce; // the player card that's not an Ace
+				//determines which card is not an Ace and sets it equal 
+				//to playerCardNotAce
+				if (playerCardOne.getCardRank() == Rank.ACE) {
+					playerCardNotAce = playerCardTwo;
+				} else
+					playerCardNotAce = playerCardOne;
 				//checks the value of the other card and sets 
 				//the correct string value for the playerHand
 				//for the strategy
-				switch (playerCardTwo.getCardRank().getCardPoints()) {
+				switch (playerCardNotAce.getCardRank().getCardPoints()) {
 					case 2:
 					case 3:
 						playerHand = "A,2–A,3";
@@ -643,6 +665,15 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 
     		index++;
 		}
+    	
+    	//Draw the value of the dealer's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Dealer's Hand Value: " + gameBoard.getDealerHandValue(), 20, 205);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -683,12 +714,23 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		
     		index++;
 		}
+    	
+    	//Draw the value of the player's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValue(), 20, 335);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
 
         // DONT DELETE THE OBJECT
     }
+    
+   
     
     /**
      * drawPlayerSplit()
@@ -723,6 +765,17 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		
     		index++;
 		}
+    	
+    	//Draw the value of the player's hand if there's a split
+    	if (gameBoard.handHasSplit()==true){
+    		// Set the font and color
+            graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+            graphicsObject2d.setColor(TEXT_COLOR);
+            
+            //Draw the number of points
+       		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValueSplit(), 20, 485);
+    	}
+    	
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -839,6 +892,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton.setVisible(false);
 		splitButton.setVisible(false);
 		doubleDownButton.setVisible(false);
+		hitSplitButton.setVisible(false);
+		standSplitButton.setVisible(false);
+		doubleDownSplitButton.setVisible(false);
 		surrenderButton.setVisible(false);
 		handButton.setVisible(false);
 		dealButton.setVisible(false);
@@ -873,9 +929,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case DEAL:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		// show split if cards are equal
-    		if (gameBoard.getPlayerHand().get(0).getCardRank() 
-    				== gameBoard.getPlayerHand().get(1).getCardRank()){
+    		// show split if cards are splittable
+    		if (gameBoard.getPlayer().hasPair(gameBoard.isOnlySplitOnSameRank())){
     			splitButton.setVisible(true);
     		}
     		doubleDownButton.setVisible(true);
@@ -890,34 +945,47 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case SPLIT:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		doubleDownButton.setVisible(true);
+    		if (gameBoard.isDoubleAllowedAfterSplit()) {
+    			doubleDownButton.setVisible(true);
+    		}
     		break;
     	
     	case END: 
-    		handButton.setVisible(true);
-    		// determine which buttons are visible
-        	// based off split hand state
-        	switch(gameBoard.getSplitHandState()) {
-        	    		
-        		case SPLIT: 
-        	    	hitButton.setVisible(true);
-        			standButton.setVisible(true);
-        			doubleDownButton.setVisible(true);
-        			break;
-        				
-        	    case HIT:
-        	    	hitButton.setVisible(true);
-        	    	standButton.setVisible(true);
-        	    	break;
-        	    		
-        	    default:
-        	    	break;
-        	    }
+    		// if both states have reached the end
+    		if (gameBoard.getSplitHandState() == GameState.END) {
+    			handButton.setVisible(true);
+    		}
         	break;
     		
     	default:
     		break;
     	}
+    	
+    	// determine which buttons are visible
+    	// based off split hand state
+    	switch(gameBoard.getSplitHandState()) {
+    	    		
+    		case SPLIT: 
+    	    	hitSplitButton.setVisible(true);
+    			standSplitButton.setVisible(true);
+    			if (gameBoard.isDoubleAllowedAfterSplit())
+    			{
+    				doubleDownSplitButton.setVisible(true);
+    			}
+    			break;
+    				
+    	    case HIT:
+    	    	hitSplitButton.setVisible(true);
+    	    	standSplitButton.setVisible(true);
+    	    	break;
+    	    
+    	    	
+    	    // if at end for both states
+    	    // or at end for first state 
+    	    // and none for second
+    	    default:
+    	    	break;
+    	    }
     	
     }
     
