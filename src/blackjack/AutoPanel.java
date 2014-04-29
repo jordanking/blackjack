@@ -767,18 +767,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		while (gameBoard.getMainHandState() != GameState.END
     				|| gameBoard.getSplitHandState() != GameState.END) {
     			
-<<<<<<< HEAD
     			// if the split hand is not ended, grab the split
     			if (gameBoard.getSplitHandState() != GameState.END
     					|| gameBoard.getSplitHandState() != GameState.RESOLVED
     					|| gameBoard.getSplitHandState() != GameState.DOUBLE) {
-=======
-    			// Update the view
-            	revalidate();
-                repaint();
-    			
-    			if (gameBoard.getSplitHandState() != GameState.END) {
->>>>>>> FETCH_HEAD
+
     				desiredAction = getStrategy(true);
     			}
     			else {
