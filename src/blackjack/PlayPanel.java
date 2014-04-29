@@ -36,7 +36,7 @@ import javax.swing.Timer;
  * Panel for manual inputs from player.
  * 
  * @author Kevin Tian
- * Modified version of dummy pannel written up by Jordan King and Allie Miller.
+ * Modified version of dummy panel written up by Jordan King and Allie Miller.
  */
 @SuppressWarnings("serial")
 public class PlayPanel extends BPanel implements Runnable, ActionListener {
@@ -996,7 +996,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
     private void storeProperties() {
     	properties.put("AverageHold", 17);
-    	properties.put("TotalWins", gameBoard.getTotalWins());
+
     	properties.put("TotalLosses", gameBoard.getTotalLosses());
     }
     

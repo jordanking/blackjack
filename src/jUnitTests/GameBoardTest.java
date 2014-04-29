@@ -5,44 +5,31 @@ package jUnitTests;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import blackjack.GameBoard;
+import blackjack.GameState;
+
 /**
- * @author jordan
- *
+ * Tests all of the public methods of the gameboard class. THERE ARE FOURTY-FOUR
+ * 
+ * @author Jordan King
+ * @version 1.0
  */
 public class GameBoardTest {
-
+	
 	/**
-	 * @throws java.lang.Exception
+	 * A gameBoard that we will test with
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
+	GameBoard game;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
+		game = new GameBoard();
 	}
 
 	/**
@@ -50,7 +37,17 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGameBoard() {
-		fail("Not yet implemented"); // TODO
+		
+		// check all of the default values
+		assertEquals(0, game.getDealer().getNumOfCards());
+		assertEquals(0, game.getPlayer().getNumOfCards());
+
+	
+		// check what defaults we can that wouldn't change.
+		assertEquals(0, game.getLosses());
+		assertEquals(0, game.getHandNumber());
+		assertEquals(GameState.END, game.getMainHandState());
+		assertEquals(GameState.END, game.getSplitHandState());
 	}
 
 	/**
@@ -58,7 +55,12 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testPlayHand() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// make sure both hands are in the right state
+		assertEquals(GameState.BET, game.getMainHandState());
+		assertEquals(GameState.END, game.getSplitHandState());
 	}
 
 	/**
@@ -66,7 +68,18 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testBet() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// set a bet
+		game.bet(400);
+		
+		// make sure both hands are in the right state
+		assertEquals(GameState.BET, game.getMainHandState());
+		assertEquals(GameState.END, game.getSplitHandState());	
+	
+		// make sure the bet is right
+		assertEquals(400, game.getBet());
 	}
 
 	/**
@@ -74,7 +87,19 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testDeal() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// set a bet
+		game.deal();
+		
+		// make sure both hands are in the right state
+		assertEquals(GameState.DEAL, game.getMainHandState());
+		assertEquals(GameState.END, game.getSplitHandState());	
+	
+		// make sure the hands are dealt correctly
+		assertEquals(2, game.getPlayerHand().size());
+		assertEquals(1, game.getDealerHand().size());
 	}
 
 	/**
@@ -82,7 +107,19 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testHit() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// set a bet
+		game.deal();
+		
+		game.hit();
+		
+		// make sure the split hand is in the right state
+		assertEquals(GameState.END, game.getSplitHandState());	
+	
+		// make sure the hand is hit correctly
+		assertEquals(3, game.getPlayerHand().size());
 	}
 
 	/**
@@ -90,7 +127,20 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testStand() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// deal
+		game.deal();
+		
+		game.stand();
+		
+		// make sure the hands are in the right state
+		assertEquals(GameState.END, game.getMainHandState());	
+		assertEquals(GameState.END, game.getSplitHandState());	
+	
+		// make sure the hand is hit correctly
+		assertEquals(2, game.getPlayerHand().size());
 	}
 
 	/**
@@ -98,7 +148,37 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// cycle til we get splittable hands
+		for (int i = 0; i < 20; i++) {
+
+			// new game
+			game = new GameBoard();
+			
+			// start a hand
+			game.playHand();
+
+			// deal
+			game.deal();
+			
+			if (game.getPlayer().hasPair(game.isOnlySplitOnSameRank()) ) {
+				
+				// split hand
+				game.split();
+
+				// make sure the hands are in the right state
+				assertEquals(GameState.SPLIT, game.getMainHandState());	
+				assertEquals(GameState.SPLIT, game.getSplitHandState());
+				
+				// make sure the hand is hit correctly
+				assertEquals(2, game.getPlayerHand().size());
+				
+				// make sure the split hand is hit correctly
+				assertEquals(2, game.getPlayerHandSplit().size());
+			}
+		}
+		
+		
 	}
 
 	/**
@@ -106,7 +186,17 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testDoubleDown() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// deal
+		game.deal();
+		
+		game.doubleDown();
+		
+		// make sure the hands are in the right state
+		assertEquals(GameState.END, game.getMainHandState());	
+		assertEquals(GameState.END, game.getSplitHandState());	
 	}
 
 	/**
@@ -114,7 +204,17 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSurrender() {
-		fail("Not yet implemented"); // TODO
+		// start a hand
+		game.playHand();
+		
+		// deal
+		game.deal();
+		
+		game.surrender();
+		
+		// make sure the hands are in the right state
+		assertEquals(GameState.END, game.getMainHandState());	
+		assertEquals(GameState.END, game.getSplitHandState());	
 	}
 
 	/**
@@ -122,7 +222,39 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testHitSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// cycle so we get some splittable hands
+		for (int i = 0; i < 20; i++) {
+
+			// new game
+			game = new GameBoard();
+			
+			game.setSplittingAcesEndsControl(false);
+			
+			// start a hand
+			game.playHand();
+
+			// deal
+			game.deal();
+			
+			if (game.getPlayer().hasPair(game.isOnlySplitOnSameRank()) ) {
+				
+				// split hand
+				game.split();
+				
+				// the test!
+				game.hitSplit();
+
+				// make sure the hands are in the right state
+				assertEquals(GameState.SPLIT, game.getMainHandState());	
+				
+				// make sure the hand is hit correctly
+				assertEquals(2, game.getPlayerHand().size());
+				
+				// make sure the split hand is hit correctly
+				assertEquals(3, game.getPlayerHandSplit().size());
+			}
+		}
 	}
 
 	/**
@@ -130,7 +262,38 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testStandSplit() {
-		fail("Not yet implemented"); // TODO
+		// cycle so we get some splittable hands
+		for (int i = 0; i < 20; i++) {
+
+			// new game
+			game = new GameBoard();
+
+			game.setSplittingAcesEndsControl(false);
+
+			// start a hand
+			game.playHand();
+
+			// deal
+			game.deal();
+
+			if (game.getPlayer().hasPair(game.isOnlySplitOnSameRank()) ) {
+
+				// split hand
+				game.split();
+
+				// the test!
+				game.standSplit();
+
+				// make sure the hands are in the right state
+				assertEquals(GameState.SPLIT, game.getMainHandState());	
+
+				// make sure the hand is hit correctly
+				assertEquals(2, game.getPlayerHand().size());
+
+				// make sure the split hand is hit correctly
+				assertEquals(2, game.getPlayerHandSplit().size());
+			}
+		}
 	}
 
 	/**
@@ -138,7 +301,39 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testDoubleDownSplit() {
-		fail("Not yet implemented"); // TODO
+		// cycle so we get some splittable hands
+		for (int i = 0; i < 20; i++) {
+
+			// new game
+			game = new GameBoard();
+
+			game.setSplittingAcesEndsControl(false);
+			game.setDoubleAllowedAfterSplit(true);
+
+			// start a hand
+			game.playHand();
+
+			// deal
+			game.deal();
+
+			if (game.getPlayer().hasPair(game.isOnlySplitOnSameRank()) ) {
+
+				// split hand
+				game.split();
+
+				// the test!
+				game.doubleDownSplit();
+
+				// make sure the hands are in the right state
+				assertEquals(GameState.SPLIT, game.getMainHandState());	
+
+				// make sure the hand is hit correctly
+				assertEquals(2, game.getPlayerHand().size());
+
+				// make sure the split hand is hit correctly
+				assertEquals(3, game.getPlayerHandSplit().size());
+			}
+		}	
 	}
 
 	/**
@@ -146,7 +341,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetMainHandState() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the hand is in the right state
+		assertEquals(GameState.END, game.getMainHandState());	
 	}
 
 	/**
@@ -154,7 +351,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetSplitHandState() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the split hand is in the right state
+		assertEquals(GameState.END, game.getSplitHandState());
 	}
 
 	/**
@@ -162,7 +361,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testHandHasSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.handHasSplit());
 	}
 
 	/**
@@ -170,7 +371,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetDealerWinsPush() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isDealerWinsPush());
+		
+		// set the dealer winning
+		game.setDealerWinsPush(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isDealerWinsPush());
 	}
 
 	/**
@@ -178,7 +387,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsDealerWinsPush() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isDealerWinsPush());
+		
+		// set the dealer winning
+		game.setDealerWinsPush(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isDealerWinsPush());
 	}
 
 	/**
@@ -186,7 +403,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetSoftSeventeenRule() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSoftSeventeenRule());
+		
+		// set the new value
+		game.setSoftSeventeenRule(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSoftSeventeenRule());
 	}
 
 	/**
@@ -194,7 +419,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsSoftSeventeenRule() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSoftSeventeenRule());
+		
+		// set the new value
+		game.setSoftSeventeenRule(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSoftSeventeenRule());
 	}
 
 	/**
@@ -202,7 +435,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetSurrenderAllowed() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSurrenderAllowed());
+		
+		// set the new value
+		game.setSurrenderAllowed(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSurrenderAllowed());
 	}
 
 	/**
@@ -210,7 +451,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsSurrenderAllowed() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSurrenderAllowed());
+		
+		// set the new value
+		game.setSurrenderAllowed(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSurrenderAllowed());	
 	}
 
 	/**
@@ -218,7 +467,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetSplittingAcesEndsControl() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSplittingAcesEndsControl());
+		
+		// set the new value
+		game.setSplittingAcesEndsControl(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSplittingAcesEndsControl());	
 	}
 
 	/**
@@ -226,7 +483,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsSplittingAcesEndsControl() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(true, game.isSplittingAcesEndsControl());
+		
+		// set the new value
+		game.setSplittingAcesEndsControl(false);
+		
+		// make sure the value is correct now
+		assertEquals(false, game.isSplittingAcesEndsControl());	
 	}
 
 	/**
@@ -234,7 +499,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetOnlySplitOnSameRank() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isOnlySplitOnSameRank());
+		
+		// set the new value
+		game.setOnlySplitOnSameRank(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isOnlySplitOnSameRank());	
 	}
 
 	/**
@@ -242,7 +515,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsOnlySplitOnSameRank() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isOnlySplitOnSameRank());
+		
+		// set the new value
+		game.setOnlySplitOnSameRank(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isOnlySplitOnSameRank());
 	}
 
 	/**
@@ -250,7 +531,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetDoubleAllowedAfterSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isDoubleAllowedAfterSplit());
+		
+		// set the new value
+		game.setDoubleAllowedAfterSplit(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isDoubleAllowedAfterSplit());
 	}
 
 	/**
@@ -258,7 +547,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testIsDoubleAllowedAfterSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(false, game.isDoubleAllowedAfterSplit());
+		
+		// set the new value
+		game.setDoubleAllowedAfterSplit(true);
+		
+		// make sure the value is correct now
+		assertEquals(true, game.isDoubleAllowedAfterSplit());	
 	}
 
 	/**
@@ -266,7 +563,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetNumberOfDecks() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(8, game.getNumberOfDecks());
+		
+		// set the new value
+		game.setNumberOfDecks(2);
+		
+		// make sure the value is correct now
+		assertEquals(2, game.getNumberOfDecks());
 	}
 
 	/**
@@ -274,7 +579,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetNumberOfDecks() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(8, game.getNumberOfDecks());
+		
+		// set the new value
+		game.setNumberOfDecks(2);
+		
+		// make sure the value is correct now
+		assertEquals(2, game.getNumberOfDecks());
 	}
 
 	/**
@@ -282,7 +595,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetBlackjackPayRatio() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(1.2, game.getBlackjackPayRatio(), 0);
+		
+		// set the new value
+		game.setBlackjackPayRatio(2.5);
+		
+		// make sure the value is correct now
+		assertEquals(2.5, game.getBlackjackPayRatio(), 0);
 	}
 
 	/**
@@ -290,7 +611,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetBlackjackPayRatio() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(1.2, game.getBlackjackPayRatio(), 0);
+		
+		// set the new value
+		game.setBlackjackPayRatio(2.5);
+		
+		// make sure the value is correct now
+		assertEquals(2.5, game.getBlackjackPayRatio(), 0);
 	}
 
 	/**
@@ -298,7 +627,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetPlayer() {
-		fail("Not yet implemented"); // TODO
+		
+		assertEquals(0, game.getPlayer().getNumOfCards());
+		
 	}
 
 	/**
@@ -306,7 +637,7 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetDealer() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(0, game.getDealer().getNumOfCards());
 	}
 
 	/**
@@ -314,7 +645,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testSetCash() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(1000, game.getCash());
+		
+		// set the new value
+		game.setCash(2000);
+		
+		// make sure the value is correct now
+		assertEquals(2000, game.getCash());
 	}
 
 	/**
@@ -322,7 +661,15 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetCash() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(1000, game.getCash());
+		
+		// set the new value
+		game.setCash(2000);
+		
+		// make sure the value is correct now
+		assertEquals(2000, game.getCash());
 	}
 
 	/**
@@ -330,7 +677,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetLosses() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(0, game.getLosses());
 	}
 
 	/**
@@ -338,7 +687,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetBet() {
-		fail("Not yet implemented"); // TODO
+		
+		// make sure the value is correct with a new board
+		assertEquals(10, game.getBet());
 	}
 
 	/**
@@ -346,7 +697,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetDealerHand() {
-		fail("Not yet implemented"); // TODO
+		
+		// starts with no cards
+		assertEquals(0, game.getDealerHand().size());
 	}
 
 	/**
@@ -354,7 +707,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetPlayerHand() {
-		fail("Not yet implemented"); // TODO
+		
+		// starts with no cards
+		assertEquals(0, game.getPlayerHand().size());
 	}
 
 	/**
@@ -362,7 +717,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetPlayerHandSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// should be zero
+		assertEquals(0, game.getPlayerHandSplit().size());
 	}
 
 	/**
@@ -370,7 +727,9 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetPlayerHandValue() {
-		fail("Not yet implemented"); // TODO
+		
+		// should be zero
+		assertEquals(0, game.getPlayerHandValue());
 	}
 
 	/**
@@ -378,23 +737,20 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetPlayerHandValueSplit() {
-		fail("Not yet implemented"); // TODO
+		
+		// should be zero
+		assertEquals(0, game.getPlayerHandValueSplit());
 	}
 
-	/**
-	 * Test method for {@link blackjack.GameBoard#getTotalWins()}.
-	 */
-	@Test
-	public final void testGetTotalWins() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	/**
 	 * Test method for {@link blackjack.GameBoard#getTotalLosses()}.
 	 */
 	@Test
 	public final void testGetTotalLosses() {
-		fail("Not yet implemented"); // TODO
+		
+		// should be zero
+		assertEquals(0, game.getTotalLosses());
 	}
 
 	/**
@@ -402,7 +758,14 @@ public class GameBoardTest {
 	 */
 	@Test
 	public final void testGetHandNumber() {
-		fail("Not yet implemented"); // TODO
+		// should be one
+		assertEquals(0, game.getHandNumber());
+		
+		// start a hand
+		game.playHand();
+		
+		// should be one
+		assertEquals(1, game.getHandNumber());
 	}
 
 }

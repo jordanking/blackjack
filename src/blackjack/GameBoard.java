@@ -60,11 +60,6 @@ public class GameBoard  {
 	 * to bet with.
 	 */
 	private int cash;
-
-	/**
-	 * The totalWins is a private member that tracks the total wins the player has.
-	 */
-	private int totalWins;
 	
 	/**
 	 * The totalLosses is a private member that tracks the total losses the player has.
@@ -1380,6 +1375,8 @@ public class GameBoard  {
 	 * @since 1.0
 	 */
 	public ArrayList<Card> getPlayerHandSplit() {
+		
+		// return it
 		return player.getHandSplit();
 	}
 
@@ -1391,6 +1388,8 @@ public class GameBoard  {
 	 * @since 1.0
 	 */
 	public int getPlayerHandValue() {
+		
+		// return it.
 		return player.getPoints();
 	}
 
@@ -1402,18 +1401,9 @@ public class GameBoard  {
 	 * @since 1.0
 	 */
 	public int getPlayerHandValueSplit() {
+		
+		// return it
 		return player.getPointsSplit();
-	}
-	
-	/**
-	 * getTotalWins()
-	 * 
-	 * Return total wins for player.
-	 * 
-	 * @return totalWins
-	 */
-	public int getTotalWins() {
-		return totalWins;
 	}
 	
 	/**

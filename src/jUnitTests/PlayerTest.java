@@ -13,8 +13,10 @@ import blackjack.Rank;
 import blackjack.Suit;
 
 /**
- * @author jordan
- *
+ * Tests all of the public methods of the player class.
+ * 
+ * @author Jordan King
+ * @version 1.0
  */
 public class PlayerTest {
 
