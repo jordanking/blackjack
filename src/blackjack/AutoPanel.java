@@ -988,19 +988,14 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 						break;
 				}
 			}	
-<<<<<<< HEAD
+
 		
 		System.out.println(playerHand);
 		// get the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
 		GameAction temp = strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
 		System.out.println(temp);
 		return temp;
-=======
 
-		// get the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
-		return strategy.getGameActionForHands(playerHand, dealerFaceUpCard);
-
->>>>>>> FETCH_HEAD
 	}
 
 	 /**
