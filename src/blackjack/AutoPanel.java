@@ -786,11 +786,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					}
     					break;
     				case STAND:
-    					System.out.println("Jordan: " + gameBoard.getMainHandState());
-    					System.out.println(gameBoard.getSplitHandState());
 
     					if (gameBoard.getSplitHandState() != GameState.END
-    					&& gameBoard.getSplitHandState() != GameState.RESOLVED) {
+    					&& gameBoard.getSplitHandState() != GameState.RESOLVED
+    					&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
     						gameBoard.standSplit();
     					}
     					else {
@@ -820,7 +819,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     							gameBoard.hit();
     						}
     						else{
-    							gameBoard.stand();
+    							gameBoard.standSplit();
     						}
     					}
     					break;
