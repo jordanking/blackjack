@@ -27,11 +27,15 @@ import javax.swing.JTextArea;
 /**
  * @author Allie Miller
  *
+ *InstructionsPanel gives the instructions for how to play
+ *blackjack. Allows the user to go on to play (PlayPanel),
+ *exit, or go back to the WelcomePanel
+ *
  */
 public class InstructionsPanel extends BPanel implements ActionListener{
 
 	JTextArea appInstructions; //instructions on how to play blackjack
-	Button getStartedButton, helpButton, exitButton, backButton; //buttons
+	Button getStartedButton, exitButton, backButton; //buttons
 	Panel buttonsPanel; //panel to hold the buttons
 	
 	public void init() {
