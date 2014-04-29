@@ -125,7 +125,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		} 
 		if (event.getSource() == getStartedButton)
 		{
-			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.PlayPanel"));
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
 		}
 		if (event.getSource() == instructionsButton) {
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.InstructionsPanel"));

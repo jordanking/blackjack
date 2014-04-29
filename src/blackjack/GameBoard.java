@@ -36,6 +36,11 @@ public class GameBoard  {
 	 */
 	static private final int MINIMUM_BET = 10;
 	
+	/**
+	 * A constant for the default amount to bet.
+	 */
+	static private final boolean INFINITEMONEY = true;
+	
 	/////////////////////////////////Data Model////////////////////////////////////////////////////
 
 
@@ -180,7 +185,7 @@ public class GameBoard  {
 		}
 
 		// See if the player has money to play
-		if (cash < 0) {
+		if (cash < 0 && !INFINITEMONEY) {
 			System.out.println("There was not enough cash to play a hand.");
 			return false;
 		}
