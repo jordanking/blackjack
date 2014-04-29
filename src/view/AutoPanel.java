@@ -109,6 +109,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
+	 * A constant for the losses display text.
+	 */
+	static private final String PERCENT_DISPLAY_STRING = "Average Percent Lost Per Hand: %";
+	
+	/**
 	 * variable for card image
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
@@ -477,7 +482,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     private void drawLosses(Graphics2D graphicsObject2d){
     	Double lostWages = calculateLostWages();
     	int money = (int) Math.ceil(lostWages);
-    	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 600);
+    	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
 
     }
     
@@ -692,8 +697,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
    		// Draw the hand number
    		graphicsObject2d.drawString(HAND_DISPLAY_STRING + gameBoard.getHandNumber(), 5, 175);
    		
-   		// Draw the state
-   		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
+   		// Draw the percent of money lost
+   		Double losses = Double.valueOf(gameBoard.getLosses());
+   		Double totalBet = Double.valueOf(gameBoard.getHandNumber() * gameBoard.getBet());
+   		Double percent = (losses/totalBet)*100;
+   		graphicsObject2d.drawString(PERCENT_DISPLAY_STRING + percent.toString().substring(0, 5), 5, 75);
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();
