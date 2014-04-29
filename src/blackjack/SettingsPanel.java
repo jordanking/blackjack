@@ -63,7 +63,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
 		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(1000, 800));
 		title = new JTextArea("Settings");
 		title.setFont(new Font("Times", Font.BOLD, 20));
 		title.setEditable(false);

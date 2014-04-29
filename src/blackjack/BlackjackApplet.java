@@ -61,7 +61,7 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 			properties = null; 
 		}
 		//sets the size and layout of the applet
-		setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(1000, 800));
 	
 		setLayout(jCardLayout  = new CardLayout());
 

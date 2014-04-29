@@ -39,7 +39,7 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		
 		// set the size of this panel
 		//setPreferredSize(new Dimension(800, 800));
-		setPreferredSize(new Dimension(1000, 700));
+		setPreferredSize(new Dimension(1000, 800));
 		
 		setLayout(new BorderLayout());
 		
@@ -59,7 +59,7 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		instructionsPanel.setLayout(new BorderLayout());
 		
 		//create and add the background image
-		JLabel background = new JLabel(new ImageIcon("images/instructions.jpg"));
+		JLabel background = new JLabel(new ImageIcon("images/instructions2.jpg"));
 		instructionsPanel.add(background);
 		background.setVisible(true);
 		add(instructionsPanel, BorderLayout.CENTER);
