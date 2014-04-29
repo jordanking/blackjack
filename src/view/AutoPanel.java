@@ -107,9 +107,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
-<<<<<<< HEAD
-	 * Stores card images.
-=======
 	 * A constant for the losses display text.
 	 */
 	static private final String PERCENT_DISPLAY_STRING = "Average Percent Lost Per Hand: %";
@@ -120,8 +117,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	private BufferedImage hourglassImage;
 	
 	/**
-	 * variable for card image
->>>>>>> 835e5793fea397cc55206dcfd3e30116b7f61750
+	 * Stores card images.
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
 
@@ -453,10 +449,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * 
      * @return timeSpentOnGame
      */
-    public double calculateLostWages(){
+    private double calculateLostWages(){
     	
     	// calculate how much the player makes per hour from actual job
-		double playerWage = 0;
+    	double playerWage = 0;
 		
 		// retrieve playerWage from properties object
 		try {
@@ -504,15 +500,15 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	int money = (int) Math.ceil(lostWages);
     	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
     	
-    	try{
-    		hourglassImage = ImageIO.read(new File("images/hourglass.png"));
-    	} catch (IOException error){
-    		System.out.println("couldn't create image");
-    		error.printStackTrace();
-    	}
-    	
-    	//draw hourglass image
-    	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
+//    	try{
+//    		hourglassImage = ImageIO.read(new File("images/hourglass.png"));
+//    	} catch (IOException error){
+//    		System.out.println("couldn't create image");
+//    		error.printStackTrace();
+//    	}
+//    	
+//    	//draw hourglass image
+//    	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
 
     }
     

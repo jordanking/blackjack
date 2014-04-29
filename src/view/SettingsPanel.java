@@ -492,7 +492,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 				myWage = salaryField.getText();
 
 				betValue = Integer.parseInt(betNumber);
-				properties.put("Salary", myWage);
+				properties.put("Wage", myWage);
 				properties.put("Bet Value", betValue);
 				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
 				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.AutoPanel"));
