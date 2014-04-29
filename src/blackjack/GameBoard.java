@@ -189,6 +189,9 @@ public class GameBoard  {
 			System.out.println("There was not enough cash to play a hand.");
 			return false;
 		}
+		
+		// reset states
+		resetHandStates();
 
 		// reset player
 		player.reset();
