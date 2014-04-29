@@ -5,11 +5,12 @@ package jUnitTests;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import blackjack.Card;
+import blackjack.Player;
+import blackjack.Rank;
+import blackjack.Suit;
 
 /**
  * @author jordan
@@ -18,39 +19,18 @@ import org.junit.Test;
 public class PlayerTest {
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
 	 * Test method for {@link blackjack.Player#Player()}.
 	 */
 	@Test
 	public final void testPlayer() {
-		fail("Not yet implemented"); // TODO
+
+		// get a new player
+		Player player = new Player();
+		
+		// make sure both hands are empty
+		assertEquals(0, player.getNumOfCards());
+		assertEquals(0, player.getNumOfCardsSplit());
+		
 	}
 
 	/**
@@ -58,7 +38,14 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testAddCard() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(Rank.ACE, player.getHand().get(0).getCardRank());
 	}
 
 	/**
@@ -66,7 +53,14 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testAddCardSplit() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(Rank.ACE, player.getHandSplit().get(0).getCardRank());
 	}
 
 	/**
@@ -74,7 +68,20 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPoints() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(11, player.getPoints());
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the ace is handled
+		assertEquals(12, player.getPoints());
 	}
 
 	/**
@@ -82,7 +89,20 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetPointsSplit() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(11, player.getPointsSplit());
+		
+		// add a card
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the ace is handled
+		assertEquals(12, player.getPointsSplit());
 	}
 
 	/**
@@ -90,7 +110,20 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetNumOfCards() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(1, player.getNumOfCards());
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the ace is handled
+		assertEquals(2, player.getNumOfCards());
 	}
 
 	/**
@@ -98,7 +131,20 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetNumOfCardsSplit() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the card is there
+		assertEquals(1, player.getNumOfCardsSplit());
+		
+		// add a card
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the ace is handled
+		assertEquals(2, player.getNumOfCardsSplit());
 	}
 
 	/**
@@ -106,7 +152,18 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetHand() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// add a card
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the aces are there
+		assertEquals(Rank.ACE, player.getHand().get(0).getCardRank());
+		
 	}
 
 	/**
@@ -114,7 +171,17 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testGetHandSplit() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card to split
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// add a card to split
+		player.addCardSplit(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// make sure the aces are there
+		assertEquals(Rank.ACE, player.getHandSplit().get(0).getCardRank());
 	}
 
 	/**
@@ -122,7 +189,17 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testHasPair() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card to split
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// add a card to split
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// check for pair
+		assertEquals(true, player.hasPair(false));
 	}
 
 	/**
@@ -130,7 +207,17 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testHasBlackjack() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card to split
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// add a card to split
+		player.addCard(new Card(Rank.JACK, Suit.HEARTS));
+		
+		// check for blackjack
+		assertEquals(true, player.hasBlackjack());
 	}
 
 	/**
@@ -138,7 +225,22 @@ public class PlayerTest {
 	 */
 	@Test
 	public final void testReset() {
-		fail("Not yet implemented"); // TODO
+		// get a new player
+		Player player = new Player();
+		
+		// add a card to split
+		player.addCard(new Card(Rank.ACE, Suit.HEARTS));
+		
+		// add a card to split
+		player.addCardSplit(new Card(Rank.JACK, Suit.HEARTS));
+		
+		player.reset();
+		
+		// check for 0 cards
+		assertEquals(0, player.getNumOfCards());
+		
+		// check for 0 cards split
+		assertEquals(0, player.getNumOfCardsSplit());
 	}
 
 }
