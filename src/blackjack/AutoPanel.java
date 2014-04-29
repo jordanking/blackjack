@@ -249,7 +249,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		pauseButton = new JButton("Pause");
 		backButton = new JButton("Back");
 		nextButton = new JButton("Next");
-		helpButton = new JButton("Help");
+		helpButton = new JButton("Continue");
 		exitButton = new JButton("Exit");
 		
 		// Add listeners to buttons.
