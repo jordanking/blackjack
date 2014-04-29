@@ -699,9 +699,18 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
    		
    		// Draw the percent of money lost
    		Double losses = Double.valueOf(gameBoard.getLosses());
-   		Double totalBet = Double.valueOf(gameBoard.getHandNumber() * gameBoard.getBet());
+   		Double winLossCount = Double.valueOf(gameBoard.getTotalHandLosses() + 
+   				gameBoard.getTotalHandWins() + gameBoard.getTotalHandTies());
+   		Double totalBet = Double.valueOf(winLossCount * betValue);
    		Double percent = (losses/totalBet)*100;
-   		graphicsObject2d.drawString(PERCENT_DISPLAY_STRING + percent.toString().substring(0, 5), 5, 75);
+
+
+   		try {
+			graphicsObject2d.drawString(PERCENT_DISPLAY_STRING + percent.toString().substring(0, 3), 5, 75);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -748,7 +757,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      */
     private void storeProperties() {
     	properties.put("AverageHold", 17);
-    	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    	properties.put("TotalLosses", gameBoard.getTotalHandLosses());
+    	properties.put("TotalLosses", gameBoard.getTotalHandWins());
     }
     
     /**
