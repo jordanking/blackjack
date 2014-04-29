@@ -21,7 +21,9 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -68,6 +70,12 @@ public class SettingsPanel extends BPanel implements ActionListener{
 
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
+		//images for the x and y axis labels of the table
+		JLabel dealerHandText = new JLabel(new ImageIcon("images/DealerHandText.jpg"));
+		JLabel playerHandText = new JLabel(new ImageIcon("images/PlayerHandText.jpg"));
+		
+		playerHandText.setSize(50, 300);
+		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
 		title = new JTextArea("Settings");
@@ -89,6 +97,19 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		salary.addActionListener(this);
 				
 		setLayout(new BorderLayout());
+		
+		//Panels for the axes labels
+		Panel xAxisPanel = new Panel();
+		Panel yAxisPanel = new Panel();
+		
+		// add the x and y axes labels and set them visible
+		yAxisPanel.add(playerHandText);
+		add(yAxisPanel,BorderLayout.WEST);
+		yAxisPanel.setVisible(true);
+		
+		xAxisPanel.add(dealerHandText);
+		add(xAxisPanel, BorderLayout.NORTH);
+		xAxisPanel.setVisible(true);
 				
 		//make input buttons
 		try {
@@ -111,7 +132,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
 		
 		
-		add(title, BorderLayout.NORTH);
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
 		salaryPanel.add(submit);
@@ -122,10 +142,18 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
 		tables.add(pairsScrollPane);
-		tables.add(salaryPanel);
+		//tables.add(salaryPanel);
 		add(tables, BorderLayout.CENTER);
 		// add the button panel
-		add(buttonsPanel, BorderLayout.SOUTH);
+		
+		//panel for the south border that holds the salary and bet info (salaryPanel)
+		//as well as the buttonsPanel
+		Panel southBorderPanel = new Panel();
+		southBorderPanel.setLayout((LayoutManager) new BoxLayout(southBorderPanel, BoxLayout.Y_AXIS));
+		
+		southBorderPanel.add(salaryPanel);
+		southBorderPanel.add(buttonsPanel);
+		add(southBorderPanel, BorderLayout.SOUTH);
 
 		
 		
