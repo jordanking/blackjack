@@ -11,57 +11,34 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import blackjack.GameAction;
+import blackjack.Strategy;
+
 /**
  * @author alyssamiller
  *
  */
 public class StrategyTest {
 
+	Strategy strategy;
+	
 	public StrategyTest() {
+		
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link blackjack.Strategy#getGameActionForHands(java.lang.String, java.lang.Integer)}.
-	 */
-	@Test
-	public void testGetGameActionForHands() {
-		fail("Not yet implemented");
-	}
-
-	/**
+	 * 
 	 * Test method for {@link blackjack.Strategy#setGameActionForHands(java.lang.String, java.lang.Integer, blackjack.GameAction)}.
+	 * Calls the set and get method for updating the strategy
 	 */
 	@Test
 	public void testSetGameActionForHands() {
-		fail("Not yet implemented");
+		
+		strategy = new Strategy();
+		
+		strategy.setGameActionForHands("13-14", 3, GameAction.STAND);
+		assertEquals(GameAction.STAND, strategy.getGameActionForHands("13-14", 3));
 	}
 
 }

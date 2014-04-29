@@ -63,13 +63,18 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
 		// set the size of this panel
-		setPreferredSize(new Dimension(1000, 800));
+		setPreferredSize(new Dimension(800, 800));
 		title = new JTextArea("Settings");
 		title.setFont(new Font("Times", Font.BOLD, 20));
 		title.setEditable(false);
 		
 		salary = new JTextField(20);
+<<<<<<< HEAD
 		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
+=======
+		salaryTitle = new JTextArea("Please Enter Your Salary: ");
+		salaryTitle.setEditable(false);
+>>>>>>> FETCH_HEAD
 		submit = new Button("Submit Salary");
 		submit.addActionListener(this);
 		salary.addActionListener(this);
