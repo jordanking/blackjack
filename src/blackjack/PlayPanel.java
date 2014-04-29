@@ -48,7 +48,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * A constant for the total hands to play in this panel.
 	 */
-	static private final int TOTAL_HANDS_TO_PLAY = 25;
+	static private final int TOTAL_HANDS_TO_PLAY = 50;
     
 	/**
 	 * A constant for the text color.
