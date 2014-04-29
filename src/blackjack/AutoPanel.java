@@ -822,11 +822,14 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					if (gameBoard.getMainHandState() == GameState.DEAL) {
     						gameBoard.split();
     					} else {
-    						if(gameBoard.getPlayerHandValue() < 16){
+    						if(gameBoard.getPlayerHandValue() < 16 
+    								&& (gameBoard.getMainHandState() == GameState.HIT 
+    								|| gameBoard.getMainHandState() == GameState.STAND)){
     							gameBoard.hit();
     						}
-    						else{
-    							gameBoard.standSplit();
+    						else if (gameBoard.getMainHandState() == GameState.HIT 
+    								|| gameBoard.getMainHandState() == GameState.STAND){
+    							gameBoard.stand();
     						}
     					}
     					break;
