@@ -6,7 +6,7 @@ import java.awt.Image;
 import java.awt.Panel;
 
 /**
- * ButtonsPanel
+ * DoubleBufferedPanel
  * 
  * Extends Panel from AWT class 
  * to enable double buffering.
@@ -14,7 +14,7 @@ import java.awt.Panel;
  * @author Kevin
  */
 @SuppressWarnings("serial")
-public class ButtonsPanel extends Panel {
+public class DoubleBufferedPanel extends Panel {
 	/**
 	 * update()
 	 * 

@@ -117,7 +117,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	ButtonsPanel buttonsPanel;
+	DoubleBufferedPanel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -246,10 +246,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private ButtonsPanel initializeInputButtons() throws HeadlessException {
+	private DoubleBufferedPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		ButtonsPanel buttonsPanel = new ButtonsPanel();
+		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
