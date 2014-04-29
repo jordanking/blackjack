@@ -207,9 +207,17 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		JTable softStrategy = drawTable(softTotal);
 		JTable pairsStrategy = drawTable(pairs);
 		
+		hardStrategy.setOpaque(false);
+		softStrategy.setOpaque(false);
+		pairsStrategy.setOpaque(false);
+		
 		JScrollPane hardScrollPane = new JScrollPane(hardStrategy);
 		JScrollPane softScrollPane = new JScrollPane(softStrategy);
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
+		
+		hardScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
+		softScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
+		pairsScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
 
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
@@ -303,13 +311,15 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		strategy.setGridColor(GREEN_BACKGROUND);
 		
 		if (isPair == false){
-			for (int i = 0; i < 10; i++){
+			for (int i = 0; i < 11; i++){
 				createOptions(strategy, strategy.getColumnModel().getColumn(i));
+				strategy.getColumnModel().getColumn(i).setCellRenderer(new CustomRenderer());
 			}
 		}
 		else{
-			for (int i = 0; i < 10; i++){
+			for (int i = 0; i < 11; i++){
 				createPairOptions(strategy, strategy.getColumnModel().getColumn(i));
+				strategy.getColumnModel().getColumn(i).setCellRenderer(new CustomRenderer());
 			}
 		}
 		
@@ -403,7 +413,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
 		
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		CustomRenderer renderer = new CustomRenderer();
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
 	}
@@ -418,7 +428,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
 		
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		CustomRenderer renderer = new CustomRenderer();
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
 	}
@@ -625,6 +635,27 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
 		    }
 		}
+	
+	class CustomRenderer extends DefaultTableCellRenderer {
+
+	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+	    {
+	        Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+	        if(table.getValueAt(row, column).equals("HIT")){
+	            cellComponent.setBackground(Color.GREEN);
+	        } else if(table.getValueAt(row, column).equals("STAND")){
+	            cellComponent.setBackground(Color.RED);
+	        } else if(table.getValueAt(row, column).equals("DOUBLE")){
+	        	cellComponent.setBackground(Color.CYAN);
+	        } else if(table.getValueAt(row, column).equals("SPLIT")){
+	        	cellComponent.setBackground(Color.YELLOW);
+	        } else if(table.getValueAt(row, column).equals("SURRENDER")){
+	        	cellComponent.setBackground(Color.WHITE);
+	        }
+	        return cellComponent;
+	    }
 	}
+}
 
 
