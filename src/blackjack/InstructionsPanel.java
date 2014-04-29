@@ -19,6 +19,8 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 
@@ -36,7 +38,8 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 
 		
 		// set the size of this panel
-		setPreferredSize(new Dimension(800, 800));
+		//setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(1000, 700));
 		
 		setLayout(new BorderLayout());
 		
@@ -54,6 +57,14 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		Panel instructionsPanel = new Panel();
 		
 		instructionsPanel.setLayout(new BorderLayout());
+		
+		//create and add the background image
+		JLabel background = new JLabel(new ImageIcon("images/instructions.jpg"));
+		instructionsPanel.add(background);
+		background.setVisible(true);
+		add(instructionsPanel, BorderLayout.CENTER);
+		
+		/*
 		instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
 
 		
@@ -77,7 +88,7 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 				+ "more card. A player has the option of doubling down after a hand has been split.");
 		
 		add(instructionsPanel, BorderLayout.NORTH);
-		
+		*/
 	}
 	
 	/** 
