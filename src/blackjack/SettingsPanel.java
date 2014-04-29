@@ -220,7 +220,6 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		strategyOption.addItem(GameAction.HIT);
 		strategyOption.addItem(GameAction.STAND);
 		strategyOption.addItem(GameAction.DOUBLE);
-		strategyOption.addItem(GameAction.DOUBLE);
 		strategyOption.addItem(GameAction.SURRENDER);
 		strategyOption.addItem(GameAction.SPLIT);
 		
