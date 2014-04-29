@@ -4,7 +4,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,15 +21,18 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -416,6 +418,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		CustomRenderer renderer = new CustomRenderer();
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
+		Table.setDefaultRenderer(Object.class, renderer);
 	}
 	
 	public void createPairOptions(JTable Table, TableColumn column){
@@ -431,6 +434,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		CustomRenderer renderer = new CustomRenderer();
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
+		Table.setDefaultRenderer(Object.class, renderer);
 	}
 	
 	public JComboBox<String> createBetOptions(){
@@ -641,21 +645,20 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 	    {
 	        Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-	        if(table.getValueAt(row, column).equals("HIT")){
-	            cellComponent.setBackground(Color.GREEN);
-	        } else if(table.getValueAt(row, column).equals("STAND")){
-	            cellComponent.setBackground(Color.RED);
-	        } else if(table.getValueAt(row, column).equals("DOUBLE")){
+	       
+	        if(table.getValueAt(row, column).toString() == "HIT"){
+	        	cellComponent.setBackground(Color.GREEN);
+	        } else if(table.getValueAt(row, column).toString() == "STAND"){
+	        	cellComponent.setBackground(Color.RED);
+	        } else if(table.getValueAt(row, column).toString() == "DOUBLE"){
 	        	cellComponent.setBackground(Color.CYAN);
-	        } else if(table.getValueAt(row, column).equals("SPLIT")){
-	        	cellComponent.setBackground(Color.YELLOW);
-	        } else if(table.getValueAt(row, column).equals("SURRENDER")){
-	        	cellComponent.setBackground(Color.WHITE);
-	        }
+	      	} else if(table.getValueAt(row, column).toString() == "SPLIT"){
+	       		cellComponent.setBackground(Color.YELLOW);
+	       	} else if(table.getValueAt(row, column).toString() == "SURRENDER"){
+	       		cellComponent.setBackground(Color.WHITE);
+	       	}
+	        
 	        return cellComponent;
 	    }
 	}
 }
-
-
