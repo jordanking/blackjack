@@ -132,7 +132,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
 		// gets model
 		gameBoard = new GameBoard();
-		strategy = new Strategy();
+		//strategy = new Strategy();
 		
 		// load Images
 		loadImages();
@@ -342,7 +342,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			
 		case ("Split Hand"):
 			//update the Strategy for dealer/player hand combination
-			updateStrategy(false, GameAction.SPLIT);
+			//updateStrategy(false, GameAction.SPLIT);
 			gameBoard.split();
 			// distinguish main hand buttons
 			// vs split buttons
@@ -1035,7 +1035,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	public void skip() {
 		
 		storeProperties();
-		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
+		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.SettingsPanel"));
 	}
 
 
