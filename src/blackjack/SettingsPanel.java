@@ -69,7 +69,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		title.setEditable(false);
 		
 		salary = new JTextField(20);
-		salaryTitle = new JTextArea("Please Enter Your Salary: ");
+		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
 		submit = new Button("Submit Salary");
 		submit.addActionListener(this);
 		salary.addActionListener(this);

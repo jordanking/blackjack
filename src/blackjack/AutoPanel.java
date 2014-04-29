@@ -73,7 +73,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * A constant for the total hands to play in this panel.
 	 */
-	static private final int TOTAL_HANDS_TO_PLAY = 1000;
+	static private final int TOTAL_HANDS_TO_PLAY = 10000;
     
 	/**
 	 * A constant for the text color.
@@ -441,12 +441,13 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	int playersLosses = gameBoard.getLosses();
     	
     	//calculate how much work time player spent on game
-    	double timeSpentOnGame = playersLosses/dollarsPerHour;
-    	
+//    	double timeSpentOnGame = playersLosses/dollarsPerHour;
+    	double timeSpentOnGame = playersLosses/salary;
+
     	//calculate how much money player could have made at work in this time
-    	double lostWages = timeSpentOnGame * dollarsPerHour;
+//    	double lostWages = timeSpentOnGame * dollarsPerHour;
     	
-    	return lostWages;
+    	return timeSpentOnGame;
  
     	//return timeSpentOnGame;
     }
@@ -462,7 +463,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      */
     private void drawLosses(Graphics2D graphicsObject2d){
     	double lostWages = calculateLostWages();
-    	graphicsObject2d.drawString("You could have made: $" + Double.toString(lostWages), 300, 600);
+    	graphicsObject2d.drawString("You lost: " + Double.toString(lostWages) + " work hours!", 300, 600);
     }
     
     /**
