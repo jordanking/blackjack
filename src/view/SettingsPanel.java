@@ -55,7 +55,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	JTextArea title, salaryTitle, betTitle;
 	JTextField salaryField, betField;
 	JComboBox<String> betComboBox;
-	String mySalary, betNumber;
+	String myWage, betNumber;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
@@ -376,7 +376,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 			}else{
 				properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
 				System.out.println(gameStrategy);
-				properties.put("Salary", mySalary);
+				properties.put("Wage", myWage);
 				// go to autoPanel
 				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.AutoPanel"));
 			}
@@ -391,8 +391,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		}
 		
 		if(event.getSource() == salaryField){
-			mySalary = salaryField.getText();
-			properties.put("Salary", mySalary);
+			myWage = salaryField.getText();
+			properties.put("Salary", myWage);
 			salaryField.removeAll();
 		}
 		
@@ -401,9 +401,9 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
 			}
 			else{
-				mySalary = salaryField.getText();
+				myWage = salaryField.getText();
 				betValue = Integer.parseInt(betNumber);
-				properties.put("Salary", mySalary);
+				properties.put("Salary", myWage);
 				properties.put("Bet Value", betValue);
 				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
 				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
