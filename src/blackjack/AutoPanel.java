@@ -58,7 +58,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * Default bet value for simulation.
 	 */
-	private Integer betValue = 50;
+	private Integer betValue = 100;
 	
 	/**
 	 * Allows the drawing on a thread.
@@ -767,10 +767,18 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		while (gameBoard.getMainHandState() != GameState.END
     				|| gameBoard.getSplitHandState() != GameState.END) {
     			
+<<<<<<< HEAD
     			// if the split hand is not ended, grab the split
     			if (gameBoard.getSplitHandState() != GameState.END
     					|| gameBoard.getSplitHandState() != GameState.RESOLVED
     					|| gameBoard.getSplitHandState() != GameState.DOUBLE) {
+=======
+    			// Update the view
+            	revalidate();
+                repaint();
+    			
+    			if (gameBoard.getSplitHandState() != GameState.END) {
+>>>>>>> FETCH_HEAD
     				desiredAction = getStrategy(true);
     			}
     			else {
@@ -804,15 +812,18 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     				case DOUBLE:
     					
     					// hit if you can't double
-    					if (gameBoard.getMainHandState() != GameState.DEAL ||
-    					gameBoard.getMainHandState() != GameState.SPLIT) {
+    					if (gameBoard.getMainHandState() == GameState.HIT ||
+    					gameBoard.getMainHandState() == GameState.STAND) {
     						gameBoard.hit();
     					}
-    					
-    					if (gameBoard.getSplitHandState() != GameState.END) {
+    					else if (gameBoard.getSplitHandState() == GameState.SPLIT) {
     						gameBoard.doubleDownSplit();
     					}
-    					else {
+    					else if (gameBoard.getSplitHandState() == GameState.HIT
+    							|| gameBoard.getSplitHandState() == GameState.STAND){
+    						gameBoard.hitSplit();
+    					}
+    					else if (gameBoard.getMainHandState() == GameState.DEAL){
     						gameBoard.doubleDown();
     					}
     					break;
@@ -860,6 +871,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					break;
     			}
     			System.out.println(gameBoard.getMainHandState());
+    			
+                
     		}
     	}
     }
@@ -1070,9 +1083,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
             public void actionPerformed(ActionEvent timeTick) {
             	
             	cycle();
-                // Update the view
-            	revalidate();
-                repaint();
                 
             
             }
