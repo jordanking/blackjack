@@ -14,6 +14,8 @@ import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,15 +37,14 @@ import javax.swing.table.TableColumn;
  *
  */
 @SuppressWarnings("serial")
-public class SettingsPanel extends BPanel implements ActionListener{
+public class SettingsPanel extends BPanel implements ActionListener, KeyListener{
 	// list of strategies for each dealer + player hand combination for the game
 	private Strategy gameStrategy; // game strategy 
-	Button setStrategyButton; // button that setsGameStrategy
+	Button setStrategyButton, submit; // button that setsGameStrategy
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
 	JTextArea title, salaryTitle;
-	private final static String newline = "\n";
 	JTextField salary;
 	String mySalary;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
@@ -68,6 +69,9 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 		salary = new JTextField(20);
 		salaryTitle = new JTextArea("Please Enter Your Salary: ");
+		submit = new Button("Submit Salary");
+		submit.addActionListener(this);
+		submit.addKeyListener(this);
 		salary.addActionListener(this);
 				
 		setLayout(new BorderLayout());
@@ -96,6 +100,8 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		add(buttonsPanel, BorderLayout.SOUTH);
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
+		salaryPanel.add(submit);
+		salaryPanel.setFocusable(true);
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
 		tables.add(pairsScrollPane);
@@ -156,7 +162,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 				 
 				 /*	
 				  * the rest of the table will be populated with options for the player to hit, 
-				  * stand, or double.  They will be initialized as "hit"
+				  * stand, or double.  They will be initialized with the game strategy passed in from playpanel
 				  */
 				 else{
 				 	dealerGameActionCombination = gameStrategy.getStrategyTable().get(cards[j]);
@@ -179,11 +185,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
         Component comp = null;
         int headerWidth = 0;
         int cellWidth = 0;
-        Object[] longValues = model.longValues;
         TableCellRenderer headerRenderer =
             table.getTableHeader().getDefaultRenderer();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             column = table.getColumnModel().getColumn(i);
 
             comp = headerRenderer.getTableCellRendererComponent(
@@ -193,10 +198,11 @@ public class SettingsPanel extends BPanel implements ActionListener{
 
             comp = table.getDefaultRenderer(model.getColumnClass(i)).
                              getTableCellRendererComponent(
-                                 table, "Double",
+                                 table, "SURRENDER",
                                  false, false, 0, i);
             cellWidth = comp.getPreferredSize().width;
         }
+        column.setPreferredWidth(Math.max(headerWidth, cellWidth));
 	}
 	
 	/**
@@ -272,39 +278,89 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 		if(event.getSource() == exitButton) {
 			System.out.println("exit");
-			System.exit(1); // exit the application
+			System.exit(1); 
 		}
 		if(event.getSource() == backButton) {
 			//go back a screen
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
 		}
+		
 		if(event.getSource() == salary){
 			mySalary = salary.getText();
-			salary.selectAll();
-			
+			properties.put("Salary", mySalary);
+			salary.removeAll();
+		}
+		
+		if(event.getSource() == submit){
+			if(salary.getText().trim().isEmpty()){
+				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
+			}
+			else{
+				mySalary = salary.getText();
+				properties.put("Salary", mySalary);
+				salary.removeAll();
+			}
 		}
 	}
 	
+	public void keyPressed(KeyEvent e){}
+	
+	public void keyTyped(KeyEvent e){
+		if (e.getKeyCode() == KeyEvent.VK_ENTER){
+			if(salary.getText().trim().isEmpty()){
+				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
+			}
+			else{
+				mySalary = salary.getText();
+				properties.put("Salary", mySalary);
+				salary.selectAll();
+			}
+		}
+	}
+	
+	public void keyReleased(KeyEvent e){}
+	
+	/**
+	 * StrategyTableModel
+	 * 
+	 * This is a model for creating the table.  Adds functionality to the table and
+	 * accessible methods.  Also makes the table editable.
+	 * 
+	 * @author alexpost
+	 *
+	 */
+	
 	public class StrategyTableModel extends AbstractTableModel{
 
+			/**
+			 * String array to hold the different values of the dealer face up card
+			 */
 			String[] dealerShowing ={"", "A","2", "3", "4", "5", "6", 
 					   			      "7", "8", "9", "10"};
 			
-			Object[] longValues = {"Double"};
+			/**
+			 * 2D array holding the contents of each cell in the table.  Set equal to the
+			 * array passed in in the constructor
+			 */
 			Object[][] strategyArray;
+			
+			/**
+			 * Constructor for StrategyTableModel.
+			 * 
+			 * @param cardsArray Takes a 2D array of a strategy table to give that
+			 * 					 table functionality.
+			 */
 			
 			StrategyTableModel(Object[][] cardsArray){
 				strategyArray = cardsArray;
 			}
 			
 			public int getRowCount() {
-				// TODO Auto-generated method stub
 				return strategyArray.length;
 			}
 
 			@Override
 			public int getColumnCount() {
-				// TODO Auto-generated method stub
 				return dealerShowing.length;
 			}
 			
@@ -324,6 +380,13 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			      return getValueAt(0, c).getClass();
 			}
 			
+			/**
+			 * isCellEditable
+			 * 
+			 * Makes it possible to edit the contents of the table.  Does not allow the first
+			 * column to be edited because it contains labels.
+			 */
+			
 			public boolean isCellEditable(int row, int col) {
 		        if (col == 0){
 		        	return false;
@@ -332,6 +395,18 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		        	return true;
 		        }
 		    }
+			
+			/**
+			 * setValueAt
+			 * 
+			 * This allows us to edit the values at each row/column pair in the 2D array.
+			 * Every time the coordinate is updated, that value is sent to the strategy object
+			 * to keep the strategy current.
+			 * 
+			 * @param value This holds the value of the object at strategyArray[row][column]
+			 * @param row The specific row the value is in
+			 * @param col The specific column the value is in
+			 */
 			
 			public void setValueAt(Object value, int row, int col) {
 				strategyArray[row][col] = (GameAction) value;
