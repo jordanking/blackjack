@@ -107,7 +107,16 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
+<<<<<<< HEAD
 	 * Stores card images.
+=======
+	 * A constant for the losses display text.
+	 */
+	static private final String PERCENT_DISPLAY_STRING = "Average Percent Lost Per Hand: %";
+	
+	/**
+	 * variable for card image
+>>>>>>> 835e5793fea397cc55206dcfd3e30116b7f61750
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
 
@@ -488,7 +497,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	hoursLost = (int) Math.ceil(lostWages);
     	
     	// display ;oss message
-    	graphicsObject2d.drawString("You lost " + Integer.toString(hoursLost) + " hours of pay!", 300, 600);
+    	graphicsObject2d.drawString("You lost " + Integer.toString(hoursLost) + " hours of pay!", 300, 700);
 
     }
     
@@ -692,8 +701,20 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
    		// Draw the hand number
    		graphicsObject2d.drawString(HAND_DISPLAY_STRING + gameBoard.getHandNumber(), 5, 175);
    		
-   		// Draw the state
-   		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
+   		// Draw the percent of money lost
+   		Double losses = Double.valueOf(gameBoard.getLosses());
+   		Double winLossCount = Double.valueOf(gameBoard.getTotalHandLosses() + 
+   				gameBoard.getTotalHandWins() + gameBoard.getTotalHandTies());
+   		Double totalBet = Double.valueOf(winLossCount * betValue);
+   		Double percent = (losses/totalBet)*100;
+
+
+   		try {
+			graphicsObject2d.drawString(PERCENT_DISPLAY_STRING + percent.toString().substring(0, 3), 5, 75);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -741,10 +762,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * Store properties for next panel.
      */
     private void storeProperties() {
-    	
-    	// store total wins and total losses
-    	properties.put("Total Wins", gameBoard.getTotalLosses());
-    	properties.put("Total Losses", gameBoard.getTotalLosses());
+       	// store total wins and total losses
+    	properties.put("Total Wins", gameBoard.getTotalHandWins());
+    	properties.put("Total Losses", gameBoard.getTotalHandLosses());
     	properties.put("Hours Lost", hoursLost);
     }
     

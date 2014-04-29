@@ -8,7 +8,7 @@ package model;
  *
  */
 public enum Rank {
-	//NEED TO change this so ACE can be a 1 or a 11
+	// ACE can be a 1 or a 11 in context
 	ACE(11),
 	TWO(2),
 	THREE(3),
@@ -23,6 +23,9 @@ public enum Rank {
 	QUEEN(10),
 	KING(10);
 	
+	/**
+	 * The value of the card.
+	 */
 	private int cardPoints;
 	
 	private Rank (int points){

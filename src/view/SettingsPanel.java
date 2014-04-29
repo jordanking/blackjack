@@ -5,6 +5,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -47,7 +48,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	
 	private Strategy gameStrategy; 
 	Integer betValue;
-
+	static private final Color GREEN_BACKGROUND = new Color(0,102,0); //constant for background color
 	JButton setStrategyButton, submitButton;
 	Button backButton; 
 	Button exitButton; 
@@ -82,6 +83,9 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
+		
+		//set background color to match color of the game table
+		setBackground(GREEN_BACKGROUND);
 		
 		// set title and title font
 		title = new JTextArea("Settings");
@@ -204,6 +208,10 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		StrategyTableModel model = new StrategyTableModel(makeStrategyArray(cards));
 		JTable strategy = new JTable(model);
+		
+		//create gridlines for table
+		strategy.setShowGrid(true);
+		strategy.setGridColor(GREEN_BACKGROUND);
 		
 		if (isPair == false){
 			for (int i = 0; i < 10; i++){

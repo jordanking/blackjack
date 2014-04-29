@@ -1014,7 +1014,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     private void storeProperties() {
     	properties.put("AverageHold", 17);
 
-    	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    	properties.put("TotalLosses", gameBoard.getTotalHandLosses());
     	properties.put("Game Strategy", strategy);
     }
     

@@ -46,6 +46,9 @@ public class GameBoardTest {
 		// check what defaults we can that wouldn't change.
 		assertEquals(0, game.getLosses());
 		assertEquals(0, game.getHandNumber());
+		assertEquals(0, game.getTotalHandLosses());
+		assertEquals(0, game.getTotalHandWins());
+		assertEquals(0, game.getTotalHandTies());
 		assertEquals(GameState.END, game.getMainHandState());
 		assertEquals(GameState.END, game.getSplitHandState());
 	}
@@ -747,10 +750,30 @@ public class GameBoardTest {
 	 * Test method for {@link controller.GameBoard#getTotalLosses()}.
 	 */
 	@Test
-	public final void testGetTotalLosses() {
+	public final void testGetTotalHandLosses() {
 		
 		// should be zero
-		assertEquals(0, game.getTotalLosses());
+		assertEquals(0, game.getTotalHandLosses());
+	}
+	
+	/**
+	 * Test method for {@link controller.GameBoard#getTotalHandWins()}.
+	 */
+	@Test
+	public final void testGetTotalHandWins() {
+		
+		// should be zero
+		assertEquals(0, game.getTotalHandWins());
+	}
+	
+	/**
+	 * Test method for {@link controller.GameBoard#getTotalHandWins()}.
+	 */
+	@Test
+	public final void testGetTotalHandTies() {
+		
+		// should be zero
+		assertEquals(0, game.getTotalHandTies());
 	}
 
 	/**
