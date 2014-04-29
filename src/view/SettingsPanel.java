@@ -41,19 +41,22 @@ import controller.Strategy;
  */
 @SuppressWarnings("serial")
 public class SettingsPanel extends BPanel implements ActionListener{
-	// list of strategies for each dealer + player hand combination for the game
-	private Strategy gameStrategy; // game strategy 
-	Button setStrategyButton, submit; // button that setsGameStrategy
-	Button backButton; // button to go back a screen
-	Button exitButton; // button to exit
-	Panel buttonsPanel; // panel for the button
-	JTextArea title, salaryTitle;
-	JTextField salary;
+	
+	private Strategy gameStrategy; 
+	Integer betValue;
+	Button setStrategyButton, submit, betButton; 
+	Button backButton; 
+	Button exitButton; 
+	Panel buttonsPanel; 
+	JTextArea title, salaryTitle, betTitle;
+	JTextField salary, bet;
+	JComboBox<String> betComboBox;
 	String mySalary;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
 					  "6,6", "5,5", "4,4", "2,2-3,3"};
+	String[] betValueString = {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100"};
 	
 	
 	/**
@@ -71,13 +74,17 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		title.setFont(new Font("Times", Font.BOLD, 20));
 		title.setEditable(false);
 		
-		salary = new JTextField(20);
+		salary = new JTextField(10);
+		betComboBox = createBetOptions();
 
 		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
-
+		betTitle = new JTextArea("How much do you want to bet?");
+		
+		betTitle.setEditable(false);
 		salaryTitle.setEditable(false);
 
 		submit = new Button("Submit Wage");
+		betButton = new Button("Submit Bet");
 		submit.addActionListener(this);
 		salary.addActionListener(this);
 				
@@ -108,7 +115,9 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
 		salaryPanel.add(submit);
-		salaryPanel.setFocusable(true);
+		salaryPanel.add(betTitle);
+		salaryPanel.add(betComboBox);
+		salaryPanel.add(betButton);
 
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
@@ -238,6 +247,14 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
 	}
+	
+	public JComboBox<String> createBetOptions(){
+		JComboBox<String> comboBox = new JComboBox<String>(betValueString);
+		comboBox.setSelectedIndex(4);
+		comboBox.addActionListener(this);
+		
+		return comboBox;
+	}
 
 	
 	/**
@@ -262,6 +279,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 		// add Action Listeners for the buttons
 		setStrategyButton.addActionListener(this);
+		betButton.addActionListener(this);
 		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		
@@ -308,8 +326,27 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			else{
 				mySalary = salary.getText();
 				properties.put("Salary", mySalary);
-				salary.removeAll();
+				JOptionPane.showMessageDialog(null, "Salary Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
 			}
+		}
+		if(event.getSource() == betButton){
+			if(bet.getText().trim().isEmpty()){
+				JOptionPane.showMessageDialog(null,"Please enter a bet value.", "Error",JOptionPane.OK_OPTION);
+			}else{
+				betValue = Integer.parseInt(bet.getText());
+				if (betValue > 100 || betValue < 0){
+					JOptionPane.showMessageDialog(null, "Bet must be between 0 and 100", "Blackjack", JOptionPane.OK_OPTION);
+				}
+				else{
+					properties.put("Bet Value", betValue);
+					JOptionPane.showMessageDialog(null, "Bet Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		}
+		if(event.getSource() == betComboBox){
+			JComboBox<String> cb = (JComboBox<String>) event.getSource();
+			String betNumber = (String) cb.getSelectedItem();
+			betValue = Integer.parseInt(betNumber);
 		}
 	}
 	
@@ -410,6 +447,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
 		    }
 		}
-}
+	}
 
 
