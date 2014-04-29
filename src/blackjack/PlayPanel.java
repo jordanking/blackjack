@@ -711,6 +711,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton.setVisible(false);
 		splitButton.setVisible(false);
 		doubleDownButton.setVisible(false);
+		hitSplitButton.setVisible(false);
+		standSplitButton.setVisible(false);
+		doubleDownSplitButton.setVisible(false);
 		surrenderButton.setVisible(false);
 		handButton.setVisible(false);
 		dealButton.setVisible(false);
@@ -745,9 +748,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case DEAL:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		// show split if cards are equal
-    		if (gameBoard.getPlayerHand().get(0).getCardRank() 
-    				== gameBoard.getPlayerHand().get(1).getCardRank()){
+    		// show split if cards are splittable
+    		if (gameBoard.getPlayer().hasPair(gameBoard.isOnlySplitOnSameRank())){
     			splitButton.setVisible(true);
     		}
     		doubleDownButton.setVisible(true);
@@ -762,40 +764,47 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case SPLIT:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		doubleDownButton.setVisible(true);
+    		if (gameBoard.isDoubleAllowedAfterSplit()) {
+    			doubleDownButton.setVisible(true);
+    		}
     		break;
     	
-    	case RESOLVED:
     	case END: 
-    		
-    		// determine which buttons are visible
-        	// based off split hand state
-        	switch(gameBoard.getSplitHandState()) {
-        	    		
-        		case SPLIT: 
-        	    	hitSplitButton.setVisible(true);
-        			standSplitButton.setVisible(true);
-        			doubleDownSplitButton.setVisible(true);
-        			break;
-        				
-        	    case HIT:
-        	    	hitSplitButton.setVisible(true);
-        	    	standSplitButton.setVisible(true);
-        	    	break;
-        	    
-        	    	
-        	    // if at end for both states
-        	    // or at end for first state 
-        	    // and none for second
-        	    default:
-        	    	handButton.setVisible(true);
-        	    	break;
-        	    }
+    		// if both states have reached the end
+    		if (gameBoard.getSplitHandState() == GameState.END) {
+    			handButton.setVisible(true);
+    		}
         	break;
     		
     	default:
     		break;
     	}
+    	
+    	// determine which buttons are visible
+    	// based off split hand state
+    	switch(gameBoard.getSplitHandState()) {
+    	    		
+    		case SPLIT: 
+    	    	hitSplitButton.setVisible(true);
+    			standSplitButton.setVisible(true);
+    			if (gameBoard.isDoubleAllowedAfterSplit())
+    			{
+    				doubleDownSplitButton.setVisible(true);
+    			}
+    			break;
+    				
+    	    case HIT:
+    	    	hitSplitButton.setVisible(true);
+    	    	standSplitButton.setVisible(true);
+    	    	break;
+    	    
+    	    	
+    	    // if at end for both states
+    	    // or at end for first state 
+    	    // and none for second
+    	    default:
+    	    	break;
+    	    }
     	
     }
     
