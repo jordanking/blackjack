@@ -283,9 +283,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		buttonsPanel.add(nextButton);
 		buttonsPanel.add(pauseButton);
 		
-		// set transparent
-		buttonsPanel.setBackground(null);
-		
 		return buttonsPanel;
 	}
 	

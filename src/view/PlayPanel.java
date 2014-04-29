@@ -87,8 +87,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * variable for card image
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
-
-
 	
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
@@ -100,8 +98,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 */
 	JButton hitButton, standButton, handButton, splitButton, dealButton,
 		hitSplitButton, standSplitButton, doubleDownSplitButton,
-		exitButton, skipButton, doubleDownButton,
-		surrenderButton, betButton1, betButton2, betButton3;
+		exitButton, backButton, proceedButton, doubleDownButton,
+		instructionsButton, surrenderButton, betButton1, betButton2, betButton3;
 	
 	/**
 	 * The game model.
@@ -122,7 +120,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * Default constructor.
 	 */
 	public PlayPanel() {
-		// do nothing...for now.
 		
 	}
 	
@@ -144,7 +141,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		// load Images
 		loadImages();
 
-		// set the size of this panel
+		// set the size and layout of this panel
 		setPreferredSize(new Dimension(1000, 800));
 		
 		setLayout(new BorderLayout());
@@ -225,27 +222,28 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 */
 	private DoubleBufferedPanel initializeInputButtons() throws HeadlessException {
 		
-		// a panel for the buttons for fun
+		// a panel for the buttons
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-
+		exitButton = new JButton("Exit");
+		betButton1 = new JButton("Bet 10");
+		betButton2 = new JButton("Bet 50");
+		betButton3 = new JButton("Bet 100");
 		hitButton = new JButton("Hit");
 		standButton = new JButton("Stand");
-		splitButton = new JButton("Split Hand");
 		doubleDownButton = new JButton("Double Down");
+		splitButton = new JButton("Split Hand");
 		hitSplitButton = new JButton("Hit Bottom");
 		standSplitButton = new JButton("Stand Bottom");
 		doubleDownSplitButton = new JButton("Double Down Bottom");
 		surrenderButton = new JButton("Surrender");
 		handButton = new JButton("Next Hand");
 		dealButton = new JButton("Deal");
-		betButton1 = new JButton("Bet 10");
-		betButton2 = new JButton("Bet 50");
-		betButton3 = new JButton("Bet 100");
-		skipButton = new JButton("Skip to Stats");
-		exitButton = new JButton("Exit");
+		instructionsButton = new JButton("How to Play");
+		backButton = new JButton("Back");
+		proceedButton = new JButton("Proceed Ahead");
 		
 		// Add listeners to buttons.
 		hitButton.addActionListener(this);
@@ -261,27 +259,32 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		betButton1.addActionListener(this);
 		betButton2.addActionListener(this);
 		betButton3.addActionListener(this);
-		skipButton.addActionListener(this);
+		proceedButton.addActionListener(this);
 		exitButton.addActionListener(this);
+		backButton.addActionListener(this);
+		instructionsButton.addActionListener(this);
 		
+		// make all irrelevant buttons invisible
 		resetButtonVisibility();
 		
 		// Add buttons to panel.
+		buttonsPanel.add(exitButton);
+		buttonsPanel.add(betButton1);
+		buttonsPanel.add(betButton2);
+		buttonsPanel.add(betButton3);
 		buttonsPanel.add(hitButton);
 		buttonsPanel.add(standButton);
-		buttonsPanel.add(splitButton);
 		buttonsPanel.add(doubleDownButton);
+		buttonsPanel.add(splitButton);
 		buttonsPanel.add(hitSplitButton);
 		buttonsPanel.add(standSplitButton);
 		buttonsPanel.add(doubleDownSplitButton);
 		buttonsPanel.add(surrenderButton);
 		buttonsPanel.add(handButton);
 		buttonsPanel.add(dealButton);
-		buttonsPanel.add(betButton1);
-		buttonsPanel.add(betButton2);
-		buttonsPanel.add(betButton3);
-		buttonsPanel.add(skipButton);
-		buttonsPanel.add(exitButton);
+		buttonsPanel.add(instructionsButton);
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(proceedButton);
 		
 		return buttonsPanel;
 	}
@@ -400,7 +403,15 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			gameBoard.deal();
 			break;
 			
-		case("Skip to Stats"):
+		case ("Back"):
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "view.PlayPanel"));
+			break;
+			
+		case ("How to Play"):
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.InstructionsPanel"));
+			break;
+			
+		case("Proceed Ahead"):
 			skip();
 			break;
 			
