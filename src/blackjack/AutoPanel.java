@@ -417,7 +417,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * 
      * @return timeSpentOnGame
      */
-    public double calculateLostHours(){
+    public double calculateLostWages(){
     	
     	//calculate how much the player makes per hour from actual job
 		double salary = 0;
@@ -425,7 +425,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		try {
 			salary = Double.parseDouble( (String) properties.get("Salary"));
 		} catch (NumberFormatException e) {
-			
+			System.out.println("couldn't get salary");
 			e.printStackTrace();
 		}
     	
@@ -441,9 +441,16 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	//calculate how much work time player spent on game
     	double timeSpentOnGame = playersLosses/dollarsPerHour;
+    	
+    	//calculate how much money player could have made at work in this time
+    	double lostWages = timeSpentOnGame * dollarsPerHour;
+    	
+    	return lostWages;
  
-    	return timeSpentOnGame;
+    	//return timeSpentOnGame;
     }
+    
+    
     
     /**
      * 
@@ -453,8 +460,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * @return none
      */
     private void drawLosses(Graphics2D graphicsObject2d){
-    	double lostHours = calculateLostHours();
-    	graphicsObject2d.drawString("You have lost: " + Double.toString(lostHours) + "hours you could have been at work", 400, 600);
+    	double lostWages = calculateLostWages();
+    	graphicsObject2d.drawString("You could have made: $" + Double.toString(lostWages), 300, 600);
     }
     
     /**
