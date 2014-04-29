@@ -767,11 +767,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		while (gameBoard.getMainHandState() != GameState.END
     				|| gameBoard.getSplitHandState() != GameState.END) {
     			
-    			// Update the view
-            	revalidate();
-                repaint();
-    			
-    			if (gameBoard.getSplitHandState() != GameState.END) {
+    			// if the split hand is not ended, grab the split
+    			if (gameBoard.getSplitHandState() != GameState.END
+    					|| gameBoard.getSplitHandState() != GameState.RESOLVED
+    					|| gameBoard.getSplitHandState() != GameState.DOUBLE) {
+
     				desiredAction = getStrategy(true);
     			}
     			else {
@@ -782,7 +782,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     			}
     			switch (desiredAction) {
     				case HIT:
-    					if (gameBoard.getSplitHandState() != GameState.END) {
+    					if (gameBoard.getSplitHandState() != GameState.END
+    							&& gameBoard.getSplitHandState() != GameState.RESOLVED
+    	    					&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
     						gameBoard.hitSplit();
     					}
     					else {
@@ -822,14 +824,24 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     					if (gameBoard.getMainHandState() == GameState.DEAL) {
     						gameBoard.split();
     					} else {
-    						if(gameBoard.getPlayerHandValue() < 16 
-    								&& (gameBoard.getMainHandState() == GameState.HIT 
-    								|| gameBoard.getMainHandState() == GameState.STAND)){
-    							gameBoard.hit();
-    						}
-    						else if (gameBoard.getMainHandState() == GameState.HIT 
-    								|| gameBoard.getMainHandState() == GameState.STAND){
-    							gameBoard.stand();
+
+    						if (gameBoard.getSplitHandState() != GameState.END
+    								&& gameBoard.getSplitHandState() != GameState.RESOLVED
+    								&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
+    							if(gameBoard.getPlayerHandValueSplit() < 16){
+    								gameBoard.hitSplit();
+    							}
+    							else{
+    								gameBoard.standSplit();
+    							}
+    						} else {
+
+    							if(gameBoard.getPlayerHandValue() < 16){
+    								gameBoard.hit();
+    							}
+    							else{
+    								gameBoard.stand();
+    							}
     						}
     					}
     					break;
@@ -838,7 +850,14 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     						gameBoard.surrender();
     					}
     					else {
-    						gameBoard.stand();
+    						if (gameBoard.getSplitHandState() != GameState.END
+    								&& gameBoard.getSplitHandState() != GameState.RESOLVED
+    								&& gameBoard.getSplitHandState() != GameState.DOUBLE) {
+    							
+    								gameBoard.standSplit();
+    						} else {
+    								gameBoard.stand();
+    						}
     					}
     					break;
     				default:
