@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,7 +47,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	
 	private Strategy gameStrategy; 
 	Integer betValue;
-	Button setStrategyButton, submitButton; 
+
+	JButton setStrategyButton, submitButton;
 	Button backButton; 
 	Button exitButton; 
 	Panel buttonsPanel; 
@@ -97,9 +99,17 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		// set editable false
 		betTitle.setEditable(false);
 		salaryTitle.setEditable(false);
+
+
+		submitButton = new JButton("Submit Values");
+		submitButton.addActionListener(this);
+		salaryField.addActionListener(this);
+		submitButton.addKeyListener(this);
+		salaryField.setFocusable(true);
+		betComboBox.setFocusable(true);
+		setFocusable(true);
 		
-		// create submit button
-		submitButton = new Button("Submit Values");
+		
 		
 		// add action listeners to submit button
 		// and salary field
@@ -341,7 +351,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// make buttons
-		setStrategyButton = new Button("Set Strategy");
+		setStrategyButton = new JButton("Set Strategy");
 		backButton = new Button("Back");
 		exitButton = new Button("Exit");
 		
@@ -409,17 +419,9 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	
 	public void keyPressed(KeyEvent event){
 		if(event.getKeyCode() == KeyEvent.VK_ENTER){
-			if(salaryField.getText().trim().isEmpty() || betNumber == "-"){
-				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
-			}
-			else{
-				mySalary = salaryField.getText();
-				betValue = Integer.parseInt(betNumber);
-				properties.put("Salary", mySalary);
-				properties.put("Bet Value", betValue);
-				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
-				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
-			}
+
+			submitButton.doClick();
+
 		}
 	}
 	

@@ -779,6 +779,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     			if (gameBoard.getSplitHandState() != GameState.END
     					|| gameBoard.getSplitHandState() != GameState.RESOLVED
     					|| gameBoard.getSplitHandState() != GameState.DOUBLE) {
+
     				desiredAction = getStrategy(true);
     			}
     			else {
