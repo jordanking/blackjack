@@ -1,6 +1,3 @@
-/**
- * 
- */
 package blackjack;
 
 import java.awt.BorderLayout;
@@ -11,9 +8,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.LayoutManager;
-import java.awt.Panel;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,7 +22,6 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**

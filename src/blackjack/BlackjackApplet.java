@@ -15,7 +15,7 @@
 // 
 // Resources:
 // http://stackoverflow.com/questions/9029162/how-do-i-get-the-text-of-a-button-in-java
-// 
+// http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html
 // 
 
 

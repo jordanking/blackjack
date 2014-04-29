@@ -19,8 +19,14 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -39,8 +45,14 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	
 	/**
 	 * Indicates if simulation is still running.
+	 * Turned off when max hands reached.
 	 */
 	private boolean simulationOn = true;
+	
+	/**
+	 * Indicates if simulation is paused.
+	 */
+	private boolean simulationPaused = false;
 	
 	/**
 	 * Stand value for simulation.
@@ -56,6 +68,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * Allows the drawing on a thread.
 	 */
     private Thread animator;
+    
+	/**
+	 * A constant for the background color
+	 */
+	static private final Color GREEN_BACKGROUND = new Color(0,102,0);
 	
 	/**
 	 * A constant for the total hands to play in this panel.
@@ -65,7 +82,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	/**
 	 * A constant for the text color.
 	 */
-	static private final Color TEXT_COLOR = Color.red;
+	static private final Color TEXT_COLOR = Color.white;
 	
 	/**
 	 * A constant for the bet display text.
@@ -83,15 +100,20 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String LOSSES_DISPLAY_STRING = "Losses: ";
 	
 	/**
-	 * Panel for the buttons
+	 * variable for card image
 	 */
-	Panel buttonsPanel;
+	private HashMap<String, BufferedImage> cardImagesMap;
+
+	
+	/**
+	 * Panel for the buttons DO NOT CHANGE TO JPANEL
+	 */
+	ButtonsPanel buttonsPanel;
 	
 	/**
 	 * The buttons
 	 */
-	Button hitButton, standButton, handButton, exitButton, skipButton, betButton1, betButton2,
-		betButton3;
+	JButton pauseButton, backButton, nextButton, helpButton, exitButton;
 	
 	/**
 	 * The game model.
@@ -130,27 +152,80 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 		
 		// gets model
 		gameBoard = new GameBoard();
+				
+		// load Images
+		loadImages();
 
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
-		
+				
 		setLayout(new BorderLayout());
-		
+				
 		// make the input buttons
 		try {
 			buttonsPanel = initializeInputButtons();
 		} catch (HeadlessException e) {
-			
-			e.printStackTrace();
+				
+				e.printStackTrace();
 		}
-
+				
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
-		
+				
 		// play hand in game
 		gameBoard.playHand();
 
 	}
+	
+	/**
+	 * loadImages()
+	 * 
+	 * Loads all of the card images
+	 * 
+	 * @return none
+	 * @throws none
+	 * @since 1.0
+	 */
+	private void loadImages() {
+		cardImagesMap = new HashMap<String, BufferedImage>();
+
+		BufferedImage cardImage;
+
+		// load all 52 cards
+		for (Rank rank: Rank.values()) {
+			for (Suit suit: Suit.values()) {
+
+				// construct the card name
+				String cardName = rank.toString() + "-" + suit.toString();
+
+				//create card image
+				try {
+					// load the image
+					cardImage = ImageIO.read(new File("images/" + cardName + ".png"));
+
+					// store the image in the map
+					cardImagesMap.put(cardName, cardImage);
+
+				} catch (IOException error) {
+					System.out.println("couldn't create dealer card image");
+					error.printStackTrace();
+				}
+
+			}
+		}
+
+		// load the deck image
+		try {
+			cardImage = ImageIO.read(new File("images/deck.jpg"));
+			cardImagesMap.put("deck", cardImage);
+
+		} catch (IOException error) {
+			System.out.println("couldn't create deckImage");
+			error.printStackTrace();
+		}
+
+	}
+	
 	
 	/**
 	 * initializeInputButtons()
@@ -161,44 +236,37 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private Panel initializeInputButtons() throws HeadlessException {
+	private ButtonsPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		ButtonsPanel buttonsPanel = new ButtonsPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
-		hitButton = new Button("Hit");
-		standButton = new Button("Stand");
-		handButton = new Button("Next Hand");
-		exitButton = new Button("Exit");
-		skipButton = new Button("Skip");
-		betButton1 = new Button("Bet 10");
-		betButton2 = new Button("Bet 50");
-		betButton3 = new Button("Bet 100");
 
+		pauseButton = new JButton("Pause");
+		backButton = new JButton("Back");
+		nextButton = new JButton("Next");
+		helpButton = new JButton("Help");
+		exitButton = new JButton("Exit");
+		
 		// Add listeners to buttons.
-		hitButton.addActionListener(this);
-		standButton.addActionListener(this);
-		handButton.addActionListener(this);
+		pauseButton.addActionListener(this);
+		backButton.addActionListener(this);
+		nextButton.addActionListener(this);
+		helpButton.addActionListener(this);
 		exitButton.addActionListener(this);
-		skipButton.addActionListener(this);
-		betButton1.addActionListener(this);
-		betButton2.addActionListener(this);
-		betButton3.addActionListener(this);
-
+		
 		// Add buttons to panel.
-		buttonsPanel.add(hitButton);
-		buttonsPanel.add(standButton);
-		buttonsPanel.add(handButton);
+		buttonsPanel.add(pauseButton);
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(nextButton);
+		buttonsPanel.add(helpButton);
 		buttonsPanel.add(exitButton);
-		buttonsPanel.add(skipButton);
-		buttonsPanel.add(betButton1);
-		buttonsPanel.add(betButton2);
-		buttonsPanel.add(betButton3);
-
+		
 		return buttonsPanel;
 	}
+	
 	
 	/**
 	 * actionPerformed()
@@ -211,40 +279,68 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		/*
-		if (event.getSource() == hitButton)
-			
-			gameBoard.hit();*/
 		
-		if (event.getSource() == exitButton) {
+		/**
+		 * Code from stackoverflow.com. See BlackjackApplet class.
+		 * Purpose of this is to use switch statement
+		 * instead of if-else combo.
+		 */
+		
+		// get object
+		Object object = event.getSource();
+		
+		// declare variables
+		JButton button = null;
+		String buttonText = "";
+		
+		// if the object is an instance of JButton
+		// convert to JButton
+		if(object instanceof JButton)
+			button = (JButton)object;
+		
+		// if button is not null
+		// get button text
+		if(button != null)
+		    buttonText = button.getText();
+		
+		// evaluate button text
+		// and call methods accordingly
+		switch (buttonText) {
+		
+		// hit top is the same as normal hit
+		// call mainhand hit
+		case ("Pause"):
+			simulationPaused = true;
+			pauseButton.setText("Resume");
+			break;
 			
+		case ("Resume"):
+			simulationPaused = false;
+			pauseButton.setText("Pause");
+			break;
+			
+		case ("Back"):
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.AutoPanel"));
+			break;
+		
+		case ("Next"):
+			storeProperties();
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.HelpPanel"));
+			break;
+		
+		case ("Help"):
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.HelpPanel"));
+			break;
+			
+		case ("Exit"): 
 			System.exit(0);
-			
-		} /*else if (event.getSource() == standButton) {
-			
-			gameBoard.stand();
-			
-		} else if (event.getSource() == handButton) {
-			
-			gameBoard.playHand();*/
-			
-		else if (event.getSource() == skipButton) {
-			
-			skip();
-			
-		} /*else if (event.getSource() == betButton1) {
-			
-			gameBoard.setBet(10);
-			
-		} else if (event.getSource() == betButton2) {
-			
-			gameBoard.setBet(50);
-			
-		} else if (event.getSource() == betButton3) {
-			
-			gameBoard.setBet(100);
-			
-		}*/
+			break;
+		
+		default:
+			break;
+		}
+		
+
 	}
 	
 
@@ -279,6 +375,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         // draw my stuff
         drawDealer(graphicsObject2d);
         drawPlayer(graphicsObject2d);
+        drawPlayerSplit(graphicsObject2d);
         drawDeck(graphicsObject2d);
         
         // Draw the meta (like cash, bet, etc...)
@@ -308,6 +405,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	// draw the background
     	//graphicsObject2d.drawImage(backImageAsset, 0, 0, this);
         
+    	//set the background color
+    	setBackground(GREEN_BACKGROUND);
+    	
         // Synchronize the graphics state - now is the time to draw! (magic)
         Toolkit.getDefaultToolkit().sync();
         
@@ -362,27 +462,34 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	
     	// get the dealer's hand
     	ArrayList<Card> dealerHand = gameBoard.getDealerHand();
-    	System.out.println(dealerHand.size());
-		// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
-    	
+
     	int index = 0;
+    	
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: dealerHand) {
-    	
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+    		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+        	
+        	// get coords
     		int x = 310 + 100*index;
     		int y = 160;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
-            
-            // Draw the card's rank and suit
-       		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
-       		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
-       		
+    		
+    		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
+
     		index++;
 		}
+    	
+    	//Draw the value of the dealer's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Dealer's Hand Value: " + gameBoard.getDealerHandValue(), 20, 205);
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -391,6 +498,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     }
 
     /**
+     * drawPlayer()
+     * 
      * Draws the player's hand on the screen
      * 
      * @param graphicsObject2d - the 2d graphics object we draw with
@@ -398,11 +507,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * @since 1.0
      */
     private void drawPlayer(Graphics2D graphicsObject2d) {
-
-		// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
     	
     	// get the player's hand
     	ArrayList<Card> playerHand = gameBoard.getPlayerHand();
@@ -413,21 +517,79 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	// iterate through all cards of the player and draw them on the board
     	for (Card card: playerHand) {
     		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+    		    		
     		// the spacing
     		int x = 100 + 100*index;
     		int y = 350;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
     		
-
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
-
-            // Draw the card rank and suit
-       		graphicsObject2d.drawString(card.getCardRank().toString(), x+10, y+10);
-       		graphicsObject2d.drawString(card.getCardSuit().toString(), x+10, y+30);
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
     		
     		index++;
 		}
+    	
+    	//Draw the value of the player's hand
+    	
+    	// Set the font and color
+        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+        graphicsObject2d.setColor(TEXT_COLOR);
+        
+        //Draw the number of points
+   		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValue(), 20, 335);
+        
+        // Synchronize the graphics state (more magic)
+        Toolkit.getDefaultToolkit().sync();
+
+        // DONT DELETE THE OBJECT
+    }
+    
+    /**
+     * drawPlayerSplit()
+     * 
+     * Draws the player's split hand on the screen
+     * 
+     * @param graphicsObject2d - the 2d graphics object we draw with
+     * @return none
+     * @since 1.0
+     */
+    private void drawPlayerSplit(Graphics2D graphicsObject2d) {
+    	
+    	// get the player's hand
+    	ArrayList<Card> playerHandSplit = gameBoard.getPlayerHandSplit();
+    	
+    	// an index for spacing things out
+    	int index = 0;
+    	
+    	// iterate through all cards of the player and draw them on the board
+    	for (Card card: playerHandSplit) {
+    		
+    		//grab the card name
+    		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
+        	BufferedImage cardImage = cardImagesMap.get(cardName);
+    		    		
+    		// the spacing
+    		int x = 100 + 100*index;
+    		int y = 500;
+    		
+    		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
+
+    		
+    		index++;
+		}
+    	
+    	//Draw the value of the player's hand if there's a split
+    	if (gameBoard.handHasSplit()==true){
+    		// Set the font and color
+            graphicsObject2d.setFont(new Font("Times", Font.BOLD, 20));
+            graphicsObject2d.setColor(TEXT_COLOR);
+            
+            //Draw the number of points
+       		graphicsObject2d.drawString("Your Hand Value: " + gameBoard.getPlayerHandValueSplit(), 20, 485);
+    	}
+    	
         
         // Synchronize the graphics state (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -445,27 +607,30 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * @since 1.0
      */
     private void drawDeck(Graphics2D graphicsObject2d) {
-    	
+
     	// graphicsObject2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
     	// Set the font and color
-        graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
-        graphicsObject2d.setColor(TEXT_COLOR);
-    	
-    	
-    		// the spacing
-    		int x = 700;
-    		int y = 160;
-    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	graphicsObject2d.setFont(new Font("Times", Font.BOLD, 10));
+    	graphicsObject2d.setColor(TEXT_COLOR);
 
-//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
+    	// get the image
+    	BufferedImage deckImage = cardImagesMap.get("deck");
 
-            // Draw the card rank and suit
-       		graphicsObject2d.drawString("Deck", x+10, y+10);
+    	// the spacing
+    	int x = 700;
+    	int y = 160;
+    	//    		graphicsObject2d.drawRoundRect(x, y, 80, 120, 1, 1);
+    	graphicsObject2d.drawImage(deckImage,x,y,80,120,null);
 
-        // Synchronize the graphics state (more magic)
-        Toolkit.getDefaultToolkit().sync();
+    	//    		graphicsObject2d.drawImage(cardImageAsset, card.getxCoordinate(), card.getyCoordinate(), this);
 
-        // DONT DELETE THE OBJECT PLZ
+    	// Draw the card rank and suit
+    	//       		graphicsObject2d.drawString("Deck", x+10, y+10);
+
+    	// Synchronize the graphics state (more magic)
+    	Toolkit.getDefaultToolkit().sync();
+
+    	// DONT DELETE THE OBJECT PLZ
     }
     
     /**
@@ -491,6 +656,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
    		
    		// Draw the bet
    		graphicsObject2d.drawString(BET_DISPLAY_STRING + gameBoard.getBet(), 5, 150);
+   		
+   		// Draw the state
+   		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();
@@ -531,6 +699,17 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	}
     
     /**
+     * storeProperties()
+     * 
+     * Store properties for next panel.
+     */
+    private void storeProperties() {
+    	properties.put("AverageHold", 17);
+    	properties.put("TotalWins", gameBoard.getTotalWins());
+    	properties.put("TotalLosses", gameBoard.getTotalLosses());
+    }
+    
+    /**
      * cycle()
      * 
      * Checks to see if hand is above total hands to play.
@@ -543,9 +722,9 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	if (gameBoard.getHandNumber() > TOTAL_HANDS_TO_PLAY) {
     		simulationOn = false;
 		}
-    	
+    
     	// if the simulation is still running
-    	if (simulationOn) {
+    	if (simulationOn && !simulationPaused) {
     		
     		// play hand
     		// method self-checks to see if hand is already in play
@@ -554,6 +733,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		// set bet
     		// method self-checks to see if it's ready to accept bet
     		gameBoard.bet(betValue);
+    		
+    		gameBoard.deal();
     		
     		// if points is less than stand value, hit
     		// otherwise, stand
@@ -565,22 +746,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     		}
     	}
     }
-    
-    /**
-     * skip()
-     * 
-     * Goes to the stats panel.
-     * 
-     * @param none
-     * @return none
-     * @see BlackjackApplet
-     */
-	public void skip() {
-		panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.StatsPanel"));
-	}
 
-
-    /**
+	 /**
      * addNotify()
      * 
      * Overridden addNotify() method - this makes the the component on a new thread.
@@ -603,7 +770,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     } 
 
     
-	@Override
+    @Override
 	public void run() {
         // The timer that draws
         Timer frameTimer = new Timer(5, new ActionListener() {
@@ -613,8 +780,10 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
             	
             	cycle();
                 // Update the view
+            	revalidate();
                 repaint();
                 
+            
             }
             
         });
@@ -622,6 +791,3 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
         frameTimer.start();		
 	}
 }
-
-
-
