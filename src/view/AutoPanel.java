@@ -499,16 +499,6 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 
     	int money = (int) Math.ceil(lostWages);
     	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
-    	
-//    	try{
-//    		hourglassImage = ImageIO.read(new File("images/hourglass.png"));
-//    	} catch (IOException error){
-//    		System.out.println("couldn't create image");
-//    		error.printStackTrace();
-//    	}
-//    	
-//    	//draw hourglass image
-//    	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
 
     }
     
