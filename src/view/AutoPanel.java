@@ -114,6 +114,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	static private final String PERCENT_DISPLAY_STRING = "Average Percent Lost Per Hand: %";
 	
 	/**
+	 * variable for the hourglass Image
+	 */
+	private BufferedImage hourglassImage;
+	
+	/**
 	 * variable for card image
 	 */
 	private HashMap<String, BufferedImage> cardImagesMap;
@@ -483,7 +488,16 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	Double lostWages = calculateLostWages();
     	int money = (int) Math.ceil(lostWages);
     	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
-
+    	
+    	try{
+    		hourglassImage = ImageIO.read(new File("images/hourglass.png"));
+    	} catch (IOException error){
+    		System.out.println("couldn't create image");
+    		error.printStackTrace();
+    	}
+    	
+    	//draw hourglass image
+    	graphicsObject2d.drawImage(hourglassImage,400,700,100,100,null);
     }
     
     /**
