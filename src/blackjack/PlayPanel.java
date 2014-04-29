@@ -605,13 +605,6 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         
         // Draw the progress bar
         drawProgressBar(graphicsObject2d);
-        
-        if (gameBoard.getPlayerHandValue()>21){
-        	graphicsObject2d.setFont(new Font("Times", Font.BOLD, 50));
-            graphicsObject2d.setColor(Color.magenta);
-            graphicsObject2d.drawString("BUSTED", 200, 100);
-            
-        }
   
         // Explicitly release the memory storing the graphics. Do not wait for garbage collection
         graphicsObject2d.dispose();
