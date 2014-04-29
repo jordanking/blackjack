@@ -100,6 +100,14 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	GameBoard gameBoard;
 	
 	/**
+	 * The strategy that is initially set to
+	 * the optimal strategy (according to Wikipedia)
+	 * and is updated based on how the player
+	 * plays the game
+	 */
+	Strategy strategy;
+	
+	/**
 	 * PlayPanel()
 	 * 
 	 * Default constructor.
@@ -122,6 +130,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		
 		// gets model
 		gameBoard = new GameBoard();
+		strategy = new Strategy();
 		
 		// load Images
 		loadImages();
@@ -299,6 +308,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		switch (buttonText) {
 		
 		case ("Hit"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(GameAction.HIT);
 			// if the main hand hasn't resolved or resolved,
 			// then main hit
 			if (gameBoard.getMainHandState() != GameState.RESOLVED 
@@ -317,6 +328,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			break;
 			
 		case ("Stand"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(GameAction.STAND);
 			// if the main hand hasn't resolved or resolved,
 			// then main stand
 			if (gameBoard.getMainHandState() != GameState.RESOLVED 
@@ -332,10 +345,14 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			
 			
 		case ("Split Hand"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(GameAction.SPLIT);
 			gameBoard.split();
 			break;
 			
 		case ("Double Down"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(GameAction.DOUBLE);
 			// if the main hand hasn't resolved or resolved,
 			// then main double down
 			if (gameBoard.getMainHandState() != GameState.RESOLVED 
@@ -350,6 +367,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 			break;
 			
 		case ("Surrender"):
+			//update the Strategy for dealer/player hand combination
+			updateStrategy(GameAction.SURRENDER);
 			gameBoard.surrender();
 			break;
 			
@@ -380,6 +399,150 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		}
 	}
 	
+	/**
+	 * updateStrategy()
+	 * 
+	 * Updates the strategy based on what GameAction the
+	 * player makes for each player hand/dealer face-up
+	 * card combination experienced by the player.
+	 * 
+	 * @param desiredAction
+	 */
+	public void updateStrategy(GameAction desiredAction) {
+		//gets the int value of the dealer's face up card
+		int dealerFaceUpCard = gameBoard.getDealerHand().get(0).getCardRank().getCardPoints();
+		String playerHand = null;	//String value of player hand
+		Card playerCardOne = gameBoard.getPlayerHandSplit().get(0);//first player card
+		Card playerCardTwo = gameBoard.getPlayerHandSplit().get(1);	//second player card
+		int playerHandSize= gameBoard.getPlayerHandSplit().size(); //the size of the hand being played
+	
+		//if the player has split the cards then change
+		//the playerHandSize and first and second
+		//player cards accordingly
+		if (gameBoard.handHasSplit()){
+			//change the size of the hand to the size of the split hand
+			playerHandSize = gameBoard.getPlayerHandSplit().size();
+			// set first two cards to the split hand that is
+			// being acted upon so that we can later determine
+			// if there is a soft total
+			playerCardOne = gameBoard.getPlayerHandSplit().get(0);
+			playerCardTwo = gameBoard.getPlayerHandSplit().get(1);
+		} 
+		
+		//checks to see if the player has two cards
+		//and they are a pair
+		if ((playerHandSize == 2) && (gameBoard.getPlayer().hasPair(false))) {
+			//gets the point value of one of the cards of the pair
+			int playerCardValue = playerCardOne.getCardRank().getCardPoints();
+			
+			//sets playerHand to the correct bin for the strategy
+			switch(playerCardValue) {
+				case 2: 
+				case 3:
+					playerHand = "2,2-3,3";
+					break;
+				case 4: 
+					playerHand = "4,4";
+					break;
+				case 5:
+					playerHand = "5,5";
+					break;
+				case 6: 
+					playerHand = "6,6";
+					break;
+				case 7:
+					playerHand = "7,7";
+					break;
+				case 8: 
+					playerHand = "8,8";
+					break;
+				case 9:
+					playerHand = "9,9";
+					break;
+				case 10: 
+					playerHand = "10,10";
+					break;
+				case 11:
+					playerHand = "A,A";
+					break;
+				default:
+					break;
+			}
+		} else
+			//checks to see if one card is an Ace for a soft total if
+			//there are only two cards in the hand
+			if ((playerHandSize == 2) && (playerCardOne.getCardRank() == Rank.ACE)) {
+				//checks the value of the other card and sets 
+				//the correct string value for the playerHand
+				//for the strategy
+				switch (playerCardTwo.getCardRank().getCardPoints()) {
+					case 2:
+					case 3:
+						playerHand = "A,2–A,3";
+						break;
+					case 4:
+					case 5:
+						playerHand = "A,4-A,5";
+						break;
+					case 6:
+						playerHand = "A,6";
+						break;
+					case 7:
+						playerHand = "A,7";
+						break;
+					case 8:
+					case 9:
+						playerHand = "A,8-A,9";
+						break;
+					default:
+						break;
+				}
+			} else {
+				//determine the total value of the player hand
+				//and set the playerHand string to that value
+				//for the strategy
+				switch (gameBoard.getPlayerHandValue()) {
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+						playerHand = "5-8";
+						break;
+					case 9:
+						playerHand = "9";
+						break;
+					case 10:
+						playerHand = "10";
+						break;
+					case 11:
+						playerHand = "11";
+						break;
+					case 12: 
+						playerHand = "12";
+						break;
+					case 13:
+					case 14:
+						playerHand = "13-14";
+						break;
+					case 15:
+						playerHand = "15";
+						break;
+					case 16:
+						playerHand = "16";
+						break;
+					case 17:
+					case 18:
+					case 19:
+					case 20:
+						playerHand = "17-20";
+						break;
+					default:
+						break;
+				}
+			}	
+		// update the strategy (GameAction) for this playerHand/dealerFaceUpCard combination
+		strategy.setGameActionForHands(playerHand, dealerFaceUpCard, desiredAction);
+	}
 
 	/**
      * paint()
