@@ -34,6 +34,10 @@ import controller.Strategy;
 
 /**
  * @author Allie Miller
+ * 
+ * WelcomePanel is a Panel that welcomes the player to the app,
+ * gives a brief purpose of the application, and let's the user
+ * either quit, move to the PlayPanel, or to the InstructionPanel
  *
  */
 public class WelcomePanel extends BPanel implements ActionListener{
@@ -46,13 +50,9 @@ public class WelcomePanel extends BPanel implements ActionListener{
 	public void init() {
 		
 		// set the size of this panel
-
-		//setPreferredSize(new Dimension(800, 800));
 		setPreferredSize(new Dimension(1000, 800));
-
-		Strategy gameStrategy = new Strategy();
-		properties.put("Game Strategy", gameStrategy);
-
+		
+		// set Layout
 		setLayout(new BorderLayout());
 		    	
 		// make the input buttons
@@ -66,42 +66,28 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		// add the button panel
 		add(buttonsPanel, BorderLayout.SOUTH);
 
-		Panel instructionsPanel = new Panel();
+		//make panel for the background
+		Panel backgroundPanel = new Panel();
 
-		instructionsPanel.setLayout(new BorderLayout());
+		backgroundPanel.setLayout(new BorderLayout());
 		
 		//create and add the background image
 		JLabel background = new JLabel(new ImageIcon("images/welcomePageImage.png"));
-		instructionsPanel.add(background);
-		//background.setPreferredSize(new Dimension(100,100));
+		backgroundPanel.add(background);
+		
 		background.setVisible(true);
-		add(instructionsPanel, BorderLayout.CENTER);
-		//instructionsPanel.add(appInstructions = new JTextArea(), BorderLayout.CENTER);
-
-/*
-		appInstructions.setEditable(false);
-		appInstructions.setText("Welcome! \n \n" +
-				" Whether you are new to gambling or are a well-seasoned gambler, \n " +
-				"this application will teach you how to safely gamble. \n " +
-				"Gambling can be a fun, harmless acivity when approached in the \n " +
-				"right way. \n \n" +
-				" This application will show you that less is more when it comes to gambling. \n " +
-				"In other words, this application will teach you to quit while you are ahead \n " +
-				"and steer you away from gambling addiction. \n \n" +
-				" To begin, you will manually play up to eight games of BlackJack \n " +
-				"with the option of changing your bet, and changing your \"holding\" \n " +
-				"and \"hitting\" values for each game. You will next be given the \n " +
-				"statistics of the eight games played, such as your average holding value, wins, and losses." +
-				"\n You will then be instructed to either use these values as your \"strategy\" for a specified" +
-				"\n amount of games automatically played. The results from these games will be displayed \n " +
-				"so that you may see the monetary outcome of an excess amount of gambling.");
-
-		//add(instructionsPanel, BorderLayout.NORTH);
-		 * 
-		 */
+		add(backgroundPanel, BorderLayout.CENTER);
+		
 	
 	}
 
+	/**
+	 * initializeInputButtons()
+	 * 
+	 * initializes buttons
+	 * @return
+	 * @throws HeadlessException
+	 */
 	private Panel initializeInputButtons() throws HeadlessException {
 
 		// a panel for the buttons for fun
@@ -121,6 +107,11 @@ public class WelcomePanel extends BPanel implements ActionListener{
 
 	}
 
+	/**
+	 * actionPerformed()
+	 * Listens for the click events for each button and adds the correct
+	 * panel accordingly, or exits
+	 */
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == exitButton) {
 			System.exit(0);
