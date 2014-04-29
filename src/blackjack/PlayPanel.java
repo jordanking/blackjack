@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.RenderingHints;
@@ -85,7 +86,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	Panel buttonsPanel;
+	ButtonsPanel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -206,10 +207,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private Panel initializeInputButtons() throws HeadlessException {
+	private ButtonsPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		ButtonsPanel buttonsPanel = new ButtonsPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
