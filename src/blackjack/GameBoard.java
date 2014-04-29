@@ -314,6 +314,7 @@ public class GameBoard  {
 			resolveMain();
 
 			// still a successful hit
+			System.out.println("BUST");
 			return true;
 
 		}
