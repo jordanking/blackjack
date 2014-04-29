@@ -21,7 +21,10 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,20 +43,23 @@ import controller.Strategy;
  *
  */
 @SuppressWarnings("serial")
-public class SettingsPanel extends BPanel implements ActionListener{
-	// list of strategies for each dealer + player hand combination for the game
-	private Strategy gameStrategy; // game strategy 
-	Button setStrategyButton, submit; // button that setsGameStrategy
-	Button backButton; // button to go back a screen
-	Button exitButton; // button to exit
-	Panel buttonsPanel; // panel for the button
-	JTextArea title, salaryTitle;
-	JTextField salary;
-	String mySalary;
+public class SettingsPanel extends BPanel implements ActionListener, KeyListener{
+	
+	private Strategy gameStrategy; 
+	Integer betValue;
+	JButton setStrategyButton, submit; 
+	Button backButton; 
+	Button exitButton; 
+	Panel buttonsPanel; 
+	JTextArea title, salaryTitle, betTitle;
+	JTextField salary, bet;
+	JComboBox<String> betComboBox;
+	String mySalary, betNumber;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
 					  "6,6", "5,5", "4,4", "2,2-3,3"};
+	String[] betValueString = {"-", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"};
 	
 	
 	/**
@@ -65,23 +71,50 @@ public class SettingsPanel extends BPanel implements ActionListener{
 
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
+		//images for the x and y axis labels of the table
+		JLabel dealerHandText = new JLabel(new ImageIcon("images/DealerHandText.jpg"));
+		JLabel playerHandText = new JLabel(new ImageIcon("images/PlayerHandText.jpg"));
+		
+		playerHandText.setSize(50, 300);
+		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
 		title = new JTextArea("Settings");
 		title.setFont(new Font("Times", Font.BOLD, 20));
 		title.setEditable(false);
 		
-		salary = new JTextField(20);
+		salary = new JTextField(10);
+		betComboBox = createBetOptions();
 
 		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
-
+		betTitle = new JTextArea("How much do you want to bet?");
+		
+		betTitle.setEditable(false);
 		salaryTitle.setEditable(false);
 
-		submit = new Button("Submit Wage");
+		submit = new JButton("Submit Values");
 		submit.addActionListener(this);
 		salary.addActionListener(this);
+		submit.addKeyListener(this);
+		salary.setFocusable(true);
+		betComboBox.setFocusable(true);
+		setFocusable(true);
+		
 				
 		setLayout(new BorderLayout());
+		
+		//Panels for the axes labels
+		Panel xAxisPanel = new Panel();
+		Panel yAxisPanel = new Panel();
+		
+		// add the x and y axes labels and set them visible
+		yAxisPanel.add(playerHandText);
+		add(yAxisPanel,BorderLayout.WEST);
+		yAxisPanel.setVisible(true);
+		
+		xAxisPanel.add(dealerHandText);
+		add(xAxisPanel, BorderLayout.NORTH);
+		xAxisPanel.setVisible(true);
 				
 		//make input buttons
 		try {
@@ -104,19 +137,28 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
 		
 		
-		add(title, BorderLayout.NORTH);
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
+		salaryPanel.add(betTitle);
+		salaryPanel.add(betComboBox);
 		salaryPanel.add(submit);
-		salaryPanel.setFocusable(true);
+		submit.setFocusable(true);
 
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
 		tables.add(pairsScrollPane);
-		tables.add(salaryPanel);
+		//tables.add(salaryPanel);
 		add(tables, BorderLayout.CENTER);
 		// add the button panel
-		add(buttonsPanel, BorderLayout.SOUTH);
+		
+		//panel for the south border that holds the salary and bet info (salaryPanel)
+		//as well as the buttonsPanel
+		Panel southBorderPanel = new Panel();
+		southBorderPanel.setLayout((LayoutManager) new BoxLayout(southBorderPanel, BoxLayout.Y_AXIS));
+		
+		southBorderPanel.add(salaryPanel);
+		southBorderPanel.add(buttonsPanel);
+		add(southBorderPanel, BorderLayout.SOUTH);
 
 		
 		
@@ -136,11 +178,23 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		  * draws the table for the hard totals. 
 		  */
 		
+		Boolean isPair = false;
+		if (cards == pairs){
+			isPair = true;
+		}
+		
 		StrategyTableModel model = new StrategyTableModel(makeStrategyArray(cards));
 		JTable strategy = new JTable(model);
 		
-		for (int i = 0; i < 10; i++){
-			createOptions(strategy, strategy.getColumnModel().getColumn(i));
+		if (isPair == false){
+			for (int i = 0; i < 10; i++){
+				createOptions(strategy, strategy.getColumnModel().getColumn(i));
+			}
+		}
+		else{
+			for (int i = 0; i < 10; i++){
+				createPairOptions(strategy, strategy.getColumnModel().getColumn(i));
+			}
 		}
 		
 		strategy.setRowSelectionAllowed(false);
@@ -230,6 +284,20 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		strategyOption.addItem(GameAction.STAND);
 		strategyOption.addItem(GameAction.DOUBLE);
 		strategyOption.addItem(GameAction.SURRENDER);
+		
+		column.setCellEditor(new DefaultCellEditor(strategyOption));
+		
+		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		renderer.setToolTipText("Click to choose action");
+		column.setCellRenderer(renderer);
+	}
+	
+	public void createPairOptions(JTable Table, TableColumn column){
+		JComboBox<GameAction> strategyOption = new JComboBox<GameAction>();
+		strategyOption.addItem(GameAction.HIT);
+		strategyOption.addItem(GameAction.STAND);
+		strategyOption.addItem(GameAction.DOUBLE);
+		strategyOption.addItem(GameAction.SURRENDER);
 		strategyOption.addItem(GameAction.SPLIT);
 		
 		column.setCellEditor(new DefaultCellEditor(strategyOption));
@@ -237,6 +305,14 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setToolTipText("Click to choose action");
 		column.setCellRenderer(renderer);
+	}
+	
+	public JComboBox<String> createBetOptions(){
+		JComboBox<String> comboBox = new JComboBox<String>(betValueString);
+		comboBox.setSelectedIndex(0);
+		comboBox.addActionListener(this);
+		
+		return comboBox;
 	}
 
 	
@@ -256,7 +332,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// make buttons
-		setStrategyButton = new Button("Set Strategy");
+		setStrategyButton = new JButton("Set Strategy");
 		backButton = new Button("Back");
 		exitButton = new Button("Exit");
 		
@@ -302,16 +378,35 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		}
 		
 		if(event.getSource() == submit){
-			if(salary.getText().trim().isEmpty()){
-				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
+			if(salary.getText().trim().isEmpty() || betNumber == "-"){
+				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
 			}
 			else{
 				mySalary = salary.getText();
+				betValue = Integer.parseInt(betNumber);
 				properties.put("Salary", mySalary);
-				salary.removeAll();
+				properties.put("Bet Value", betValue);
+				System.out.println(properties.get("Salary") + " " + properties.get("Bet Value"));
+				JOptionPane.showMessageDialog(null, "Values Entered.", "Blackjack", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
+	
+		
+		if(event.getSource() == betComboBox){
+			JComboBox<String> cb = (JComboBox<String>) event.getSource();
+			betNumber = (String) cb.getSelectedItem();
+		}
 	}
+	
+	public void keyPressed(KeyEvent event){
+		if(event.getKeyCode() == KeyEvent.VK_ENTER){
+			submit.doClick();
+		}
+	}
+	
+	public void keyTyped(KeyEvent event){}
+	
+	public void keyReleased(KeyEvent event){} 
 	
 	/**
 	 * StrategyTableModel
@@ -410,6 +505,6 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
 		    }
 		}
-}
+	}
 
 
