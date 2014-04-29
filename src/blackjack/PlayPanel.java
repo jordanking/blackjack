@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.RenderingHints;
@@ -35,7 +36,7 @@ import javax.swing.Timer;
  * Panel for manual inputs from player.
  * 
  * @author Kevin Tian
- * Modified version of dummy pannel written up by Jordan King and Allie Miller.
+ * Modified version of dummy panel written up by Jordan King and Allie Miller.
  */
 @SuppressWarnings("serial")
 public class PlayPanel extends BPanel implements Runnable, ActionListener {
@@ -85,7 +86,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	/**
 	 * Panel for the buttons DO NOT CHANGE TO JPANEL
 	 */
-	Panel buttonsPanel;
+	ButtonsPanel buttonsPanel;
 	
 	/**
 	 * The buttons
@@ -206,10 +207,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 	 * @throws HeadlessException
 	 * @since 1.0
 	 */
-	private Panel initializeInputButtons() throws HeadlessException {
+	private ButtonsPanel initializeInputButtons() throws HeadlessException {
 		
 		// a panel for the buttons for fun
-		Panel buttonsPanel = new Panel();
+		ButtonsPanel buttonsPanel = new ButtonsPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
 		// Make the buttons!
@@ -711,6 +712,9 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
 		standButton.setVisible(false);
 		splitButton.setVisible(false);
 		doubleDownButton.setVisible(false);
+		hitSplitButton.setVisible(false);
+		standSplitButton.setVisible(false);
+		doubleDownSplitButton.setVisible(false);
 		surrenderButton.setVisible(false);
 		handButton.setVisible(false);
 		dealButton.setVisible(false);
@@ -745,9 +749,8 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case DEAL:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		// show split if cards are equal
-    		if (gameBoard.getPlayerHand().get(0).getCardRank() 
-    				== gameBoard.getPlayerHand().get(1).getCardRank()){
+    		// show split if cards are splittable
+    		if (gameBoard.getPlayer().hasPair(gameBoard.isOnlySplitOnSameRank())){
     			splitButton.setVisible(true);
     		}
     		doubleDownButton.setVisible(true);
@@ -762,40 +765,47 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	case SPLIT:
     		hitButton.setVisible(true);
     		standButton.setVisible(true);
-    		doubleDownButton.setVisible(true);
+    		if (gameBoard.isDoubleAllowedAfterSplit()) {
+    			doubleDownButton.setVisible(true);
+    		}
     		break;
     	
-    	case RESOLVED:
     	case END: 
-    		
-    		// determine which buttons are visible
-        	// based off split hand state
-        	switch(gameBoard.getSplitHandState()) {
-        	    		
-        		case SPLIT: 
-        	    	hitSplitButton.setVisible(true);
-        			standSplitButton.setVisible(true);
-        			doubleDownSplitButton.setVisible(true);
-        			break;
-        				
-        	    case HIT:
-        	    	hitSplitButton.setVisible(true);
-        	    	standSplitButton.setVisible(true);
-        	    	break;
-        	    
-        	    	
-        	    // if at end for both states
-        	    // or at end for first state 
-        	    // and none for second
-        	    default:
-        	    	handButton.setVisible(true);
-        	    	break;
-        	    }
+    		// if both states have reached the end
+    		if (gameBoard.getSplitHandState() == GameState.END) {
+    			handButton.setVisible(true);
+    		}
         	break;
     		
     	default:
     		break;
     	}
+    	
+    	// determine which buttons are visible
+    	// based off split hand state
+    	switch(gameBoard.getSplitHandState()) {
+    	    		
+    		case SPLIT: 
+    	    	hitSplitButton.setVisible(true);
+    			standSplitButton.setVisible(true);
+    			if (gameBoard.isDoubleAllowedAfterSplit())
+    			{
+    				doubleDownSplitButton.setVisible(true);
+    			}
+    			break;
+    				
+    	    case HIT:
+    	    	hitSplitButton.setVisible(true);
+    	    	standSplitButton.setVisible(true);
+    	    	break;
+    	    
+    	    	
+    	    // if at end for both states
+    	    // or at end for first state 
+    	    // and none for second
+    	    default:
+    	    	break;
+    	    }
     	
     }
     
@@ -806,7 +816,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
      */
     private void storeProperties() {
     	properties.put("AverageHold", 17);
-    	properties.put("TotalWins", gameBoard.getTotalWins());
+
     	properties.put("TotalLosses", gameBoard.getTotalLosses());
     }
     

@@ -20,9 +20,11 @@ import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -40,7 +42,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	Button backButton; // button to go back a screen
 	Button exitButton; // button to exit
 	Panel buttonsPanel; // panel for the button
-	JTextArea title;
+	JTextArea title, salaryTitle;
+	private final static String newline = "\n";
+	JTextField salary;
+	String mySalary;
 	String[] hardTotal = {"17-20", "16", "15", "13-14", "12", "11", "10", "9", "5-8"};
 	String[] softTotal = {"A,8-A,9", "A,7", "A,6", "A,4-A,5", "A,2-A,3"};
 	String[] pairs = {"A,A", "10,10", "9,9", "8,8", "7,7", 
@@ -50,9 +55,7 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	/**
 	 * 
 	 */
-	public SettingsPanel() {
-		// TODO Auto-generated constructor stub
-	}
+	public SettingsPanel() {}
 
 	public void init(){
 		gameStrategy = (Strategy) properties.get("Game Strategy");
@@ -62,6 +65,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		title = new JTextArea("Settings");
 		title.setFont(new Font("Times", Font.BOLD, 20));
 		title.setEditable(false);
+		
+		salary = new JTextField(20);
+		salaryTitle = new JTextArea("Please Enter Your Salary: ");
+		salary.addActionListener(this);
 				
 		setLayout(new BorderLayout());
 				
@@ -73,8 +80,10 @@ public class SettingsPanel extends BPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		
-		Panel panel = new Panel();
-		panel.setLayout((LayoutManager) new BoxLayout(panel, BoxLayout.Y_AXIS));
+		Panel tables = new Panel();
+		Panel salaryPanel = new Panel();
+		salaryPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
+		tables.setLayout((LayoutManager) new BoxLayout(tables, BoxLayout.Y_AXIS));
 		
 		JTable hardStrategy = drawTable(hardTotal);
 		JTable softStrategy = drawTable(softTotal);
@@ -85,10 +94,13 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		
 		add(title, BorderLayout.NORTH);
 		add(buttonsPanel, BorderLayout.SOUTH);
-		panel.add(hardScrollPane);
-		panel.add(softScrollPane);
-		panel.add(pairsScrollPane);
-		add(panel);
+		salaryPanel.add(salaryTitle);
+		salaryPanel.add(salary);
+		tables.add(hardScrollPane);
+		tables.add(softScrollPane);
+		tables.add(pairsScrollPane);
+		tables.add(salaryPanel);
+		add(tables);
 		// add the button panel
 		
 		
@@ -249,9 +261,14 @@ public class SettingsPanel extends BPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == setStrategyButton){
-			properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
-			// go to autoPanel
-			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
+			if(properties.get("Salary") == null){
+				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
+			}else{
+				properties.put("Game Strategy", gameStrategy); // add gameStrategy to properties object
+				properties.put("Salary", mySalary);
+				// go to autoPanel
+				panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "blackjack.AutoPanel"));
+			}
 		}
 		if(event.getSource() == exitButton) {
 			System.out.println("exit");
@@ -260,6 +277,11 @@ public class SettingsPanel extends BPanel implements ActionListener{
 		if(event.getSource() == backButton) {
 			//go back a screen
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "blackjack.StatsPanel"));
+		}
+		if(event.getSource() == salary){
+			mySalary = salary.getText();
+			salary.selectAll();
+			
 		}
 	}
 	
