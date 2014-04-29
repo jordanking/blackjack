@@ -845,6 +845,15 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
    		
    		// Draw the state
    		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
+   		
+   		// draw the busted
+        if (gameBoard.getPlayerHandValue()>21){
+        	graphicsObject2d.setFont(new Font("Times", Font.BOLD, 50));
+            graphicsObject2d.setColor(Color.magenta);
+            graphicsObject2d.drawString("BUSTED", 200, 100);
+            
+        }
+  
         
         // Synchronize the graphics state - now is the the to draw! (more magic)
         Toolkit.getDefaultToolkit().sync();
