@@ -46,6 +46,11 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
 	private boolean simulationOn = true;
 	
 	/**
+	 * constant for computations
+	 */
+	public final static int hoursInWorkYear = 2080;
+	
+	/**
 	 * Indicates if simulation is paused.
 	 */
 	private boolean simulationPaused = false;
@@ -412,18 +417,30 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * 
      * @return timeSpentOnGame
      */
-    public int calculateLostHours(){
+    public double calculateLostHours(){
     	
     	//calculate how much the player makes per hour from actual job
-    	int salary = (Integer) properties.get("Salary");
-    	int hoursInWorkYear = 2080;
-    	int dollarsPerHour = salary/hoursInWorkYear;
+		double salary = 0;
+		
+		try {
+			salary = Double.parseDouble( (String) properties.get("Salary"));
+		} catch (NumberFormatException e) {
+			
+			e.printStackTrace();
+		}
+    	
+    	// see if we failed to get a salary
+    	if (salary == 0) {
+    		salary = 10;
+    	}
+    	
+    	double dollarsPerHour = salary/hoursInWorkYear;
     	
     	//get player's losses from the game
     	int playersLosses = gameBoard.getLosses();
     	
     	//calculate how much work time player spent on game
-    	int timeSpentOnGame = playersLosses/dollarsPerHour;
+    	double timeSpentOnGame = playersLosses/dollarsPerHour;
  
     	return timeSpentOnGame;
     }
@@ -436,8 +453,8 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
      * @return none
      */
     private void drawLosses(Graphics2D graphicsObject2d){
-    	int lostHours = calculateLostHours();
-    	graphicsObject2d.drawString("You have lost: " + lostHours + "hours you could have been at work", 400, 600);
+    	double lostHours = calculateLostHours();
+    	graphicsObject2d.drawString("You have lost: " + Double.toString(lostHours) + "hours you could have been at work", 400, 600);
     }
     
     /**

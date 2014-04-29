@@ -37,7 +37,7 @@ import javax.swing.table.TableColumn;
  *
  */
 @SuppressWarnings("serial")
-public class SettingsPanel extends BPanel implements ActionListener, KeyListener{
+public class SettingsPanel extends BPanel implements ActionListener{
 	// list of strategies for each dealer + player hand combination for the game
 	private Strategy gameStrategy; // game strategy 
 	Button setStrategyButton, submit; // button that setsGameStrategy
@@ -59,7 +59,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	public SettingsPanel() {}
 
 	public void init(){
-		//gameStrategy = new Strategy();
+
 		gameStrategy = (Strategy) properties.get("Game Strategy");
 		
 		// set the size of this panel
@@ -72,7 +72,6 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		salaryTitle = new JTextArea("Please Enter Your Salary: ");
 		submit = new Button("Submit Salary");
 		submit.addActionListener(this);
-		submit.addKeyListener(this);
 		salary.addActionListener(this);
 				
 		setLayout(new BorderLayout());
@@ -97,18 +96,21 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		JScrollPane softScrollPane = new JScrollPane(softStrategy);
 		JScrollPane pairsScrollPane = new JScrollPane(pairsStrategy);
 		
+		
 		add(title, BorderLayout.NORTH);
-		add(buttonsPanel, BorderLayout.SOUTH);
 		salaryPanel.add(salaryTitle);
 		salaryPanel.add(salary);
 		salaryPanel.add(submit);
 		salaryPanel.setFocusable(true);
+
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
 		tables.add(pairsScrollPane);
 		tables.add(salaryPanel);
-		add(tables);
+		add(tables, BorderLayout.CENTER);
 		// add the button panel
+		add(buttonsPanel, BorderLayout.SOUTH);
+
 		
 		
 	}
@@ -302,23 +304,6 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 			}
 		}
 	}
-	
-	public void keyPressed(KeyEvent e){}
-	
-	public void keyTyped(KeyEvent e){
-		if (e.getKeyCode() == KeyEvent.VK_ENTER){
-			if(salary.getText().trim().isEmpty()){
-				JOptionPane.showMessageDialog(null,"Please enter your salary.","Error",JOptionPane.OK_OPTION);
-			}
-			else{
-				mySalary = salary.getText();
-				properties.put("Salary", mySalary);
-				salary.selectAll();
-			}
-		}
-	}
-	
-	public void keyReleased(KeyEvent e){}
 	
 	/**
 	 * StrategyTableModel
