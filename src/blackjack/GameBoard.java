@@ -670,7 +670,7 @@ public class GameBoard  {
 		onlySplitOnSameRank = false;
 		
 		// less house edge
-		doubleAllowedAfterSplit = false;
+		doubleAllowedAfterSplit = true;
 		
 		// best house edge
 		numberOfDecks = 8;
