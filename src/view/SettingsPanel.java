@@ -107,7 +107,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	 */
 	
 	public void showInitMessage(){
-		JOptionPane.showMessageDialog(null,"You are about to our interpretation of your"
+		JOptionPane.showMessageDialog(null,"You are about see to our interpretation of your"
 				+ " strategy.  If you think you are even smarter, you can change the value \n"
 				+ " of any cell by clicking on it.  Then you can see a simulation of your"
 				+ " choices.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
