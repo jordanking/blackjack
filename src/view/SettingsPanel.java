@@ -21,18 +21,16 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -77,7 +75,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		setLayout(new BorderLayout());
 		
-		Panel tables = new Panel();
+		JPanel tables = new JPanel();
 		Panel northPanel = new Panel();
 		Panel southPanel = new Panel();
 		Panel westPanel = new Panel();
@@ -201,8 +199,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		return northPanel;
 	}
 	
-	public Panel drawTablePanel(){
-		Panel tables = new Panel();
+	public JPanel drawTablePanel(){
+		JPanel tables = new JPanel();
 		tables.setLayout((LayoutManager) new BoxLayout(tables, BoxLayout.Y_AXIS));
 		
 		JTable hardStrategy = drawTable(hardTotal);
@@ -656,6 +654,8 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	       		cellComponent.setBackground(Color.YELLOW);
 	       	} else if(table.getValueAt(row, column).toString() == "SURRENDER"){
 	       		cellComponent.setBackground(Color.WHITE);
+	       	}else{
+	       		cellComponent.setBackground(Color.LIGHT_GRAY);
 	       	}
 	        
 	        return cellComponent;
