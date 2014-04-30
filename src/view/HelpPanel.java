@@ -60,7 +60,7 @@ public class HelpPanel extends BPanel implements ActionListener{
 		instructionsPanel.setLocation(300, 300);
 		
 		//create and add the background image
-		JLabel background = new JLabel(new ImageIcon("images/helpPanelImage.png"));
+		JLabel background = new JLabel(new ImageIcon("images/helpPanelImage.jpg"));
 		instructionsPanel.add(background);
 				
 		background.setVisible(true);
