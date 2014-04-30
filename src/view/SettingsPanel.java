@@ -19,6 +19,7 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -210,10 +211,14 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		JTable hardStrategy = drawTable(hardTotal);
 		JTable softStrategy = drawTable(softTotal);
 		JTable pairsStrategy = drawTable(pairs);
-		
+			
 		hardStrategy.setOpaque(false);
 		softStrategy.setOpaque(false);
 		pairsStrategy.setOpaque(false);
+		
+		hardStrategy.setFillsViewportHeight(true);
+		softStrategy.setFillsViewportHeight(true);
+		pairsStrategy.setFillsViewportHeight(true);
 		
 		JScrollPane hardScrollPane = new JScrollPane(hardStrategy);
 		JScrollPane softScrollPane = new JScrollPane(softStrategy);
@@ -222,10 +227,12 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		hardScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
 		softScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
 		pairsScrollPane.getViewport().setBackground(GREEN_BACKGROUND);
-
+		
 		tables.add(hardScrollPane);
 		tables.add(softScrollPane);
 		tables.add(pairsScrollPane);
+		tables.setBackground(GREEN_BACKGROUND);
+		tables.setBorder(BorderFactory.createLineBorder(GREEN_BACKGROUND));
 		
 		return tables;
 	}
@@ -500,7 +507,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		if(event.getSource() == submitButton){
 			if(salaryField.getText().trim().isEmpty() || betNumber == "-"){
-				JOptionPane.showMessageDialog(null,"Have you entered both values?","Blackjack",JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null,"Please enter both values.","Blackjack",JOptionPane.OK_OPTION);
 			}
 			else{
 
