@@ -13,8 +13,11 @@ import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 
@@ -34,9 +37,10 @@ public class HelpPanel extends BPanel implements ActionListener{
 	public void init() {
 		setBackground(Color.white);
 		
-		totalWins = (int) properties.get("Total Wins");
-		totalLosses = (int) properties.get("Total Losses");
-		hoursLost = (int) properties.get("Hours Lost");
+//		totalWins = (int) properties.get("Total Wins");
+//		totalLosses = (int) properties.get("Total Losses");
+//		hoursLost = (int) properties.get("Hours Lost");
+		
 		
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
@@ -55,6 +59,23 @@ public class HelpPanel extends BPanel implements ActionListener{
 		instructionsPanel.setLayout(borderLayout);
 		instructionsPanel.setLocation(300, 300);
 		
+		//create and add the background image
+		JLabel background = new JLabel(new ImageIcon("images/helpPanelImage.png"));
+		instructionsPanel.add(background);
+				
+		background.setVisible(true);
+		add(instructionsPanel, BorderLayout.CENTER);
+		
+//		JLabel winsLabel = new JLabel("Wins: " + totalWins);
+//		JLabel lossesLabel = new JLabel("Losses: " + totalLosses);
+//		JLabel hoursLabel = new JLabel("Hours Lost: " + hoursLost);
+//		
+//		instructionsPanel.add(winsLabel);
+//		instructionsPanel.add(lossesLabel);
+//		instructionsPanel.add(hoursLabel);
+		
+		
+		/*
 		instructionsPanel.add(helpInstructions = new JTextArea(), BorderLayout.CENTER);
 		
 		
@@ -82,8 +103,10 @@ public class HelpPanel extends BPanel implements ActionListener{
 		
 		helpInstructions.setAlignmentX(CENTER_ALIGNMENT);
 		helpInstructions.setAlignmentY(CENTER_ALIGNMENT);
+		*/
 		
-		instructionsPanel.add(buttonsPanel, BorderLayout.AFTER_LAST_LINE);
+		//instructionsPanel.add(buttonsPanel, BorderLayout.AFTER_LAST_LINE);
+		instructionsPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
