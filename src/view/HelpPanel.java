@@ -36,12 +36,7 @@ public class HelpPanel extends BPanel implements ActionListener{
 	
 	public void init() {
 		setBackground(Color.white);
-		
-		totalWins = (int) properties.get("Total Wins");
-		totalLosses = (int) properties.get("Total Losses");
-		hoursLost = (int) properties.get("Hours Lost");
-		
-		
+				
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
@@ -61,57 +56,15 @@ public class HelpPanel extends BPanel implements ActionListener{
 		
 		//create and add the background image
 		JLabel background = new JLabel(new ImageIcon("images/helpPanelImage.jpg"));
-		instructionsPanel.add(background);
-				
+		instructionsPanel.add(background);		
 		background.setVisible(true);
 		add(instructionsPanel, BorderLayout.CENTER);
-		
-		JLabel winsLabel = new JLabel("Wins: " + totalWins);
-		JLabel lossesLabel = new JLabel("Losses: " + totalLosses);
-		JLabel hoursLabel = new JLabel("Hours Lost: " + hoursLost);
-		
-		instructionsPanel.add(winsLabel, BorderLayout.NORTH);
-		instructionsPanel.add(lossesLabel,BorderLayout.NORTH);
-		instructionsPanel.add(hoursLabel, BorderLayout.NORTH);
-		
-		
-		/*
-		instructionsPanel.add(helpInstructions = new JTextArea(), BorderLayout.CENTER);
-		
-		
-		helpInstructions.setEditable(false);
-		helpInstructions.setText("Congratulations! \n \nYou have successfully " +
-				"made your first step to safe gambling. \n \n" +
-				"UNDERSTANDING THE PROBLEM \n \n" +
-				"The first step to gambling addiction recovery is to understand \n" +
-				"the problem. Not only can gambling addiction lead to excessive \n" +
-				"losses in time and money, but it can also lead to significant \n" +
-				"strains on relationships and emotion. \n \n" +
-				"YOU MAY HAVE A GAMBLING ADDICTION IF YOU: \n \n" +
-				"- Lie to others about gambling \n" +
-				"- Cannot control your gambling habits \n" +
-				"- Gamble regardless of whether or not you have the money \n" +
-				"- Have worried loved ones \n \n" +
-				"GETTING HELP: \n \n" +
-				"- Gamblers Anonymous: A 12-step recovery program with the help of a sponsor. \n" +
-				"- Cognitive-behavioral Therapy: Teaching yourself to control the need to \n" +
-				"gamble with the help of a therapist. \n \n" +
-				"More Resources: \n \n" +
-				"http://www.helpguide.org/mental/gambling_addiction.php \n" +
-				"http://www.gamblersanonymous.org/ga/ \n" +
-				"http://www.ncpgambling.org/i4a/pages/index.cfm?pageid=4332 \n");
-		
-		helpInstructions.setAlignmentX(CENTER_ALIGNMENT);
-		helpInstructions.setAlignmentY(CENTER_ALIGNMENT);
-		*/
-		
-		//instructionsPanel.add(buttonsPanel, BorderLayout.AFTER_LAST_LINE);
+				
 		instructionsPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		setLayout(gridBagLayout);
-		
 		
 		gridBagConstraints.anchor = GridBagConstraints.CENTER;
 		gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
