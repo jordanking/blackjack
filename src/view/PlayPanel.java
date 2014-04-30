@@ -633,10 +633,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	graphicsObject2d.setRenderingHint(RenderingHints.KEY_RENDERING,
   	          RenderingHints.VALUE_RENDER_QUALITY);
         
-        // draw background MAYBE DOES NOT WORK
+        // draw background
         drawBackground(graphicsObject2d);
         
-        // draw my stuff
+        // draw my players' cards
         drawDealer(graphicsObject2d);
         drawPlayer(graphicsObject2d);
         drawPlayerSplit(graphicsObject2d);
@@ -693,11 +693,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
         	BufferedImage cardImage = cardImagesMap.get(cardName);
         	
-        	// get coords
+        	//set coordinates for the card image with spacing
     		int x = 310 + 100*index;
     		int y = 160;
     		
-    		
+    		//draw card image
     		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
     		index++;
@@ -738,10 +738,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
         	BufferedImage cardImage = cardImagesMap.get(cardName);
     		    		
-    		// the spacing
+        	//set coordinates for the card image with spacing
     		int x = 100 + 100*index;
     		int y = 350;
     		
+    		//draw card image
     		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
     		
@@ -785,10 +786,11 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     		String cardName = card.getCardRank().toString() + "-" + card.getCardSuit().toString();
         	BufferedImage cardImage = cardImagesMap.get(cardName);
     		    		
-    		// the spacing
+        	//set coordinates for the card image with spacing
     		int x = 100 + 100*index;
     		int y = 500;
     		
+    		//draw card image
     		graphicsObject2d.drawImage(cardImage,x,y,80,120,this);
 
     		
@@ -829,7 +831,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
     	// get the image
     	BufferedImage deckImage = cardImagesMap.get("deck");
 
-    	// the spacing
+    	//set coordinates for the image
     	int x = 910;
     	int y = 160;
     	
@@ -867,7 +869,7 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
    		// Draw the state
    		graphicsObject2d.drawString(gameBoard.getMainHandState().toString(), 5, 75);
    		
-   		// draw the busted
+   		// draw the "busted" notification
         if (gameBoard.getPlayerHandValue()>21){
         	graphicsObject2d.setFont(new Font("Times", Font.BOLD, 50));
             graphicsObject2d.setColor(Color.magenta);
@@ -1093,7 +1095,10 @@ public class PlayPanel extends BPanel implements Runnable, ActionListener {
         animator.start();
     } 
 
-    
+    /**
+     * run()
+     * implements thread for panel
+     */
 	@Override
 	public void run() {
         // The timer that draws

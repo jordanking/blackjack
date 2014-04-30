@@ -31,8 +31,11 @@ import javax.swing.JLabel;
 public class HelpPanel extends BPanel implements ActionListener{
 
 	JButton backButton, playAgainButton, exitButton;
-	int totalWins, totalLosses, hoursLost;
 	
+	/**
+	 * init()
+	 * Sets up the visuals for the panel
+	 */
 	public void init() {
 		setBackground(Color.white);
 				
