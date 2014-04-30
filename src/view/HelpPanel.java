@@ -37,9 +37,9 @@ public class HelpPanel extends BPanel implements ActionListener{
 	public void init() {
 		setBackground(Color.white);
 		
-//		totalWins = (int) properties.get("Total Wins");
-//		totalLosses = (int) properties.get("Total Losses");
-//		hoursLost = (int) properties.get("Hours Lost");
+		totalWins = (int) properties.get("Total Wins");
+		totalLosses = (int) properties.get("Total Losses");
+		hoursLost = (int) properties.get("Hours Lost");
 		
 		
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
@@ -66,13 +66,13 @@ public class HelpPanel extends BPanel implements ActionListener{
 		background.setVisible(true);
 		add(instructionsPanel, BorderLayout.CENTER);
 		
-//		JLabel winsLabel = new JLabel("Wins: " + totalWins);
-//		JLabel lossesLabel = new JLabel("Losses: " + totalLosses);
-//		JLabel hoursLabel = new JLabel("Hours Lost: " + hoursLost);
-//		
-//		instructionsPanel.add(winsLabel);
-//		instructionsPanel.add(lossesLabel);
-//		instructionsPanel.add(hoursLabel);
+		JLabel winsLabel = new JLabel("Wins: " + totalWins);
+		JLabel lossesLabel = new JLabel("Losses: " + totalLosses);
+		JLabel hoursLabel = new JLabel("Hours Lost: " + hoursLost);
+		
+		instructionsPanel.add(winsLabel, BorderLayout.NORTH);
+		instructionsPanel.add(lossesLabel,BorderLayout.NORTH);
+		instructionsPanel.add(hoursLabel, BorderLayout.NORTH);
 		
 		
 		/*

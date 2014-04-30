@@ -55,7 +55,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		backgroundPanel.setLayout(new BorderLayout());
 		
 		//create and add the background image
-		JLabel background = new JLabel(new ImageIcon("images/welcomePageImage.png"));
+		JLabel background = new JLabel(new ImageIcon("images/welcomePageImage2.jpg"));
 		backgroundPanel.add(background);
 		
 		background.setVisible(true);
@@ -101,7 +101,7 @@ public class WelcomePanel extends BPanel implements ActionListener{
 		} 
 		if (event.getSource() == getStartedButton)
 		{
-			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.HelpPanel"));
+			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.PlayPanel"));
 		}
 		if (event.getSource() == instructionsButton) {
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.ADD, "view.InstructionsPanel"));
