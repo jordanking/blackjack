@@ -1,7 +1,8 @@
 // 
 // Project 4 
 // Name: Allie Miller, Alex Post, Jordan King, Kevin Tian, Riya Modi
-// E-mail: rm662@georgetown.edu 
+// E-mail: rm662@georgetown.edu, kt493@georgetown.edu, jwk67@georgetown.edu,
+// amm359@georgetown.edu, arp68@georgetown.edu
 // Instructor: Singh 
 // COSC 150 
 // 
@@ -21,11 +22,6 @@
 // http://www.javaworld.com/article/2076917/client-side-java/mpad--a-new-design-and-development-methodology-for-multi-panel-applets.html
 // 
 
-
-
-/**
- * 
- */
 package view;
 
 import java.awt.AWTEvent;
