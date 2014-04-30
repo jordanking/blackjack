@@ -18,6 +18,7 @@
 // Resources:
 // http://stackoverflow.com/questions/9029162/how-do-i-get-the-text-of-a-button-in-java
 // http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html
+// http://www.javaworld.com/article/2076917/client-side-java/mpad--a-new-design-and-development-methodology-for-multi-panel-applets.html
 // 
 
 
@@ -39,6 +40,8 @@ import javax.swing.JApplet;
 
 /**
  * @author Allie Miller
+ * 
+ * BlackJack Applet; manages the Panels for the Blackjack applet
  */
 @SuppressWarnings("serial")
 public class BlackjackApplet extends JApplet implements ActionListener{
