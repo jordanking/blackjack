@@ -4,6 +4,7 @@
 package model;
 
 /**
+ * Use enums to represent the different suits of cards in a deck
  * @author Riya Modi
  *
  */
