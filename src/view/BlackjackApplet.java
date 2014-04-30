@@ -20,7 +20,12 @@
 // http://stackoverflow.com/questions/9029162/how-do-i-get-the-text-of-a-button-in-java
 // http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html
 // http://www.javaworld.com/article/2076917/client-side-java/mpad--a-new-design-and-development-methodology-for-multi-panel-applets.html
-// 
+// http://stackoverflow.com/questions/19125707/simplest-way-to-set-image-as-jpanel-background
+//
+// image resources:
+// http://img.ehowcdn.com/article-new-thumbnail/ehow/images/a02/4c/de/do-handtohand-spread-playing-cards-800x800.jpg 
+// http://solvingthemoneypuzzle.com/wp-content/uploads/2013/09/blackjack.gif
+// https://code.google.com/p/vector-playing-cards/
 
 package view;
 
