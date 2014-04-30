@@ -94,11 +94,15 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	}
 	
 	public void showInitMessage(){
-		JOptionPane.showMessageDialog(null,"You are about to see the \"optimal\" strategy.  If you think you are smarter, you can change the value \n of any cell by clicking on it.  Then you can see a simulation of your choices.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null,"You are about to our interpretation of your"
+				+ " strategy.  If you think you are even smarter, you can change the value \n"
+				+ " of any cell by clicking on it.  Then you can see a simulation of your"
+				+ " choices.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void showHelpMessage(){
-		JOptionPane.showMessageDialog(null,"The simulation will run this strategy. You can change any of the values by clicking on them.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null,"The simulation will run this strategy. You can change"
+				+ " any of the values by clicking on them.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public Panel drawWestPanel(){
