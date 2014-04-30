@@ -495,7 +495,7 @@ public class AutoPanel extends BPanel implements ActionListener, Runnable {
     	Double lostWages = calculateLostWages();
 
     	int money = (int) Math.ceil(lostWages);
-    	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 700);
+    	graphicsObject2d.drawString("You lost " + Integer.toString(money) + " hours of pay!", 300, 610);
 
     }
     

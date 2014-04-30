@@ -43,6 +43,11 @@ import controller.Strategy;
 /**
  * @author Alex Post
  *
+ *Resources: 
+ *
+ *http://www.javalobby.org/articles/jtable/?source=archives
+ *http://stackoverflow.com/questions/11858286/how-to-use-custom-jtable-cell-editor-and-cell-renderer
+ *http://stackoverflow.com/questions/11684903/how-to-add-a-drop-down-menu-to-a-jtable-cell
  */
 @SuppressWarnings("serial")
 public class SettingsPanel extends BPanel implements ActionListener, KeyListener{
@@ -94,6 +99,13 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		showInitMessage();
 	}
 	
+	/**
+	 * showInitMessage()
+	 * 
+	 * This method shows a message before the settings panel actually shows up, telling the user how
+	 * to use the page.
+	 */
+	
 	public void showInitMessage(){
 		JOptionPane.showMessageDialog(null,"You are about to our interpretation of your"
 				+ " strategy.  If you think you are even smarter, you can change the value \n"
@@ -101,10 +113,24 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 				+ " choices.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	/**
+	 * showHelpMessage()
+	 * 
+	 * Shows the popup to help the user use the settings panel
+	 */
+	
 	public void showHelpMessage(){
 		JOptionPane.showMessageDialog(null,"The simulation will run this strategy. You can change"
 				+ " any of the values by clicking on them.", "Strategy", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	/**
+	 * drawWestPanel()
+	 * 
+	 * Draws the panel holding the player hand icon
+	 * 
+	 * @return westPanel The panel to be added to the BPanel
+	 */
 	
 	public Panel drawWestPanel(){
 		Panel westPanel = new Panel();
@@ -117,6 +143,14 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		return westPanel;
 	}
 	
+	/**
+	 * drawNorthPanel()
+	 * 
+	 * This will draw the panel to hold the dealer hand label.
+	 * 
+	 * @return northPanel This is the panel that will be added to the BPanel
+	 */
+	
 	public Panel drawNorthPanel(){
 		Panel northPanel = new Panel();
 
@@ -125,10 +159,6 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 		// images for the x and y axis labels of the table
 		JLabel dealerHandText = new JLabel(new ImageIcon("images/DealerHandText.jpg"));
-		JLabel playerHandText = new JLabel(new ImageIcon("images/PlayerHandText.jpg"));
-		
-		// set jtext size
-		playerHandText.setSize(50, 300);
 		
 		// set the size of this panel
 		setPreferredSize(new Dimension(800, 800));
@@ -136,73 +166,21 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		//set background color to match color of the game table
 		setBackground(GREEN_BACKGROUND);
 		
-		// set title and title font
-		title = new JTextArea("Settings");
-		title.setFont(new Font("Times", Font.BOLD, 20));
-		title.setEditable(false);
-		
-		// create salary field and bet options
-		salaryField = new JTextField(10);
-		betComboBox = createBetOptions();
-		
-		// create jtextareas for salary and bet
-		salaryTitle = new JTextArea("Please Enter Your Hourly Wage: ");
-		betTitle = new JTextArea("How much do you want to bet?");
-		
-		// set editable false
-		betTitle.setEditable(false);
-		salaryTitle.setEditable(false);
-
-
-		submitButton = new JButton("Submit Values");
-		submitButton.addActionListener(this);
-		salaryField.addActionListener(this);
-		submitButton.addKeyListener(this);
-		salaryField.setFocusable(true);
-		betComboBox.setFocusable(true);
-		setFocusable(true);
-		
-		
-		
-		// add action listeners to submit button
-		// and salary field
-		submitButton.addActionListener(this);
-		salaryField.addActionListener(this);
-		
-		// add key listener
-		submitButton.addKeyListener(this);
-		
-		// set border layout
-		setLayout(new BorderLayout());
-		
-		// panels for the axes labels
-		DoubleBufferedPanel xAxisPanel = new DoubleBufferedPanel();
-		DoubleBufferedPanel yAxisPanel = new DoubleBufferedPanel();
-		
-		// add the x and y axes labels and set them visible
-		yAxisPanel.add(playerHandText);
-		add(yAxisPanel,BorderLayout.WEST);
-		yAxisPanel.setVisible(true);
-		
-		xAxisPanel.add(dealerHandText);
-		add(xAxisPanel, BorderLayout.NORTH);
-		xAxisPanel.setVisible(true);
-				
-		//make input buttons
-		try {
-			buttonsPanel = initializeInputButtons();
-		} catch (HeadlessException e) {
-			
-			e.printStackTrace();
-		}
-
-		
 		northPanel.add(dealerHandText);
 		add(northPanel, BorderLayout.NORTH);
 		northPanel.setVisible(true);
 		
 		return northPanel;
 	}
+	
+	/**
+	 * drawTablePanel()
+	 * 
+	 * This method draws each of the tables to be shown on the page.
+	 * 
+	 * @return tables This is the panel that holds the three different tables.  This panel will be added
+	 * 		   to the BPanel
+	 */
 	
 	public JPanel drawTablePanel(){
 		JPanel tables = new JPanel();
@@ -237,12 +215,21 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		return tables;
 	}
 	
+	/**
+	 * This method draws the panel that will be used to hold the buttons at the bottom of the screen.
+	 * 
+	 * @return southPanel The panel to hold the buttons
+	 */
+	
 	public Panel drawSouthPanel(){
+		//Initialize the main panel that will be returned
 		Panel southPanel = new Panel();
+		//Initialize the panel to hold the strategy and bet buttons/text fields
 		Panel salaryPanel = new Panel();
 		
 		Font font = new Font("Verdana", Font.PLAIN, 14);
 		
+		//Initialize the buttons panel
 		buttonsPanel = new Panel();
 		buttonsPanel = initializeInputButtons();
 		
@@ -253,9 +240,11 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		betTitle = new JTextArea("How much do you want to bet?");
 		submitButton = new JButton("Proceed to Simulation");
 		
+		//Make everything green
 		salaryTitle.setBackground(GREEN_BACKGROUND);
 		betTitle.setBackground(GREEN_BACKGROUND);
 		
+		//Make it white so it is visible
 		salaryTitle.setFont(font);
 		salaryTitle.setForeground(Color.WHITE);
 		
@@ -277,6 +266,7 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		betTitle.setEditable(false);
 		salaryTitle.setEditable(false);
 		
+		//make everything focusable so the keyboard can access it
 		submitButton.setFocusable(true);
 		salaryField.setFocusable(true);
 		betComboBox.setFocusable(true);
@@ -341,10 +331,13 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 	
 	
 	/**
-	 * Populates the strategyArray with the players options
+	 * Populates the specific strategyArray with the correct values.  Allows for multiple tables to be
+	 * made because it is possible to pass a specific number of rows.
 	 * 
+	 * @param  cards Takes a string array of cards to use as the number and label for each of the rows
 	 * @return strategyArray The populated strategyArray
 	 */
+	
 	
 	public Object[][] makeStrategyArray(String[] cards){
 		Object[][] strategyArray = new Object[cards.length][11];
@@ -430,6 +423,14 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		Table.setDefaultRenderer(Object.class, renderer);
 	}
 	
+	/**
+	 * This method creates the combo box for the pairs table. The only difference between this method and
+	 * the createOptions() method is that this adds an option for splits.
+	 * 
+	 * @param Table Takes a JTable object for which to add the combo box.
+	 * @param column Takes a column object for which column to focus on at a time.
+	 */
+	
 	public void createPairOptions(JTable Table, TableColumn column){
 		JComboBox<GameAction> strategyOption = new JComboBox<GameAction>();
 		strategyOption.addItem(GameAction.HIT);
@@ -489,6 +490,12 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		
 	}
 	
+	/**
+	 * actionPerformed()
+	 * 
+	 * Gives all of the buttons functionality.
+	 */
+	
 	public void actionPerformed(ActionEvent event){
 		if(event.getSource() == exitButton) {
 			System.out.println("exit");
@@ -504,6 +511,11 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 			properties.put("Salary", myWage);
 			salaryField.removeAll();
 		}
+		
+		/*
+		 * checks to see if the bet field or the salary field is empty.  If they are not empty, it submits the
+		 * values into the properties and proceeds to the auto panel.
+		 */
 		
 		if(event.getSource() == submitButton){
 			if(salaryField.getText().trim().isEmpty() || betNumber == "-"){
@@ -531,6 +543,12 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 			showHelpMessage();
 		}
 	}
+	
+	/**
+	 * keyPressed()
+	 * 
+	 * Allows the buttons on the main panel to be accessed with the keyboard.
+	 */
 	
 	public void keyPressed(KeyEvent event){
 		if(event.getKeyCode() == KeyEvent.VK_ENTER){
@@ -648,6 +666,15 @@ public class SettingsPanel extends BPanel implements ActionListener, KeyListener
 		        gameStrategy.setGameActionForHands(playerHand, col, desiredAction);
 		    }
 		}
+	
+	/**
+	 * CustomRenderer()
+	 * 
+	 * This is a class to enable each cell of the strategy table to change colors as the text changes.
+	 * 
+	 * @author alexpost
+	 *
+	 */
 	
 	class CustomRenderer extends DefaultTableCellRenderer {
 
