@@ -13,12 +13,12 @@ import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
+
 
 
 /**
@@ -30,26 +30,29 @@ import javax.swing.JTextArea;
  */
 public class HelpPanel extends BPanel implements ActionListener{
 
-	JTextArea helpInstructions;
 	JButton backButton, playAgainButton, exitButton;
-	int totalWins, totalLosses, hoursLost;
 	
+	/**
+	 * init()
+	 * Sets up the visuals for the panel
+	 */
 	public void init() {
 		setBackground(Color.white);
 				
 		DoubleBufferedPanel buttonsPanel = new DoubleBufferedPanel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
+		//add the buttons to the screen
 		buttonsPanel.add(playAgainButton = new JButton("Play Again"));
 		buttonsPanel.add(backButton = new JButton("Back"));
 		buttonsPanel.add(exitButton = new JButton("Exit"));
 		
+		//add action listeners to the buttons
 		backButton.addActionListener(this);
 		exitButton.addActionListener(this);
 		playAgainButton.addActionListener(this);
 		
 		Panel instructionsPanel = new Panel();
-		//GridLayout gridLayout = new GridLayout(2,1);
 		BorderLayout borderLayout = new BorderLayout();
 		instructionsPanel.setLayout(borderLayout);
 		instructionsPanel.setLocation(300, 300);
@@ -59,9 +62,11 @@ public class HelpPanel extends BPanel implements ActionListener{
 		instructionsPanel.add(background);		
 		background.setVisible(true);
 		add(instructionsPanel, BorderLayout.CENTER);
-				
+		
+		//specify where on the panel the buttons will be
 		instructionsPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
+		//specify grid properties
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		setLayout(gridBagLayout);
@@ -91,7 +96,10 @@ public class HelpPanel extends BPanel implements ActionListener{
 			panelManager.actionPerformed(new ActionEvent(this, BlackjackApplet.REMOVE, "view.HelpPanel"));
 		}
 	}
-	
+	/**
+	 * getInsets()
+	 * Returns the Insets for the panel
+	 */
  public Insets getInsets()
    {
       return new Insets(0, 0, 0, 0);

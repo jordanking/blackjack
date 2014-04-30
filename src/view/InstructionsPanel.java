@@ -5,17 +5,12 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Panel;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,10 +33,14 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 	Button getStartedButton, exitButton, backButton; //buttons
 	Panel buttonsPanel; //panel to hold the buttons
 	
+	/**
+	 * init()
+	 * initializes the visuals for the panel
+	 */
 	public void init() {
 
 		
-		// set the size of this panel\
+		// set the size of this panel
 		setPreferredSize(new Dimension(1000, 800));
 		
 		setLayout(new BorderLayout());
@@ -83,11 +82,12 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		Panel buttonsPanel = new Panel();
 		buttonsPanel.setLayout((LayoutManager) new FlowLayout(FlowLayout.LEFT));
 		
+		//add the buttons to the panel
 		buttonsPanel.add(exitButton = new Button("Exit"));
 		buttonsPanel.add(backButton = new Button("Back"));
 		buttonsPanel.add(getStartedButton = new Button("Get Started"));
 		
-		
+		//add action listeners
 		exitButton.addActionListener(this);
 		getStartedButton.addActionListener(this);
 		backButton.addActionListener(this);
@@ -100,6 +100,7 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 	 * actionPerformed()
 	 * Listens for the click events for each button and adds/removes the correct
 	 * panel accordingly, or exits
+	 * @param event ActionEvent object
 	 */
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == exitButton) {
@@ -114,6 +115,11 @@ public class InstructionsPanel extends BPanel implements ActionListener{
 		}
 	}
 	
+	/**
+	 * getInsets()
+	 * returns the margins for the panel
+	 * @return Insets
+	 */
 	 public Insets getInsets()
 	   {
 	      return new Insets(0, 0, 0, 0);

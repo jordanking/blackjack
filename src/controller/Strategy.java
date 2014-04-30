@@ -418,6 +418,8 @@ public class Strategy {
 	}
 
 	/**
+	 * getStrategyTable()
+	 * returns the strategy table
 	 * @return the strategyTable
 	 */
 	public Map<String, Map<Integer, GameAction>> getStrategyTable() {
@@ -425,6 +427,8 @@ public class Strategy {
 	}
 
 	/**
+	 * setStrategyTable()
+	 * sets strategy table given the parameters
 	 * @param strategyTable the strategyTable to set
 	 */
 	public void setStrategyTable(Map<String, Map<Integer, GameAction>> strategyTable) {
@@ -460,6 +464,13 @@ public class Strategy {
 		return desiredAction;
 	}
 	
+	/**
+	 * setGameActionForHands()
+	 * sets the actions collected from the game for the player
+	 * @param playerHand
+	 * @param dealerFaceUpCard
+	 * @param desiredAction
+	 */
 	public void setGameActionForHands(String playerHand, Integer dealerFaceUpCard, GameAction desiredAction) {
 		// Map of the dealer/GameAction combinations
 		Map<Integer, GameAction> dealerGameActionCombinations = 

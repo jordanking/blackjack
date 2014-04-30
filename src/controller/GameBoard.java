@@ -18,12 +18,6 @@ import model.Rank;
  * game of blackjack. It contains the complete model of a game of blackjack, for an arbitrary
  * number of hands played between one player and a dealer. It tracks losses and finances.
  * 
- * I'm sure that you're already working on this Jordan, so that's why I haven't modified it.
- * You mentioned you were already going to have buttons highlight (may be best if some disappear)
- * depending on the state, which is great. One gameplay issue if you haven't found it yet 
- * is that I can hit and stand without betting.
- * 
- * Added total wins and total losses to play around with for setting properties. Feel free to modify.
  */
 	
 	/////////////////////////////////Constants/////////////////////////////////////////////////////
@@ -314,7 +308,7 @@ public class GameBoard  {
 				mainHandState != GameState.HIT && 
 				mainHandState != GameState.SPLIT) {
 
-			// errors!
+			// print errors!
 			System.out.println("Can only hit from states DEAL, HIT, or SPLIT.");
 			return false;
 
@@ -504,8 +498,7 @@ public class GameBoard  {
 		}
 
 
-		// TODO: RULES LIMITING LATE SURRENDERING
-
+		//set value of cash and losses for the player
 		cash -= Math.ceil(bet/2);
 		losses += Math.ceil(bet/2);
 		
@@ -800,7 +793,11 @@ public class GameBoard  {
 	}
 
 	/**
-	 * 
+	 * resolveDealerHand()
+	 * makes sure the dealer is following the rules: 
+	 * hits if under 17 and calls function to check soft seventeen rule
+	 * @param none
+	 * @return none
 	 */
 	private void resolveDealerHand() {
 		// dealer must take hits until they have < 17 points

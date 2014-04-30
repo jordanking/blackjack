@@ -1,7 +1,8 @@
 // 
 // Project 4 
 // Name: Allie Miller, Alex Post, Jordan King, Kevin Tian, Riya Modi
-// E-mail: rm662@georgetown.edu 
+// E-mail: rm662@georgetown.edu, kt493@georgetown.edu, jwk67@georgetown.edu,
+// amm359@georgetown.edu, arp68@georgetown.edu
 // Instructor: Singh 
 // COSC 150 
 // 
@@ -10,19 +11,22 @@
 // items noted below, I have neither given nor received any assistance 
 // on this project. 
 // 
-// Description: Our program simulates a Blackjack game and
-// allows the player to visualize the true weight of his monetary losses.
+// Description: Our program allows the user to manually play Blackjack games. It learns 
+// the user's strategies and then uses these strategies (or new ones entered by the user)
+// to implement an automated simulation of Blackjack. Our applet shows the user just how much
+// one would lose (money and time), no matter the strategies, over a long period of time as an addict
 // 
 // Resources:
 // http://stackoverflow.com/questions/9029162/how-do-i-get-the-text-of-a-button-in-java
 // http://www.ecst.csuchico.edu/~amk/classes/csciOOP/double-buffering.html
-// 
+// http://www.javaworld.com/article/2076917/client-side-java/mpad--a-new-design-and-development-methodology-for-multi-panel-applets.html
+// http://stackoverflow.com/questions/19125707/simplest-way-to-set-image-as-jpanel-background
+//
+// image resources:
+// http://img.ehowcdn.com/article-new-thumbnail/ehow/images/a02/4c/de/do-handtohand-spread-playing-cards-800x800.jpg 
+// http://solvingthemoneypuzzle.com/wp-content/uploads/2013/09/blackjack.gif
+// https://code.google.com/p/vector-playing-cards/
 
-
-
-/**
- * 
- */
 package view;
 
 import java.awt.AWTEvent;
@@ -37,6 +41,8 @@ import javax.swing.JApplet;
 
 /**
  * @author Allie Miller
+ * 
+ * BlackJack Applet; manages the Panels for the Blackjack applet
  */
 @SuppressWarnings("serial")
 public class BlackjackApplet extends JApplet implements ActionListener{
@@ -48,7 +54,11 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 	// Event IDs for ADD and REMOVE functions
 	final static int ADD = AWTEvent.RESERVED_ID_MAX + 1,
 			REMOVE = AWTEvent.RESERVED_ID_MAX + 2;
-
+	
+	/**
+	 * init()
+	 * Initializes properties for the applet
+	 */
 	public void init() {
 		try {
 
@@ -71,7 +81,9 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 	}
 
 	/**
+	 * actionPerformed(ActionEvent event)
 	 * Handle ADD and REMOVE events from/for panels
+	 * @param event ActionEvent object
 	 */
 	public void actionPerformed(ActionEvent event)
 	{   
@@ -93,10 +105,14 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 	}
 
 	/**
+	 * panelAdd(Object arg)
+	 * 
 	 * Instantiate a class file, call its init() and start() methods, call stop() on 
 	 * previous panel, show newly added panel in the cardlayout, add new Panel
 	 * to the panel vector, and finally add the reference to Properties so that
 	 * it can be accessed by all panels
+	 * 
+	 *@param arg
 	 */
 	public void panelAdd(Object arg)
 	{
@@ -139,10 +155,14 @@ public class BlackjackApplet extends JApplet implements ActionListener{
 
 
 	/**
+	 * panelRemove(Object arg)
+	 * 
 	 * Remove requested panel from panel vector, show previous panel, call stop() on
 	 * panel being removed, call start() on previous panel and show it in
 	 * the cardlayout, call destroy() on panel being removed, and finally
 	 * remove panel from CardLayout and Properties object
+	 * 
+	 * @param arg
 	 */
 	public void panelRemove(Object arg)
 	{

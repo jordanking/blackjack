@@ -19,7 +19,7 @@ public enum GameState {
 	STAND,
 	SPLIT,
 	DOUBLE,
-	SURRENDER, // seems to be unused
+	SURRENDER,
 	RESOLVED,
 	END;
 	
