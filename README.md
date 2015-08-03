@@ -7,7 +7,11 @@ Various blackjack rules can be altered in the code.
 
 #Contributors
 Jordan King
-Riya Modi
-Kevin Tian
-Alex Post
+
 Allie Miller
+
+Riya Modi
+
+Alex Post
+
+Kevin Tian
